@@ -3,6 +3,41 @@
     ViewData["Title"] = "MasjidList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+/
+<h2>Taqweem Masjid Directory</h2>
+<br /><br />
 
-<h2>MasjidList</h2>
+<div class="row">
+    <div class="col-md-12">
+        <table id="maintable" class="table table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Town</th>
+                    <th>Country</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Masjid Muaadh bin Jabal Crosby</td>
+                    <td>Johannesburg</td>
+                    <td>South Africa</td>
+                    <td>View</td>
+                </tr>
+                <tr>
+                    <td>Masjid Muaadh bin Jabal Crosby</td>
+                    <td>Johannesburg</td>
+                    <td>South Africa</td>
+                    <td>View</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
+<script>
+    $(document).ready(function () {
+        $('#maintable').DataTable();
+    });
+</script>

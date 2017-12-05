@@ -2,42 +2,109 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="row">
-    <div class="col-md-3">
-        <h2>Application uses</h2>
-        <ul>
-            <li>Sample pages using ASP.NET Core MVC</li>
-            <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
-        </ul>
+
+<div id="located" style="text-align:center; visibility: hidden;">
+    <form>
+        <table style="width:100%" class="table table-striped table-sm">
+            <thead class="thead"><tr><th colspan="4"><center><h5><strong>My Location</strong></h5></center></th></tr></thead>
+            <tr>
+                <td><h4><div style="text-align:center; font-size:18px;">Latitude</div></h4></td>
+                <td><h4><div id="Latitude" style="text-align:center; font-size:18px;"></div></h4></td>
+                <td><h4><div style="text-align:center; font-size:18px;">Longitude</div></h4></td>
+                <td><h4><div id="Longitude" style="text-align:center; font-size:18px;"></div></h4></td>
+            </tr>
+            <tr>
+                <td><h4><div id="currentdate" style="text-align:center; font-size:18px;"></div></h4></td>
+                <td><h4><div id="currenttime" style="text-align:center; font-size:18px;"></div></h4></td>
+                <td><h4><div id="ctimezone" style="text-align:center; font-size:18px;"></div></h4></td>
+                <td><h4><div id="cperp" style="text-align:center; font-size:18px;"></div></h4></td>
+            </tr>
+            <tr>
+                <td><input type="range" id="rangeInput" name="rangeInput" value="7" min="3" max="300" onchange="updateTextInput(this.value);"></td>
+                <td><h4><div id="textInput" style="text-align:center; font-size:18px;">Radius: 7 KM</div></h4></td>
+            </tr>
+
+        </table>
+    </form>
+
+
+    <div id="users">
     </div>
-    <div class="col-md-3">
-        <h2>How to</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Overview</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and middleware.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699321">Client side development</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699322">Develop on different platforms</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Run &amp; Deploy</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
-        </ul>
-    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
+    <script type="text/javascript">
+		function updateTextInput(val) {
+			document.getElementById('textInput').innerHTML = val + "KM";
+			GetRadiusTimes(document.getElementById('Latitude').innerHTML, document.getElementById('Longitude').innerHTML, val);
+		}
+    </script>
+
+    <script>
+		var Timer = 0;
+		(function () {
+			function checkTime(i) {
+			return (i < 10) ? "0" + i : i;
+		}
+
+		function startTime() {
+			Timer += 1;
+
+			if (Timer == 6){
+				if (Location.lat != undefined){
+					UserLatitude = Location.lat;
+					UserLongitude = Location.lng;
+					ZoomLength = 12;
+					var todayz = new Date();
+					var tzn = todayz.getTimezoneOffset();
+					tzn = tzn / -60;
+					document.getElementById("Latitude").innerHTML = UserLatitude;
+					document.getElementById("Longitude").innerHTML = UserLongitude;
+					var PerpetualLink = "<a href='report_perpetual_location.php?Lat=" + UserLatitude + "&Lng=" + UserLongitude + "&TZ=" + tzn + "'>View Perpetual Times</a>";
+					document.getElementById("cperp").innerHTML = PerpetualLink;
+					GetRadiusTimes(UserLatitude,UserLongitude, 7, 'Init');
+				}
+			}
+
+			if (Timer == 120){
+				location.reload();
+			}
+
+			var today = new Date(),
+			h = checkTime(today.getHours()),
+			m = checkTime(today.getMinutes()),
+			s = checkTime(today.getSeconds());
+			var n = today.getTimezoneOffset();
+			n = n / -60;
+			document.getElementById('currentdate').innerHTML = today.toDateString();
+			document.getElementById('currenttime').innerHTML = h + ":" + m + ":" + s;
+			document.getElementById('ctimezone').innerHTML =  "Device Timezone: " + n;
+			t = setTimeout(function () {startTime()}, 500);
+		}
+
+		startTime();
+		})();
+    </script>
+
 </div>
+
+
+<div id="orig-header" class="service-header">
+    <h1>Taqweem Musjid Guide</h1>
+    <h3>Select your location on the map</h3>
+</div>
+<div id="map" style="height: 600px; width:100%"></div>
+
+<table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+    <tr>
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td><div class="timetable" id="ptimes"></div>
+        <td><div id="directionsPanel" class="Font12BrownTahoma"></div></td>
+    </tr>
+</table>
