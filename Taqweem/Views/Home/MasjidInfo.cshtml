@@ -43,16 +43,17 @@
                 <table class="table table-condensed" style="color:#f2f2f2" 
                        @*style="background-color: White; border-color: rgb(204, 204, 204); border-width: 1px; border-style: none; border-collapse: collapse; color: Black;"*@
                        >
-                    <tr><td>SEHRI ENDS</td><td><img src="icons/Suhoor.jpg" width="50px"></td><td>03:33</td></tr>
-                    <tr><td>FAJR</td><td><img src="icons/Fajr.jpg" width="50px"></td><td>03:38</td></tr>
-                    <tr><td>SUNRISE</td><td><img src="icons/Sunrise.jpg" width="50px"></td><td>05:08</td></tr>
-                    <tr><td>ISHRAAQ</td><td><img src="icons/Ishraaq.jpg" width="50px"></td><td>05:13</td></tr>
-                    <tr><td>ZAWAAL</td><td><img src="icons/Dhuhr.jpg" width="50px"></td><td>11:58</td></tr>
-                    <tr><td>DHUHR</td><td><img src="icons/Dhuhr.jpg" width="50px"></td><td>12:01</td></tr>
-                    <tr><td>ASR SHAFI</td><td><img src="icons/Asar1.jpg" width="50px"></td><td>15:25</td></tr>
-                    <tr><td>ASR HANAFI</td><td><img src="icons/Asar2.jpg" width="50px"></td><td>16:43</td></tr>
-                    <tr><td>SUNSET</td><td><img src="icons/Sunset.jpg" width="50px"></td><td>18:49</td></tr>
-                    <tr><td>ISHA</td><td><img src="icons/Isha.jpg" width="50px"></td><td>20:18</td></tr>
+                    <tr><td>SEHRI ENDS</td><td><img src="icons/Suhoor.jpg" width="50px"></td><td>@Model.PerpetualTime.SehriEnds.ToString("HH:mm")</td></tr>
+                    <tr><td>FAJR</td><td><img src="icons/Fajr.jpg" width="50px"></td><td>@Model.PerpetualTime.Fajr.ToString("HH:mm")</td></tr>
+                    <tr><td>SUNRISE</td><td><img src="icons/Sunrise.jpg" width="50px"></td><td>@Model.PerpetualTime.Sunrise.ToString("HH:mm")</td></tr>
+                    <tr><td>ISHRAAQ</td><td><img src="icons/Ishraaq.jpg" width="50px"></td><td>@Model.PerpetualTime.Ishraaq.ToString("HH:mm")</td></tr>
+                    <tr><td>ZAWAAL</td><td><img src="icons/Dhuhr.jpg" width="50px"></td><td>@Model.PerpetualTime.Zawaal.ToString("HH:mm")</td></tr>
+                    <tr><td>DHUHR</td><td><img src="icons/Dhuhr.jpg" width="50px"></td><td>@Model.PerpetualTime.Dhuhr.ToString("HH:mm")</td></tr>
+                    
+                    <tr><td>ASR SHAFI</td><td><img src="icons/Asar1.jpg" width="50px"></td><td>@Model.PerpetualTime.AsrShafi.ToString("HH:mm")</td></tr>
+                    <tr><td>ASR HANAFI</td><td><img src="icons/Asar2.jpg" width="50px"></td><td>@Model.PerpetualTime.AsrHanafi.ToString("HH:mm")</td></tr>
+                    <tr><td>SUNSET</td><td><img src="icons/Sunset.jpg" width="50px"></td><td>@Model.PerpetualTime.Sunset.ToString("HH:mm")</td></tr>
+                    <tr><td>ISHA</td><td><img src="icons/Isha.jpg" width="50px"></td><td>@Model.PerpetualTime.Isha.ToString("HH:mm")</td></tr>
                 </table>
 
             </div>
@@ -76,18 +77,18 @@
                         <th style="text-align:left;">ADHAAN</th>
                         <th style="text-align:left;">SALAAH</th>
                     </tr>
-                    <tr><td>FAJR</td><td><img src="icons/Fajr.jpg" width="50px"></td><td>05:30</td><td>05:45</td></tr>
+                    <tr><td>FAJR</td><td><img src="icons/Fajr.jpg" width="50px"></td><td>@Model.SalaahTime.FajrAdhaan.ToString("HH:mm")</td><td>@Model.SalaahTime.FajrSalaah.ToString("HH:mm")</td></tr>
                     <tr>
                         <td>
                             DHUHR
                         </td>
                         <td><img src="icons/Dhuhr.jpg" width="50px"></td>
-                        <td>12:30</td>
-                        <td>12:45</td>
+                        <td>@Model.SalaahTime.DhuhrAdhaan.ToString("HH:mm")</td>
+                        <td>@Model.SalaahTime.DhuhrSalaah.ToString("HH:mm")</td>
                     </tr>
-                    <tr><td>ASR</td><td><img src="icons/Asar2.jpg" width="50px"></td><td>16:43</td><td>16:45</td></tr>
-                    <tr><td>MAGHRIB</td><td><img src="icons/Sunset.jpg" width="50px"></td><td colspan="2">18:52</td></tr>
-                    <tr><td>ISHA</td><td><img src="icons/Isha.jpg" width="50px"></td><td>20:18</td><td>19:15</td></tr>
+                    <tr><td>ASR</td><td><img src="icons/Asar2.jpg" width="50px"></td><td>@Model.SalaahTime.AsrAdhaan.ToString("HH:mm")</td><td>@Model.SalaahTime.AsrSalaah.ToString("HH:mm")</td></tr>
+                    <tr><td>MAGHRIB</td><td><img src="icons/Sunset.jpg" width="50px"></td><td colspan="2">@Model.PerpetualTime.Maghrib.ToString("HH:mm")</td></tr>
+                    <tr><td>ISHA</td><td><img src="icons/Isha.jpg" width="50px"></td><td>@Model.SalaahTime.IshaAdhaan.ToString("HH:mm")</td><td>@Model.SalaahTime.IshaSalaah.ToString("HH:mm")</td></tr>
                 </table>
 
             </div>
@@ -106,23 +107,23 @@
                 <table class="table table-condensed" style="color:#f2f2f2">
                     <tr>
                         <td style="text-align:left">NAME</td>
-                        <td>Masjid Muaadh bin Jabal Crosby</td>
+                        <td>@Model.Name</td>
                     </tr>
 
                     <tr>
                         <td style="text-align:left">TOWN</td>
-                        <td>Johannesburg</td>
+                        <td>@Model.Town</td>
                         <td></td>
                     </tr>
                     <tr>
                         <td style="text-align:left">COUNTRY</td>
-                        <td>South Africa</td>
+                        <td>@Model.Country</td>
                         <td></td>
                     </tr>
-                    <tr> <td style="text-align:left">QIBLA DISTANCE</td><td>5446 KM - 2940 Nautical miles - 3384 Statute miles</td></tr>
-                    <tr><td style="text-align:left">QIBLA BEARING FROM TRUE NORTH</td><td>14.66 Degrees</td></tr>
-                    <tr><td style="text-align:left">LATITUDE</td><td>-26.195149</td></tr>
-                    <tr><td style="text-align:left">LONGITUTE</td><td>27.990238</td></tr>
+                    <tr> <td style="text-align:left">QIBLA DISTANCE</td><td>@Model.QiblaDistance KM - @Model.QDNautical Nautical miles - @Model.QDStatute Statute miles</td></tr>
+                    <tr><td style="text-align:left">QIBLA BEARING FROM TRUE NORTH</td><td>@Model.QiblaBearing Degrees</td></tr>
+                    <tr><td style="text-align:left">LATITUDE</td><td>@Model.Latitude</td></tr>
+                    <tr><td style="text-align:left">LONGITUTE</td><td>@Model.Longitude</td></tr>
                 </table>
 
             </div>
@@ -145,14 +146,21 @@
 
                     <tr>
                         <td style="text-align:left">JURISTIC METHOD</td>
-                        <td>University of Islamic Sciences, Karachi</td>
+                        <td>
+                        @if (Model.JuristicM == JuristicMethod.UniversityOfIslamicSciences)
+                        {
+                            <text>University of Islamic Sciences, Karachi </text>
+
+                        }
+                            
+                        </td>
                     </tr>
 
 
-                    <tr><td style="text-align:left">LADIES FACILITY</td><td>Yes</td></tr>
-                    <tr><td style="text-align:left">JUMMAH FACILITY</td><td>Yes</td></tr>
-                    <tr><td style="text-align:left">CONTACT</td><td>Ml R Joosub<br>Ml S Maanjra<br>Br Abdur Rasheed<br>Br Faizal Suffla<br>Br Basheer Seedat</td></tr>
-                    <tr><td style="text-align:left">PHYSICAL ADDRESS</td><td>114 Jamestown Avenue Crosby, Johannesburg</td></tr>
+                    <tr><td style="text-align:left">LADIES FACILITY</td><td>@Model.LadiesFacility</td></tr>
+                    <tr><td style="text-align:left">JUMMAH FACILITY</td><td>@Model.JummahFacility</td></tr>
+                    <tr><td style="text-align:left">CONTACT</td><td>@Model.Contact</td></tr>
+                    <tr><td style="text-align:left">PHYSICAL ADDRESS</td><td>@Model.Address</td></tr>
                 </table>
 
             </div>
@@ -186,7 +194,7 @@
                 var n = today.getTimezoneOffset();
                 n = n / -60;
                 document.getElementById('currenttime').innerHTML = h + ":" + m + ":" + s;
-                document.getElementById('currenttime2').innerHTML = "Time Zone - Masjid: 2.00 Device: " + n;
+                document.getElementById('currenttime2').innerHTML = "Time Zone - Masjid: @Model.TimeZone.ToString() Device: " + n;
                 t = setTimeout(function () {
                     startTime()
                 }, 500);
