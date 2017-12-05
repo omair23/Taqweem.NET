@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Taqweem</title>
 
-    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="~/assets/css/font-awesome.min.css" rel="stylesheet">
-    <link href="~/assets/css/style.css" rel="stylesheet">
-    <link href="~/assets/css/animate.css" rel="stylesheet">
-    <link href="~/assets/css/skin-blue.css" rel="stylesheet">
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/animate.css" rel="stylesheet">
+    <link href="~/css/skin-blue.css" rel="stylesheet">
 
     <link rel="shortcut icon" href="assets/ico/favicon.png">
 </head>
@@ -46,28 +46,30 @@
     <div class="body-content">
 
         <section id="Section-2" class="fullbg color-white">
-            @RenderBody()
+
+            <div class="container">
+                @RenderBody()
+            </div>
+
         </section>
 
-        <hr />
+        @*<hr />*@
         <footer id="foot-sec">
             <div class="footerdivide">
             </div>
             <div class="container ">
                 <div class="row">
                     <div class="text-center color-white col-sm-12 col-lg-12">
-                        <ul class="social-icons">
+                        @*<ul class="social-icons">
                             <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                             <li><a href="#"><i class="fa fa-twitter"></i></a></li>
                             <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
                             <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
                             <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                        </ul>
+                        </ul>*@
                         <p>
-                            © Your Website.com. Template by WowThemes.net
-                        </p>
-                        <p>
-                            <a href="http://www.wowthemes.net/premium-themes-templates/">Official Website</a> | <a href="http://www.wowthemes.net/support/">Theme Support</a> | <a href="http://www.wowthemes.net/frequently-asked-questions/">F.A.Q.</a>
+                            All Rights reserved. <br />
+                            © Taqweem @DateTime.Now.Year.ToString()
                         </p>
                     </div>
                 </div>
