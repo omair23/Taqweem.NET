@@ -27,6 +27,13 @@ namespace Taqweem.Controllers
             return View(Model);
         }
 
+        public IActionResult MasjidInfo(string Id)
+        {
+            MasjidInfoViewModel Model = new MasjidInfoViewModel("TO DO replace");
+
+            return View(Model);
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
