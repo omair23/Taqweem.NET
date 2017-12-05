@@ -124,116 +124,25 @@ section {
 		position:relative;
 		overflow:hidden;
 }
- #Section-1 {
-	background-color:#4ba2dc;
-}
-#Section-1:after {
-	content:"";
-	display:block;
-	position:absolute;
-	top:0;
-	left:0;
-	background-image:url(http://unsplash.it/1600/1400?random=1);
-	width:100%;
-	height:100%;
-	opacity:0.05;
-	 -webkit-background-size:cover !Important;
-	-moz-background-size:cover !Important;
-	-o-background-size:cover !Important;
-	background-size:cover !Important;
-}
  	 #Section-2 {
 	 background-color:#222;
 	 min-height:730px;
 }
-#Section-2:after {
-	content:"";
-	display:block;
-	position:absolute;
-	top:0;
-	left:0;
-	background-image:url(http://unsplash.it/1600/1400?random=2);
-	-webkit-background-size:cover !Important;
-	-moz-background-size:cover !Important;
-	-o-background-size:cover !Important;
-	background-size:cover !Important;
-	width:100%;
-	height:100%;
-	opacity:0.05;
-}
- 	 #Section-3 {
-			 background-color:#4ba2dc;
-}
-#Section-3:after {
-	content:"";
-	display:block;
-	position:absolute;
-	top:0;
-	left:0;
-	background-image:url(http://unsplash.it/1600/1400?random=3);
-	-webkit-background-size:cover !Important;
-	-moz-background-size:cover !Important;
-	-o-background-size:cover !Important;
-	background-size:cover !Important;
-	width:100%;
-	height:100%;
-	opacity:0.1;
-}
- 	 #Section-4 {
-	 background-color:#222;
-	 min-height:730px;
-}
-#Section-4:after {
-	content:"";
-	display:block;
-	position:absolute;
-	top:0;
-	left:0;
-	background-image:url(http://unsplash.it/1600/1400?random=4);
-	-webkit-background-size:cover !Important;
-	-moz-background-size:cover !Important;
-	-o-background-size:cover !Important;
-	background-size:cover !Important;
-	width:100%;
-	height:100%;
-	opacity:0.10;
-}
- 	 #Section-5 {
-	 background-color:#4ba2dc;
-}
-#Section-5:after {
-	content:"";
-	display:block;
-	position:absolute;
-	top:0;
-	left:0;
-	background-image:url(http://unsplash.it/1600/1400?random=5);
-	width:100%;
-	height:100%;
-	opacity:0.08;
-	-webkit-background-size:cover !Important;
-	-moz-background-size:cover !Important;
-	-o-background-size:cover !Important;
-	background-size:cover !Important;
-}
- 	 #Section-6 {
-	background-color:#222;
-}
-#Section-6:after {
-	content:"";
-	display:block;
-	position:absolute;
-	top:0;
-	left:0;
-	background-image:url(http://unsplash.it/1600/1400?random=6);	 
-	width:100%;
-	height:100%;
-	opacity:0.04;
-	-webkit-background-size:cover !Important;
-	-moz-background-size:cover !Important;
-	-o-background-size:cover !Important;
-	background-size:cover !Important;
-}
+        #Section-2:after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-image: url(../img/quraan_kaaba.jpg); /* url(http://unsplash.it/1600/1400?random=2);*/
+            -webkit-background-size: cover !Important;
+            -moz-background-size: cover !Important;
+            -o-background-size: cover !Important;
+            background-size: cover !Important;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+        }
  	 footer {
 		background-color:#4ba2dc;
 		width:100%;
