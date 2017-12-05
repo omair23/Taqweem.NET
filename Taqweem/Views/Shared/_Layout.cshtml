@@ -5,44 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Taqweem</title>
 
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/assets/css/style.css" rel="stylesheet">
+    <link href="~/assets/css/animate.css" rel="stylesheet">
+    <link href="~/assets/css/skin-blue.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="assets/ico/favicon.png">
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav id="topnav" class="navbar navbar-fixed-top navbar-default" role="navigation">
         <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Taqweem</a>
+                <a class="navbar-brand" href="#top-section">TAQWEEM</a>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="">Home</a></li>
+                    <li><a href="">Directory</a></li>
+                    <li><a href="">Map</a></li>
+                    <li><a href="">About</a></li>
+                    <li><a href="">Add Masjid</a></li>
+                    <li><a href="">Login</a></li>
+                    <li><a href="http://www.rapidsoft.co.za/" target="_blank">Rapidsoft</a></li>
+                    <li><a href="http://www.mbdsa.co.za/MusjidSalaahTimeTable/index.php" target="_blank">MUST</a></li>
                 </ul>
-                @await Html.PartialAsync("_LoginPartial")
             </div>
+            <!-- /.navbar-collapse -->
         </div>
     </nav>
-    <div class="container body-content">
-        @RenderBody()
+
+    <div class="body-content">
+
+        <section id="Section-2" class="fullbg color-white">
+            @RenderBody()
+        </section>
+
         <hr />
-        <footer>
-            <p>&copy; 2017 - Taqweem</p>
+        <footer id="foot-sec">
+            <div class="footerdivide">
+            </div>
+            <div class="container ">
+                <div class="row">
+                    <div class="text-center color-white col-sm-12 col-lg-12">
+                        <ul class="social-icons">
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                        </ul>
+                        <p>
+                            © Your Website.com. Template by WowThemes.net
+                        </p>
+                        <p>
+                            <a href="http://www.wowthemes.net/premium-themes-templates/">Official Website</a> | <a href="http://www.wowthemes.net/support/">Theme Support</a> | <a href="http://www.wowthemes.net/frequently-asked-questions/">F.A.Q.</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </footer>
     </div>
 
