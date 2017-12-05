@@ -1,9 +1,10 @@
-﻿
+﻿@model MasjidListViewModel
+
 @{
     ViewData["Title"] = "MasjidList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-/
+
 <h2>Taqweem Masjid Directory</h2>
 <br /><br />
 
@@ -19,18 +20,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Masjid Muaadh bin Jabal Crosby</td>
-                    <td>Johannesburg</td>
-                    <td>South Africa</td>
-                    <td>View</td>
-                </tr>
-                <tr>
-                    <td>Masjid Muaadh bin Jabal Crosby</td>
-                    <td>Johannesburg</td>
-                    <td>South Africa</td>
-                    <td>View</td>
-                </tr>
+                @foreach (var Item in Model.Masjids)
+                {
+                    <tr>
+                        <td>@Item.Name</td>
+                        <td>@Item.Town</td>
+                        <td>@Item.Country</td>
+                        <td>View</td>
+                    </tr>
+
+                }
             </tbody>
         </table>
     </div>

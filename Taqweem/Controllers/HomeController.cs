@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Taqweem.Models;
+using Taqweem.ViewModels;
 
 namespace Taqweem.Controllers
 {
@@ -17,7 +18,13 @@ namespace Taqweem.Controllers
 
         public IActionResult MasjidList()
         {
-            return View();
+            MasjidListViewModel Model = new MasjidListViewModel();
+
+            Model.Masjids.Add(new MasjidList("1", "Masjid Muaadh bin Jabal Crosby", "Johannesburg", "South Africa"));
+
+            Model.Masjids.Add(new MasjidList("2", "Masjid Al Farooq", "Johannesburg", "South Africa"));
+
+            return View(Model);
         }
 
         public IActionResult Error()
