@@ -7,8 +7,11 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="panel-heading">
-            <center><h3>@Model.Name, @Model.Town, @Model.Country</h3></center>
+        <div class="panel-heading thumbnail"  style="background-color: #333">
+
+            <div class="row">
+                <center><h3>@Model.Name, @Model.Town, @Model.Country</h3></center>
+            </div>
 
             <div class="row">
                 <div class="col-md-4">
@@ -31,8 +34,6 @@
     </div>
 </div>
 
-<br /><br />
-
 <div class="row">
 
     <div class="col-md-4">
@@ -40,9 +41,7 @@
             <div class="caption">
                 <h4>PERPETUAL TIMES</h4>
 
-                <table class="table table-condensed" style="color:#f2f2f2" 
-                       @*style="background-color: White; border-color: rgb(204, 204, 204); border-width: 1px; border-style: none; border-collapse: collapse; color: Black;"*@
-                       >
+                <table class="table table-condensed" style="color: #f2f2f2; border-top: none; border:none">
                     <tr><td>SEHRI ENDS</td><td><img src="icons/Suhoor.jpg" width="50px"></td><td>@Model.PerpetualTime.SehriEnds.ToString("HH:mm")</td></tr>
                     <tr><td>FAJR</td><td><img src="icons/Fajr.jpg" width="50px"></td><td>@Model.PerpetualTime.Fajr.ToString("HH:mm")</td></tr>
                     <tr><td>SUNRISE</td><td><img src="icons/Sunrise.jpg" width="50px"></td><td>@Model.PerpetualTime.Sunrise.ToString("HH:mm")</td></tr>
