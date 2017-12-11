@@ -7,7 +7,7 @@
     <style>
         .table-striped > tbody > tr:nth-child(odd) > td,
         .table-striped > tbody > tr:nth-child(odd) > th {
-            background-color: #525252;
+            background-color: #272626;
         }
     </style>
 }
@@ -26,65 +26,43 @@
             <div class="caption">
                 <table class="table table-striped" id="perp" style="color: #fff">
 
-                    @foreach (var Month in Model.Months)
-                    {
-                        <thead class='thead'>
+                    <thead class='thead'>
+                        <tr>
+                            <th>Date</th>
+                            <th>Sehri-Ends</th>
+                            <th>Fajr</th>
+                            <th>Sunrise</th>
+                            <th>Ishraaq</th>
+                            <th>Zawaal</th>
+                            <th>Dhuhr</th>
+                            <th>Asar-Shaafi</th>
+                            <th>Asar-Hanafi</th>
+                            <th>Sunset</th>
+                            <th>Maghrib</th>
+                            <th>Isha</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var Item in Model.Times.OrderBy(s => s.Date.DayOfYear))
+                        {
                             <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th>
-                                    <h4>@Month.ToString("MMMM")</h4>
-                                </th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <td>@Item.Date.ToString("d  MMMM")</td>
+                                <td>@Item.SehriEnds.ToString("hh:mm")</td>
+                                <td>@Item.Fajr.ToString("hh:mm")</td>
+                                <td>@Item.Sunrise.ToString("hh:mm")</td>
+                                <td>@Item.Ishraaq.ToString("hh:mm")</td>
+                                <td>@Item.Zawaal.ToString("hh:mm")</td>
+                                <td>@Item.Dhuhr.ToString("hh:mm")</td>
+                                <td>@Item.AsrShafi.ToString("hh:mm")</td>
+                                <td>@Item.AsrHanafi.ToString("hh:mm")</td>
+                                <td>@Item.Sunset.ToString("hh:mm")</td>
+                                <td>@Item.Maghrib.ToString("hh:mm")</td>
+                                <td>@Item.Isha.ToString("hh:mm")</td>
                             </tr>
-                        </thead>
+                        }
 
-                        <tbody>
-                            <center>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Sehri-Ends</th>
-                                    <th>Fajr</th>
-                                    <th>Sunrise</th>
-                                    <th>Ishraaq</th>
-                                    <th>Zawaal</th>
-                                    <th>Dhuhr</th>
-                                    <th>Asar-Shaafi</th>
-                                    <th>Asar-Hanafi</th>
-                                    <th>Sunset</th>
-                                    <th>Maghrib</th>
-                                    <th>Isha</th>
-                                </tr>
-                            </center>
-
-                            @foreach (var Item in Model.Times.OrderBy(s => s.Date.DayOfYear).Where(s => s.Date.Month == Month.Month).ToList())
-                            {
-                                <tr>
-                                    <td>@Item.Date.Day</td>
-                                    <td>@Item.SehriEnds.ToString("hh:mm")</td>
-                                    <td>@Item.Fajr.ToString("hh:mm")</td>
-                                    <td>@Item.Sunrise.ToString("hh:mm")</td>
-                                    <td>@Item.Ishraaq.ToString("hh:mm")</td>
-                                    <td>@Item.Zawaal.ToString("hh:mm")</td>
-                                    <td>@Item.Dhuhr.ToString("hh:mm")</td>
-                                    <td>@Item.AsrShafi.ToString("hh:mm")</td>
-                                    <td>@Item.AsrHanafi.ToString("hh:mm")</td>
-                                    <td>@Item.Sunset.ToString("hh:mm")</td>
-                                    <td>@Item.Maghrib.ToString("hh:mm")</td>
-                                    <td>@Item.Isha.ToString("hh:mm")</td>
-                                </tr>
-                            }
-
-                        </tbody>
-                    }
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -95,6 +73,14 @@
     $(document).ready(function () {
         var table = $('#perp').DataTable({
             responsive: true,
+            "bLengthChange": false,
+            "Filter": false,
+            "Info": false,
+            fixedHeader: {
+                header: true,
+                footer: true
+            },
+            "paging": false,
             "dom": '',
             "ordering": false,
             "columns": [
@@ -114,7 +100,7 @@
             "columnDefs": [{
                 "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], // column or columns numbers
                 "orderable": false,  // set orderable for selected columns
-            }],
+            }]
         });
     });
 </script>

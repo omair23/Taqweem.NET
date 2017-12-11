@@ -24,6 +24,8 @@ namespace Taqweem.Controllers
 
             Model.Masjids.Add(new MasjidList("2", "Masjid Al Farooq", "Johannesburg", "South Africa"));
 
+            Model.Masjids.Add(new MasjidList("2", "Masjid Al Farooq", "Johannesburg", "South Africa"));
+
             return View(Model);
         }
 

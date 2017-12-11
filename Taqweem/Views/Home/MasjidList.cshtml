@@ -3,6 +3,13 @@
 @{
     ViewData["Title"] = "MasjidList";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    <style>
+        .table-striped > tbody > tr:nth-child(odd) > td,
+        .table-striped > tbody > tr:nth-child(odd) > th {
+            background-color: #383838;
+        }
+    </style>
 }
 
 <h2>Taqweem Masjid Directory</h2>
@@ -10,7 +17,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <table id="maintable" class="table table-bordered" cellspacing="0" width="100%">
+        <table id="maintable" class="table table-bordered table-striped" cellspacing="0" width="100%">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -37,6 +44,20 @@
 
 <script>
     $(document).ready(function () {
-        $('#maintable').DataTable();
+        var table = $('#maintable').DataTable({
+            responsive: true,
+            "dom": '<lf<t>ip>',
+            "ordering": false,
+            "columns": [
+                { "data": "a1" },
+                { "data": "a2" },
+                { "data": "a3" },
+                { "data": "a4" },
+            ],
+            "columnDefs": [{
+                "targets": [0, 1, 2, 3], // column or columns numbers
+                "orderable": false,  // set orderable for selected columns
+            }],
+        });
     });
 </script>
