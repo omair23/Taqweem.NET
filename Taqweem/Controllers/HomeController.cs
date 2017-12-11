@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Taqweem.Models;
 using Taqweem.ViewModels;
+using System.Xml;
 
 namespace Taqweem.Controllers
 {
@@ -13,7 +14,18 @@ namespace Taqweem.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            Markers Model = new Markers();
+
+            Masjid X = new Masjid("1", -30, 28, 0, 2);
+            X.Name = "ABC";
+            X.Town = "DEF";
+            X.Country = "GHI";
+
+            Model.Marker.Add(X);
+
+            Model.Marker.Add(new Masjid("1", 25, 28, 0, 2));
+
+            return View(Model);
         }
 
         public IActionResult MasjidList()

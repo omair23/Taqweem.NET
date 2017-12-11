@@ -1,8 +1,17 @@
 ﻿@model MasjidInfoViewModel
 
 @{
-    ViewData["Title"] = "MasjidInfo";
+    ViewData["Title"] = Model.Masjid.Name + ", " + Model.Masjid.Town + ", " + Model.Masjid.Country;
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Masjid: @Model.Masjid.Name - @Model.Masjid.Town - @Model.Masjid.Country - Salaah Times - Perpetual Times - Salaah Calendar - Perpetual Calendar - Adhaan - Salaah - Masjid - Map - Fajr - Dhuhr - Asr - Maghrib - Isha" />
+
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+    <script type="text/javascript" src="PrayTimes.js"></script>
+
+
 
     <style>
         .table-striped > tbody > tr:nth-child(odd) > td,
