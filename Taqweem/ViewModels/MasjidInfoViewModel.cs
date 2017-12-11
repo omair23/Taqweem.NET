@@ -57,7 +57,7 @@ namespace Taqweem.ViewModels
             Country = "South Africa";
             LastUpdate = new DateTime(2016, 9, 28);
 
-            PerpetualTime = new cPerpetualTime();
+            PerpetualTime = new cPerpetualTime(DateTime.Now);
             SalaahTime = new cSalaahTime();
 
 

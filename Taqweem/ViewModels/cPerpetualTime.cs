@@ -7,6 +7,13 @@ namespace Taqweem.ViewModels
 {
     public class cPerpetualTime
     {
+        public cPerpetualTime(DateTime Dval)
+        {
+            Date = Dval;
+        }
+
+        public DateTime Date { get; set; }
+
         public DateTime SehriEnds { get; set; } = new DateTime(1, 1, 1, 3, 1, 0);
 
         public DateTime Fajr { get; set;}

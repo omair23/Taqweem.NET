@@ -36,7 +36,7 @@ namespace Taqweem.Controllers
 
         public IActionResult PerpetualCalendar(string Id)
         {
-            MasjidInfoViewModel Model = new MasjidInfoViewModel("TO DO replace");
+            cPerpCalendar Model = new cPerpCalendar();
 
             return View(Model);
         }
