@@ -44,22 +44,44 @@
                     </thead>
 
                     <tbody>
-                        @foreach (var Item in Model.Times.OrderBy(s => s.Date.DayOfYear))
+                        @foreach (var Month in Model.Months)
                         {
                             <tr>
-                                <td>@Item.Date.ToString("d  MMMM")</td>
-                                <td>@Item.SehriEnds.ToString("hh:mm")</td>
-                                <td>@Item.Fajr.ToString("hh:mm")</td>
-                                <td>@Item.Sunrise.ToString("hh:mm")</td>
-                                <td>@Item.Ishraaq.ToString("hh:mm")</td>
-                                <td>@Item.Zawaal.ToString("hh:mm")</td>
-                                <td>@Item.Dhuhr.ToString("hh:mm")</td>
-                                <td>@Item.AsrShafi.ToString("hh:mm")</td>
-                                <td>@Item.AsrHanafi.ToString("hh:mm")</td>
-                                <td>@Item.Sunset.ToString("hh:mm")</td>
-                                <td>@Item.Maghrib.ToString("hh:mm")</td>
-                                <td>@Item.Isha.ToString("hh:mm")</td>
+                                <th>Date</th>
+                                <th>Sehri-Ends</th>
+                                <th>Fajr</th>
+                                <th>Sunrise</th>
+                                <th>Ishraaq</th>
+                                <th>Zawaal</th>
+                                <th>Dhuhr</th>
+                                <th>Asar-Shaafi</th>
+                                <th>Asar-Hanafi</th>
+                                <th>Sunset</th>
+                                <th>Maghrib</th>
+                                <th>Isha</th>
                             </tr>
+
+                            @foreach (var Item in Model.Times
+                                                    .Where(s => s.Date.Month == Month.Month)
+                                                    .OrderBy(s => s.Date.DayOfYear)
+                                                    .ToList())
+                            {
+                                <tr>
+                                    <td>@Item.Date.ToString("d  MMMM")</td>
+                                    <td>@Item.SehriEnds.ToString("hh:mm")</td>
+                                    <td>@Item.Fajr.ToString("hh:mm")</td>
+                                    <td>@Item.Sunrise.ToString("hh:mm")</td>
+                                    <td>@Item.Ishraaq.ToString("hh:mm")</td>
+                                    <td>@Item.Zawaal.ToString("hh:mm")</td>
+                                    <td>@Item.Dhuhr.ToString("hh:mm")</td>
+                                    <td>@Item.AsrShafi.ToString("hh:mm")</td>
+                                    <td>@Item.AsrHanafi.ToString("hh:mm")</td>
+                                    <td>@Item.Sunset.ToString("hh:mm")</td>
+                                    <td>@Item.Maghrib.ToString("hh:mm")</td>
+                                    <td>@Item.Isha.ToString("hh:mm")</td>
+                                </tr>
+                            }
+
                         }
 
                     </tbody>
@@ -76,10 +98,6 @@
             "bLengthChange": false,
             "Filter": false,
             "Info": false,
-            fixedHeader: {
-                header: true,
-                footer: true
-            },
             "paging": false,
             "dom": '',
             "ordering": false,
