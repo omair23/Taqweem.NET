@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Taqweem.Models;
 
 namespace Taqweem.ViewModels
 {
@@ -13,6 +14,8 @@ namespace Taqweem.ViewModels
 
         public cPerpCalendar()
         {
+            Masjid Masjid = new Masjid("ID", -30, 28, 0, 2);
+
             Months = new List<DateTime>();
 
             for(int i=1; i <=12; i++)
@@ -28,7 +31,7 @@ namespace Taqweem.ViewModels
 
                 for (int i=1; i<= Days; i++)
                 {
-                    Times.Add(new cPerpetualTime(new DateTime(DateTime.Now.Year, Item.Month, i)));
+                    Times.Add(new cPerpetualTime(new DateTime(DateTime.Now.Year, Item.Month, i), Masjid));
                 }
 
             }

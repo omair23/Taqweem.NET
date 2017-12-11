@@ -8,8 +8,18 @@
         .table-striped > tbody > tr:nth-child(odd) > td,
         .table-striped > tbody > tr:nth-child(odd) > th {
             background-color: #272626;
-        }
+            //font-weight: bold;
+        }   
     </style>
+
+    @*<style>
+        .table-striped > tbody > tr:nth-child(odd) > td,
+        .table-striped > tbody > tr:nth-child(odd) > th {
+            background-color: #cccccc;
+            color: #d90909;
+            font-weight: bold;
+        }
+    </style>*@
 }
 
 <div class="row">
@@ -17,7 +27,7 @@
         <div class="panel-heading thumbnail"  style="background-color: #333">
 
             <div class="row">
-                <center><h3>@Model.Name, @Model.Town, @Model.Country</h3></center>
+                <center><h3>@Model.Masjid.Name, @Model.Masjid.Town, @Model.Masjid.Country</h3></center>
             </div>
 
             <div class="row">
@@ -34,7 +44,15 @@
                 </div>
 
                 <div class="col-md-4">
-                    <h5>Last Updated: @Model.LastUpdate.ToString("yyyy-MM-dd hh:mm")</h5>
+                    @if (Model.Masjid.LastUpdate.Year >= 2017)
+                    {
+                        <h5>Last Updated: @Model.Masjid.LastUpdate.ToString("yyyy-MM-dd hh:mm")</h5>
+                    }
+                    else
+                    {
+                        <h5>Last Updated: Yet to be updated</h5>
+                    }
+
                 </div>
             </div>
         </div>
@@ -113,23 +131,23 @@
                 <table class="table table-condensed table-striped" style="color:#f2f2f2">
                     <tr>
                         <td style="text-align:left">NAME</td>
-                        <td>@Model.Name</td>
+                        <td>@Model.Masjid.Name</td>
                     </tr>
 
                     <tr>
                         <td style="text-align:left">TOWN</td>
-                        <td>@Model.Town</td>
+                        <td>@Model.Masjid.Town</td>
                         <td></td>
                     </tr>
                     <tr>
                         <td style="text-align:left">COUNTRY</td>
-                        <td>@Model.Country</td>
+                        <td>@Model.Masjid.Country</td>
                         <td></td>
                     </tr>
                     <tr> <td style="text-align:left">QIBLA DISTANCE</td><td>@Model.QiblaDistance KM - @Model.QDNautical Nautical miles - @Model.QDStatute Statute miles</td></tr>
                     <tr><td style="text-align:left">QIBLA BEARING FROM TRUE NORTH</td><td>@Model.QiblaBearing Degrees</td></tr>
-                    <tr><td style="text-align:left">LATITUDE</td><td>@Model.Latitude</td></tr>
-                    <tr><td style="text-align:left">LONGITUTE</td><td>@Model.Longitude</td></tr>
+                    <tr><td style="text-align:left">LATITUDE</td><td>@Model.Masjid.Latitude</td></tr>
+                    <tr><td style="text-align:left">LONGITUTE</td><td>@Model.Masjid.Longitude</td></tr>
                 </table>
 
             </div>
@@ -153,20 +171,36 @@
                     <tr>
                         <td style="text-align:left">JURISTIC METHOD</td>
                         <td>
-                        @if (Model.JuristicM == JuristicMethod.UniversityOfIslamicSciences)
+                        @if (Model.Masjid.JuristMethod == JuristicMethod.UniversityOfIslamicSciencesKarachi)
                         {
-                            <text>University of Islamic Sciences, Karachi </text>
-
+                            <text>University of Islamic Sciences, Karachi</text>
+                        }else if (Model.Masjid.JuristMethod == JuristicMethod.EgyptianGeneralAuthorityOfSurvey)
+                        {
+                            <text>Egyptian General Authority of Survey</text>
+                        }else if (Model.Masjid.JuristMethod == JuristicMethod.IslamicSocietyOfNorthAmerica)
+                        {
+                            <text>Islamic Society of North America (ISNA)</text>
+                        }else if (Model.Masjid.JuristMethod == JuristicMethod.MuslimWorldLeague)
+                        {
+                            <text>Muslim World League</text>
+                        }else if (Model.Masjid.JuristMethod == JuristicMethod.UmmAlQuraUniversityMakkah)
+                        {
+                            <text>Umm al-Qura University, Makkah</text>
                         }
                             
                         </td>
                     </tr>
 
 
-                    <tr><td style="text-align:left">LADIES FACILITY</td><td>@Model.LadiesFacility</td></tr>
-                    <tr><td style="text-align:left">JUMMAH FACILITY</td><td>@Model.JummahFacility</td></tr>
-                    <tr><td style="text-align:left">CONTACT</td><td>@Model.Contact</td></tr>
-                    <tr><td style="text-align:left">PHYSICAL ADDRESS</td><td>@Model.Address</td></tr>
+                    <tr><td style="text-align:left">LADIES FACILITY</td><td>@if (Model.Masjid.LadiesFacility)
+                    {<text>Yes</text>}
+                    else {<text>No</text> }</td></tr>
+
+                    <tr><td style="text-align:left">JUMMAH FACILITY</td><td>@if (Model.Masjid.JummahFacility){< text > Yes </ text >}
+                    else
+                    {<text>No</text> }</td></tr>
+                    <tr><td style="text-align:left">CONTACT</td><td>@Model.Masjid.Contact</td></tr>
+                    <tr><td style="text-align:left">PHYSICAL ADDRESS</td><td>@Model.Masjid.Address</td></tr>
                 </table>
 
             </div>
@@ -200,7 +234,7 @@
                 var n = today.getTimezoneOffset();
                 n = n / -60;
                 document.getElementById('currenttime').innerHTML = h + ":" + m + ":" + s;
-                document.getElementById('currenttime2').innerHTML = "Time Zone - Masjid: @Model.TimeZone.ToString() Device: " + n;
+                document.getElementById('currenttime2').innerHTML = "Time Zone - Masjid: @Model.Masjid.TimeZone.ToString() Device: " + n;
                 t = setTimeout(function () {
                     startTime()
                 }, 500);

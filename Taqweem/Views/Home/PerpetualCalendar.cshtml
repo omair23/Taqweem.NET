@@ -46,20 +46,23 @@
                     <tbody>
                         @foreach (var Month in Model.Months)
                         {
-                            <tr>
-                                <th>Date</th>
-                                <th>Sehri-Ends</th>
-                                <th>Fajr</th>
-                                <th>Sunrise</th>
-                                <th>Ishraaq</th>
-                                <th>Zawaal</th>
-                                <th>Dhuhr</th>
-                                <th>Asar-Shaafi</th>
-                                <th>Asar-Hanafi</th>
-                                <th>Sunset</th>
-                                <th>Maghrib</th>
-                                <th>Isha</th>
-                            </tr>
+                            @if (Month.Month != 1)
+                            {
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Sehri-Ends</th>
+                                    <th>Fajr</th>
+                                    <th>Sunrise</th>
+                                    <th>Ishraaq</th>
+                                    <th>Zawaal</th>
+                                    <th>Dhuhr</th>
+                                    <th>Asar-Shaafi</th>
+                                    <th>Asar-Hanafi</th>
+                                    <th>Sunset</th>
+                                    <th>Maghrib</th>
+                                    <th>Isha</th>
+                                </tr>
+                            }
 
                             @foreach (var Item in Model.Times
                                                     .Where(s => s.Date.Month == Month.Month)
