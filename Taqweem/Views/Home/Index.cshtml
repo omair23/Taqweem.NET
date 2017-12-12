@@ -8,13 +8,6 @@
     <meta name="description" content="Taqweem provides Salaah Times, Perpetual Times and Locations of Masajid worldwide. Find your local masjid or add it if it is not in our database. Lookup Salaah Times for masajid within a radius of your location. " />
 
     <style>
-        .timetable {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 14px;
-            color: #000;
-            text-align: center;
-        }
-
         .table-striped > tbody > tr:nth-child(odd) > td,
         .table-striped > tbody > tr:nth-child(odd) > th {
             background-color: #383838;
@@ -58,10 +51,14 @@
 
     <div class="row">
         <div class="col-md-3">
+            <div id="slider">
+                <div id="custom-handle" class="ui-slider-handle"></div>
+            </div>
+
             <form>
                 <input type="range" id="rangeInput" name="rangeInput" value="7" min="3" max="300" onchange="updateTextInput(this.value);">
 
-                <div id="textInput" >Radius: 7 KM</div>
+                <div id="textInput">Radius: 7 KM</div>
             </form>
         </div>
         <div class="col-md-3">
@@ -119,12 +116,6 @@
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
 <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-
-<script>
-    $(document).ready(function () {
-        load();
-    });
-</script>
 
 <script type="text/javascript">
 
@@ -204,171 +195,11 @@
                 </text>
             }
 
-           var contentString2 = "Pointer Masjid";
-
-           var infowindow2 = new google.maps.InfoWindow({
-               content: contentString2
-           });
-
-           var myLatlng2 = new google.maps.LatLng(-28.732617, 24.754);
-
            google.maps.event.addListener(map, 'click', function (event) {
-
                marker = new google.maps.Marker({ position: event.latLng, map: map });
 
                var lat = event.latLng.lat();
                var lng = event.latLng.lng();
-
-               @*var R = 6371;
-
-               var distances = [];
-
-               @foreach(var Item in Model.Marker)
-               {
-                <text>
-                   var mlat = @Item.Latitude;
-
-                   var mlng = parseFloat(@Item.Longitude);
-
-                   var dLat = rad(mlat - lat);
-
-                   var dLong = rad(mlng - lng);
-
-                   var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-
-                       Math.cos(rad(lat)) * Math.cos(rad(lat)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
-
-                   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-                   var d = R * c;
-
-                   distances[i] = d;
-
-                   if (closest == -1 || d < distances[closest]) {
-                       closest = i;
-
-                   }
-               </text>
-               }
-
-               var closestMusjid = (markers[closest].getAttribute("Name")) + ", " + (markers[closest].getAttribute("Town")) + ", " + (markers[closest].getAttribute("Country"))
-
-               var closestID = (markers[closest].getAttribute("ID"));
-
-               geocoder.geocode({ 'latLng': event.latLng }, function (results, status) {
-
-                   var area = results[0].formatted_address;
-
-                   document.getElementById('area').innerHTML = area;
-
-               });
-
-               //get perpetual times
-
-               var str = (event.latLng);
-
-               str = str + ''
-
-               str = str.replace('(', '');
-
-               str = str.replace(')', '');
-
-               GPS = str.split(",");
-
-               var todayd = new Date();
-
-               var n = todayd.getTimezoneOffset();
-
-               n = n / -60;
-
-               prayTimes.setMethod('Karachi');
-
-               prayTimes.adjust({ asr: 'Hanafi' });
-
-               var date = new Date(); // today
-
-               var times = prayTimes.getTimes(date, [GPS[0], GPS[1]], n);
-
-               var list = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Midnight'];
-
-               prayTimes.adjust({ asr: 'Standard' });
-
-               var date = new Date(); // today
-
-               var times2 = prayTimes.getTimes(date, [GPS[0], GPS[1]], n);
-
-               var list2 = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Midnight'];
-
-               var str = "View Times";
-
-               var result = str.link("viewmasjid.php?ID=" + closestID);
-
-               var html = '<table id="timetable">';
-
-               html += '<tr><th colspan="2" class="timetable">' + date.toLocaleDateString() + '</th></tr>';
-
-               html += '<tr><th colspan="2" class="timetable">Perpetual Salaah Times For Your Selected Location</th></tr>';
-
-               html += '<tr><th style="text-align:center" colspan="2">_____________________________</th></tr>';
-
-               html += '<tr><th class="timetable">Fajr</th><th> ' + times[list[0].toLowerCase()] + '</th></tr>';
-
-               html += '<tr><th class="timetable">Sunrise</th><th> ' + times[list[1].toLowerCase()] + '</th></tr>';
-
-               html += '<tr><th class="timetable">Dhuhr</th><th> ' + times[list[2].toLowerCase()] + '</th></tr>';
-
-               html += '<tr><th class="timetable">Asr Shafi</th><th> ' + times2[list2[3].toLowerCase()] + '</th></tr>';
-
-               html += '<tr><th class="timetable">Asr Hanafi</th><th> ' + times[list[3].toLowerCase()] + '</th></tr>';
-
-               html += '<tr><th class="timetable">Maghrib</th><th> ' + times[list[4].toLowerCase()] + '</th></tr>';
-
-               html += '<tr><th class="timetable">Isha</th><th> ' + times[list[5].toLowerCase()] + '</th></tr>';
-
-               html += '<tr><th style="text-align:center" colspan="2">_____________________________</th></tr>';
-
-               html += '<tr><th colspan="2" class="timetable">Nearest Masjid : ' + closestMusjid + '</th></tr>';
-
-               html += '<tr><th colspan="2" class="timetable">' + result + '</th></tr>';
-
-               html += '<tr><th style="text-align:center" colspan="2">_____________________________</th></tr>';
-
-               html += '</table>';
-
-               document.getElementById('ptimes').innerHTML = html;
-
-               directionsDisplay.setMap(map);
-
-               directionsDisplay.setPanel(document.getElementById("directionsPanel"));
-
-               var pointb;
-
-               pointb = '(';
-
-               pointb += markers[closest].getAttribute("Latitude");
-
-               pointb += ',';
-
-               pointb += markers[closest].getAttribute("Longitude");
-
-               pointb += ')';
-
-               calcRoute(event.latLng, pointb);
-
-               document.getElementById('Latitude').innerHTML = lat;
-
-               document.getElementById('Longitude').innerHTML = lng;
-
-               var todayz = new Date();
-
-               var tzn = todayz.getTimezoneOffset();
-
-               tzn = tzn / -60;
-
-               var PerpetualLink = "<a href='report_perpetual_location.php?Lat=" + lat + "&Lng=" + lng + "&TZ=" + tzn + "'>View Perpetual Times</a>";
-
-               document.getElementById("cperp").innerHTML = PerpetualLink;*@
-
                var Radius = document.getElementById('rangeInput').value;
 
                $("#Latitude").html(lat);
@@ -380,6 +211,10 @@
 </script>
 
 <script>
+       $(document).ready(function () {
+           load();
+       });
+
            function GetRadiusTimes(lat, lng, radius, type) {
 
            if (type == 'Init') { radius = 100; }
