@@ -15,6 +15,11 @@
             text-align: center;
         }
 
+        .table-striped > tbody > tr:nth-child(odd) > td,
+        .table-striped > tbody > tr:nth-child(odd) > th {
+            background-color: #383838;
+        }
+
         .gm-style .gm-style-iw {
             background-color: #808080 !important;
             top: 0 !important;
@@ -72,7 +77,26 @@
         </div>
     </div>
 
-    <div id="users"></div>
+    <div class="row" id="nearestInfo" style="display:none;">
+        <div class="col-md-12" id="users">
+            @*<h3>Masajid within a " + radius + " KM Radius of your marker</h3><br>*@
+
+            <table id="nearestDetail" class="table table-bordered table-striped" style="width: 100%;">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Masjid</th>
+                        <th>Distance</th>
+                        <th>Next Salaah</th>
+                        <th>Countdown</th>
+                        <th>Salaah Time</th>
+                        <th>Ladies Facility</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -93,6 +117,8 @@
 </table>
 
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
 
 <script>
     $(document).ready(function () {
@@ -130,35 +156,22 @@
        }
 
        function load() {
-
            var UserLatitude;
-
            var UserLongitude;
-
            var ZoomLength = 6;
-
            UserLatitude = -25;
-
            UserLongitude = 27;
 
            if (Location.lat != undefined) {
-
                UserLatitude = Location.lat;
-
                UserLongitude = Location.lng;
-
                ZoomLength = 12;
-
            }
 
            var map = new google.maps.Map(document.getElementById("map"), {
-
                center: new google.maps.LatLng(UserLatitude, UserLongitude),
-
                zoom: ZoomLength,
-
                mapTypeId: 'roadmap'
-
            });
 
            marker = new google.maps.Marker({ position: Location, map: map });
@@ -203,17 +216,12 @@
 
                marker = new google.maps.Marker({ position: event.latLng, map: map });
 
-               //get closeset musjid//////
-
                var lat = event.latLng.lat();
-
                var lng = event.latLng.lng();
 
-               var R = 6371;
+               @*var R = 6371;
 
                var distances = [];
-
-               var closest = -1;
 
                @foreach(var Item in Model.Marker)
                {
@@ -237,7 +245,6 @@
                    distances[i] = d;
 
                    if (closest == -1 || d < distances[closest]) {
-
                        closest = i;
 
                    }
@@ -346,11 +353,7 @@
 
                pointb += ')';
 
-
-
                calcRoute(event.latLng, pointb);
-
-               var Radius = document.getElementById('rangeInput').value;
 
                document.getElementById('Latitude').innerHTML = lat;
 
@@ -364,245 +367,49 @@
 
                var PerpetualLink = "<a href='report_perpetual_location.php?Lat=" + lat + "&Lng=" + lng + "&TZ=" + tzn + "'>View Perpetual Times</a>";
 
-               document.getElementById("cperp").innerHTML = PerpetualLink;
+               document.getElementById("cperp").innerHTML = PerpetualLink;*@
+
+               var Radius = document.getElementById('rangeInput').value;
+
+               $("#Latitude").html(lat);
+               $("#Longitude").html(lng);
 
                GetRadiusTimes(lat, lng, Radius, 'Click');
-
            });
-
        }
+</script>
 
-       function GetRadiusTimes(lat, lng, radius, type) {
-
-           //'Init'
-
-           /////////////////////////////// GET RADIUS TIMES /////////////////
-
-           var myLatlng2 = new google.maps.LatLng(-28.732617, 24.754);
-
-           var R = 6371;
-
-           var distances = [];
-
-           var TempMarkers = [];
+<script>
+           function GetRadiusTimes(lat, lng, radius, type) {
 
            if (type == 'Init') { radius = 100; }
-
-           for (i = 0; i < markers.length; i++) {
-
-               var mlat = markers[i].getAttribute("Latitude");
-
-               var mlng = parseFloat(markers[i].getAttribute("Longitude"));
-
-               var dLat = rad(mlat - lat);
-
-               var dLong = rad(mlng - lng);
-
-               var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-
-                   Math.cos(rad(lat)) * Math.cos(rad(lat)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
-
-               var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-               var d = R * c; //distance in KM
-
-               distances[i] = d;
-
-               if (d < radius) {
-
-                   markers[i].setAttribute("Distance", parseFloat(Math.round(d * 100) / 100).toFixed(2));
-
-                   TempMarkers.push({
-
-                       name: markers[i].getAttribute("Name"),
-
-                       town: markers[i].getAttribute("Town"),
-
-                       country: markers[i].getAttribute("Country"),
-
-                       distance: markers[i].getAttribute("Distance"),
-
-                       id: markers[i].getAttribute("ID"),
-
-                       jummah: markers[i].getAttribute("Jummah"),
-
-                       maghrib: markers[i].getAttribute("Maghrib"),
-
-                       fajradhaan: markers[i].getAttribute("FajrAdhaan"),
-
-                       fajrsalaah: markers[i].getAttribute("FajrSalaah"),
-
-                       dhuhradhaan: markers[i].getAttribute("DhuhrAdhaan"),
-
-                       dhuhrsalaah: markers[i].getAttribute("DhuhrSalaah"),
-
-                       asaradhaan: markers[i].getAttribute("AsarAdhaan"),
-
-                       asarsalaah: markers[i].getAttribute("AsarSalaah"),
-
-                       ishaadhaan: markers[i].getAttribute("IshaAdhaan"),
-
-                       ishasalaah: markers[i].getAttribute("IshaSalaah"),
-
-                       ladies: markers[i].getAttribute("LadiesFacility")
-
-                   });
-
-               }
-
-           }
-
-           TempMarkers.sort(function (a, b) { return a.distance - b.distance });
-
-           var MaxDistance = radius;
-
-           var html2 = '<table class="table table-striped table-sm" cellspacing="20px" cellpadding="20px" style="width: 100%;"><thead class="thead-inverse"><tr><center><th>Masjid</th><th>Distance</th><th>Next Salaah</th>' +
-
-               '<th>Countdown</th><th>Salaah Time</th><th>Ladies Facility</th></center></tr></thead>' +
-
-               '<tbody class="list">';
-
-           var InitCount = 0;
-
-           for (a = 0; a < TempMarkers.length; a++) {
-
-
-
-               if (TempMarkers[a].fajradhaan == null) { "<tr></tr>"; }
-
-               else {
-
-                   if (type == 'Init') { InitCount += 1; }
-
-                   if (InitCount < 4) {
-
-                       var str = TempMarkers[a].name + ", " + TempMarkers[a].town + ", " + TempMarkers[a].country;
-
-                       var result = str.link("viewmasjid.php?ID=" + TempMarkers[a].id);
-
-                       html2 += "<tr><td>" + result + "</td>";
-
-                       html2 += "<td>" + TempMarkers[a].distance + " KM</td>";
-
-                       MaxDistance = TempMarkers[a].distance;
-
-                       var Times = [];
-
-                       Times[0] = TempMarkers[a].fajrsalaah;
-
-                       Times[1] = TempMarkers[a].dhuhrsalaah;
-
-                       Times[2] = TempMarkers[a].asarsalaah;
-
-                       Times[3] = TempMarkers[a].maghrib;
-
-                       Times[4] = TempMarkers[a].ishasalaah;
-
-                       var NextSalaah = 0;
-
-                       var today = new Date();
-
-                       for (r = 0; r <= 4; r++) {
-
-                           var Time = Times[r].split(":");
-
-                           var Current = new Date(today.getFullYear(), today.getMonth(), today.getDate(), Time[0], Time[1], 0, 0);
-
-                           if (Current > today) {
-
-                               NextSalaah = r;
-
-                               break;
-
-                           }
-
-                       }
-
-                       if (NextSalaah == 0) { html2 += "<td>Fajr</td>"; }
-
-                       var d = new Date();
-
-                       var n = d.getDay();
-
-                       if (NextSalaah == 1) {
-
-                           if (TempMarkers[a].jummah == "1" && n == "5") {
-
-                               html2 += "<td>Jummah</td>";
-                           }
-
-                           else {
-
-                               html2 += "<td>Dhuhr</td>";
-
-                           }
-
-                       }
-
-                       if (NextSalaah == 2) { html2 += "<td>Asr</td>"; }
-
-                       if (NextSalaah == 3) { html2 += "<td>Maghrib</td>"; }
-
-                       if (NextSalaah == 4) { html2 += "<td>Isha</td>"; }
-
-
-
-                       var Time = Times[NextSalaah].split(":");
-
-                       var Current = new Date(today.getFullYear(), today.getMonth(), today.getDate(), Time[0], Time[1], 0, 0);
-
-                       var Difference = Current - today;
-
-
-
-                       var msec = Difference;
-
-                       var hh = Math.floor(msec / 1000 / 60 / 60);
-
-                       msec -= hh * 1000 * 60 * 60;
-
-                       var mm = Math.floor(msec / 1000 / 60);
-
-                       msec -= mm * 1000 * 60;
-
-                       var ss = Math.floor(msec / 1000);
-
-                       msec -= ss * 1000;
-
-
-
-                       //if (mm < 10){mm += "0" ;}
-
-
-
-                       if (hh > 0) { html2 += "<td>" + hh + " hours <br>"; } else { html2 += "<td>" }
-
-                       html2 += mm + " minutes</td>";
-
-                       html2 += "<td>" + Times[NextSalaah] + "</td>";
-
-                       html2 += "<td>" + TempMarkers[a].ladies; + "</td>";
-
-                       html2 += "</tr>";
-
-                   }
-
-               }
-
-           }
-
-           html2 += "</table>";
-
-           document.getElementById('located').style.visibility = 'visible';
-
-           document.getElementById('orig-header').style.visibility = 'hidden';
-
-           var html3 = "<br><h3>Masajid within a " + MaxDistance + " KM Radius of your marker</h3><br>" + html2;
-
-           document.getElementById('users').innerHTML = html3;
-
-           /////////////////////////////////////////////////////////////////
-
+           var myLatlng2 = new google.maps.LatLng(-28.732617, 24.754);
+
+           $('#nearestDetail').DataTable().destroy();
+
+           $('#nearestDetail').DataTable({
+                ajax: {
+                    url: "@Url.Action("NearestMasjidsTable", "Home")",
+                    data: { "Latitude": lat, "Longitude": lng, "Radius": radius},
+                    suppressSuccess: true,
+                    suppressLoading: true
+                },
+                deferRender: true,
+                "ordering": false,
+                responsive: true,
+                dom: 'rtip',
+                select: 'single',
+                "columns": [
+                    { "data": "Masjid" },
+                    { "data": "Distance" },
+                    { "data": "NextSalaah" },
+                    { "data": "Countdown" },
+                    { "data": "SalaahTime" },
+                    { "data": "LadiesFacility" },
+                ]
+           });
+
+           $('#nearestInfo').css('display', 'inline');
        }
 
        function checkTime(i) {
@@ -611,23 +418,15 @@
 
        function calcRoute(pointa, pointb) {
            var request = {
-
                origin: pointa,
-
                destination: pointb,
-
                travelMode: google.maps.TravelMode.DRIVING
-
            };
 
            directionsService.route(request, function (response, status) {
-
                if (status == google.maps.DirectionsStatus.OK) {
-
                    directionsDisplay.setDirections(response);
-
                }
-
            });
        }
 
@@ -641,7 +440,6 @@
        }
 
        function doNothing() { }
-
 </script>
 
 <script type="text/javascript">
@@ -688,7 +486,7 @@
 
                             document.getElementById("cperp").innerHTML = PerpetualLink;
 
-                            GetRadiusTimes(UserLatitude, UserLongitude, 7, 'Init');
+                            //GetRadiusTimes(UserLatitude, UserLongitude, 7, 'Init');
 
                         }
 
@@ -725,9 +523,3 @@
             })();
 
 </script>
-
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-
-<script src="js/plugins.js"></script>
-
-<script src="js/main.js"></script>

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Taqweem.ViewModels;
 
 namespace Taqweem.Models
 {
@@ -50,6 +52,12 @@ namespace Taqweem.Models
         public string Contact { get; set; }
 
         public string Address { get; set; }
+
+        [NotMapped]
+        public virtual cSalaahTime SalaahTime {get; set;}
+
+        [NotMapped]
+        public double Distance { get; set; }
 
         public Masjid()
         {
