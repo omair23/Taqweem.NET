@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Taqweem.Classes;
 using Taqweem.ViewModels;
 
 namespace Taqweem.Models
@@ -23,10 +24,8 @@ namespace Taqweem.Models
     //else if (JMethod == 5) { FajrAngle = 19.5; IshaAngle = 17.5; txtJuristicM.Text = "Egyptian General Authority of Survey"; }
     //else { FajrAngle = 18; IshaAngle = 18; txtJuristicM.Text = "N/A"; }
 
-    public class Masjid
+    public class Masjid: AuditableEntity
     {
-        public string Id { get; set; }
-
         public string Name { get; set; }
 
         public string Town { get; set; }
@@ -52,6 +51,12 @@ namespace Taqweem.Models
         public string Contact { get; set; }
 
         public string Address { get; set; }
+
+        public string GeneralInfo { get; set; }
+
+        public bool AllowRegistration { get; set; } = true;
+
+        public int MaghribAdhaanDelay { get; set; } = 3;
 
         [NotMapped]
         public virtual cSalaahTime SalaahTime {get; set;}

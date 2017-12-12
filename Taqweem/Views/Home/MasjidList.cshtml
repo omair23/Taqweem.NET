@@ -44,6 +44,9 @@
 
 <script>
     $(document).ready(function () {
+        $("#directory_nav").addClass("active");
+        $("#home_nav").removeClass("active");
+
         var table = $('#maintable').DataTable({
             responsive: true,
             "dom": '<lf<t>ip>',
