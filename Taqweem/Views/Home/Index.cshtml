@@ -81,6 +81,7 @@
             <table id="nearestDetail" class="table table-bordered table-striped" style="width: 100%;">
                 <thead class="thead-inverse">
                     <tr>
+                        <th>Id</th>
                         <th>Masjid</th>
                         <th>Distance</th>
                         <th>Next Salaah</th>
@@ -215,7 +216,7 @@
            load();
        });
 
-           function GetRadiusTimes(lat, lng, radius, type) {
+       function GetRadiusTimes(lat, lng, radius, type) {
 
            if (type == 'Init') { radius = 100; }
            var myLatlng2 = new google.maps.LatLng(-28.732617, 24.754);
@@ -223,8 +224,8 @@
            $('#nearestDetail').DataTable().destroy();
 
            $('#nearestDetail').DataTable({
-                ajax: {
-                    url: "@Url.Action("NearestMasjidsTable", "Home")",
+               ajax: {
+                   url: "@Url.Action("NearestMasjidsTable", "Home")",
                     data: { "Latitude": lat, "Longitude": lng, "Radius": radius},
                     suppressSuccess: true,
                     suppressLoading: true
@@ -233,15 +234,24 @@
                 "ordering": false,
                 responsive: true,
                 dom: 'rtip',
-                select: 'single',
                 "columns": [
-                    { "data": "Masjid" },
+                    { "data": "Id" },
+                    { "data": "Masjid"},
                     { "data": "Distance" },
                     { "data": "NextSalaah" },
                     { "data": "Countdown" },
                     { "data": "SalaahTime" },
                     { "data": "LadiesFacility" },
-                ]
+                ],
+                "columnDefs": [{
+                    "render": function (data, type, row) {
+                        return '<a href="@Url.Action("MasjidInfo", "Home")/' + row.Id + '">' + data
+                    },
+                    "targets": 1
+                }, {
+                    "targets": 0,
+                    "visible": false
+                }]
            });
 
            $('#nearestInfo').css('display', 'inline');

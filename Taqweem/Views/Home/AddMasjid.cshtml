@@ -1,0 +1,130 @@
+﻿@{
+    ViewData["Title"] = "AddMasjid";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add Masjid</h2>
+
+<h6>Select the location of the masjid on the map to automatically input the co-ordinates</h6>
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUs6gpwmJ8WRZXjIPQH-wyPEu_P2hdHo0&sensor=false"></script>
+
+<div class="row">
+    <div class="col-md-6">
+        <div id="map" style="height: 600px; width:100%"></div>
+    </div>
+    <div class="col-md-6">
+        <div class="thumbnail">
+            <div class="caption">
+                <form class="form-signin" style="width:100%" method="post" action="insert_masjid.php">
+                    <label for="inputName" class="sr-only">Musjid Name</label>
+
+                    <input name="inputName" type="text" id="inputName" class="form-control" placeholder="Masjid Name" required autofocus>
+
+
+                    <label for="inputTown" class="sr-only">Town</label>
+
+                    <input name="inputTown" type="text" id="inputTown" class="form-control" placeholder="Town" required autofocus>
+
+
+                    <label for="inputCountry" class="sr-only">Country</label>
+
+                    <input name="inputCountry" type="text" id="inputCountry" class="form-control" placeholder="Country" required autofocus>
+
+
+                    <label for="inputTimeZone" class="sr-only">Time-Zone</label>
+
+                    <input name="inputTimeZone" type="number" id="inputTimeZone" class="form-control" placeholder="Time Zone" required autofocus>
+
+
+                    <label for="inputAddress" class="sr-only">Physical Address</label>
+
+                    <input name="inputAddress" type="text" id="inputAddress" class="form-control" placeholder="Physical Address" required autofocus>
+
+
+                    <label for="inputContact" class="sr-only">Contact</label>
+
+                    <input name="inputContact" type="text" id="inputContact" class="form-control" placeholder="Contact" autofocus>
+
+
+                    <label for="inputGeneral" class="sr-only">General Information</label>
+
+                    <input name="inputGeneral" type="text" id="inputGeneral" class="form-control" placeholder="General Information" autofocus>
+
+
+                    <label><input type="checkbox" name="inputLadies" id="inputLadies"> Ladies Facility</label><br>
+
+
+                    <div>
+
+                        <label for="inputLatitude" class="sr-only">Latitude</label>
+
+                        <input name="inputLatitude" type="text" id="inputLatitude" class="form-control" placeholder="Latitude" required autofocus>
+
+
+                        <label for="inputLongitude" class="sr-only">Longitude</label>
+
+                        <input name="inputLongitude" type="text" id="inputLongitude" class="form-control" placeholder="Longitude" required autofocus>
+
+                        <br>
+
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Add Musjid</button>
+
+                        <br>
+
+                    </div>
+
+                </form>
+            </div>
+
+
+        </div>
+</div>
+
+
+<script type="text/javascript">
+        var map;
+
+        function load() {
+
+            var map = new google.maps.Map(document.getElementById("map"), {
+
+                center: new google.maps.LatLng(0, 0),
+
+                zoom: 1,
+
+                mapTypeId: 'roadmap'
+
+            });
+
+            var infoWindow = new google.maps.InfoWindow;
+
+            geocoder = new google.maps.Geocoder();
+
+            directionsDisplay = new google.maps.DirectionsRenderer();
+
+            google.maps.event.addListener(map, 'click', function (event) {
+
+                marker = new google.maps.Marker({ position: event.latLng, map: map });
+
+                var lat = event.latLng.lat();
+
+                var lng = event.latLng.lng();
+
+                document.getElementById('inputLatitude').value = lat;
+
+                document.getElementById('inputLongitude').value = lng;
+
+            });
+        }
+
+        function doNothing() { }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#home_nav").removeClass("active");
+        $("#add_nav").addClass("active");
+        load();
+    });
+</script>

@@ -58,6 +58,16 @@ namespace Taqweem.Controllers
             return View(Model);
         }
 
+        public IActionResult About()
+        {
+            return View();
+        }
+
+        public IActionResult AddMasjid()
+        {
+            return View();
+        }
+
         public IActionResult PerpetualCalendar(string Id)
         {
             Masjid Masjid = Repository
@@ -109,6 +119,7 @@ namespace Taqweem.Controllers
 
                 var _json = NearestM.Select(u => new
                 {
+                    Id = u.Id,
                     Masjid = u.Name + ", " + u.Town + ", " + u.Country,
                     Distance = u.Distance + " KM",
                     NextSalaah = "",
