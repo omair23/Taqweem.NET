@@ -27,38 +27,44 @@ namespace Taqweem.Controllers
 
         public IActionResult Index()
         {
+            List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
+
             Markers Model = new Markers();
 
-            var Mas = Repository.GetAll<Masjid>().ToList();
-
-            Model.Marker.Add(new Masjid("1", -28, 28, 0, 2));
+            Model.Marker = AllMasjids;
 
             return View(Model);
         }
 
         public IActionResult MasjidList()
         {
+            List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
+
             MasjidListViewModel Model = new MasjidListViewModel();
 
-            Model.Masjids.Add(new MasjidList("1", "Masjid Muaadh bin Jabal Crosby", "Johannesburg", "South Africa"));
-
-            Model.Masjids.Add(new MasjidList("2", "Masjid Al Farooq", "Johannesburg", "South Africa"));
-
-            Model.Masjids.Add(new MasjidList("2", "Masjid Al Farooq", "Johannesburg", "South Africa"));
+            Model.Masjids = AllMasjids;
 
             return View(Model);
         }
 
         public IActionResult MasjidInfo(string Id)
         {
-            MasjidInfoViewModel Model = new MasjidInfoViewModel("TO DO replace");
+            Masjid Info = Repository
+                            .Find<Masjid>(s => s.Id == Id)
+                            .FirstOrDefault();
+
+            MasjidInfoViewModel Model = new MasjidInfoViewModel(Info);
 
             return View(Model);
         }
 
         public IActionResult PerpetualCalendar(string Id)
         {
-            cPerpCalendar Model = new cPerpCalendar();
+            Masjid Masjid = Repository
+                            .Find<Masjid>(s => s.Id == Id)
+                            .FirstOrDefault();
+
+            cPerpCalendar Model = new cPerpCalendar(Masjid);
 
             return View(Model);
         }
@@ -75,19 +81,7 @@ namespace Taqweem.Controllers
 
         public List<Masjid> NearestMasjids(double Latitude, double Longitude, int Radius)
         {
-            List<Masjid> Markers = new List<Masjid>();
-
-            Masjid X = new Masjid("1", -30, 28, 0, 2);
-            X.Name = "ABC";
-            X.Town = "DEF";
-            X.Country = "GHI";
-            Markers.Add(X);
-
-            Masjid Y = new Masjid("1", -29, 28, 0, 2);
-            Y.Name = "TER";
-            Y.Town = "TER";
-            Y.Country = "TER";
-            Markers.Add(Y);
+            List<Masjid> Markers = Repository.GetAll<Masjid>().ToList();
 
             List<Masjid> Nearest = new List<Masjid>();
 

@@ -21,13 +21,9 @@ namespace Taqweem.ViewModels
 
         public double QiblaBearing { get; set; }
 
-        public MasjidInfoViewModel(string id)
+        public MasjidInfoViewModel(Masjid pMasjid)
         {
-            Masjid = new Masjid(id, -26.195149, 27.990238, 0, 2);
-
-            Masjid.Name = "Masjid Muaadh bin Jabal Crosby";
-            Masjid.Town = "Johannesburg";
-            Masjid.Country = "South Africa";
+            Masjid = pMasjid;
 
             PerpetualTime = new cPerpetualTime(DateTime.Now, Masjid);
             SalaahTime = new cSalaahTime();
@@ -38,6 +34,8 @@ namespace Taqweem.ViewModels
             QDStatute = Math.Round(QiblaDistance * 0.621371, 0);
 
             QDNautical = Math.Round(QiblaDistance * 0.539957, 0);
+
+            QiblaBearing = Math.Round(cCalculations.DegreeBearing(Masjid.Latitude, Masjid.Longitude, 21.4225, 39.8262), 2);
         }
 
         

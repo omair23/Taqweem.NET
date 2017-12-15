@@ -12,10 +12,8 @@ namespace Taqweem.ViewModels
 
         public List<cPerpetualTime> Times;
 
-        public cPerpCalendar()
+        public cPerpCalendar(Masjid Masjid)
         {
-            Masjid Masjid = new Masjid("ID", -30, 28, 0, 2);
-
             Months = new List<DateTime>();
 
             for(int i=1; i <=12; i++)
