@@ -76,6 +76,8 @@ namespace Taqweem.Models
             Longitude = pLongitude;
             Height = pHeight;
             TimeZone = pTimezone;
+
+            LastUpdate = DateTime.UtcNow;
         }
     }
 }

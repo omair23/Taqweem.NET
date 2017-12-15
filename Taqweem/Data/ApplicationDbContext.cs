@@ -10,7 +10,9 @@ namespace Taqweem.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Masjid> Masjid { get; set; }
+        public DbSet<Masjid> Masjids { get; set; }
+
+        public DbSet<Configuration> Configurations { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -20,6 +22,8 @@ namespace Taqweem.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Masjid>().ToTable("Masjid");
+
+            builder.Entity<Configuration>().ToTable("Configuration");
 
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.

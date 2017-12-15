@@ -10,7 +10,7 @@ namespace Taqweem.Data
             context.Database.EnsureCreated();
 
             // Look for any students.
-            if (context.Masjid.Any())
+            if (context.Masjids.Any())
             {
                 return;   // DB has been seeded
             }
@@ -23,7 +23,7 @@ namespace Taqweem.Data
             s.Longitude = 27.990238;
             s.TimeZone = 2;
 
-            context.Masjid.Add(s);
+            context.Masjids.Add(s);
             context.SaveChanges();
         }
     }

@@ -9,14 +9,11 @@
 
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
-
-
     <style>
         .table-striped > tbody > tr:nth-child(odd) > td,
         .table-striped > tbody > tr:nth-child(odd) > th {
             background-color: #272626;
-            //font-weight: bold;
-        }   
+        }
     </style>
 
     @*<style>
@@ -228,6 +225,10 @@
 </div>
 
 <script>
+    $(document).ready(function () {
+        $("#home_nav").removeClass("active");
+    });
+
         (function () {
             function checkTime(i) {
                 return (i < 10) ? "0" + i : i;

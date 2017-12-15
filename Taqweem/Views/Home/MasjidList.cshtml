@@ -23,17 +23,15 @@
                     <th>Name</th>
                     <th>Town</th>
                     <th>Country</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var Item in Model.Masjids)
                 {
                     <tr>
-                        <td>@Item.Name</td>
+                        <td><a href="@Url.Action("MasjidInfo", "Home", new { Id = Item.Id })">@Item.Name</a></td>
                         <td>@Item.Town</td>
                         <td>@Item.Country</td>
-                        <td><a href="@Url.Action("MasjidInfo", "Home", new { Id = Item.Id })">View</a></td>
                     </tr>
 
                 }
@@ -54,11 +52,10 @@
             "columns": [
                 { "data": "a1" },
                 { "data": "a2" },
-                { "data": "a3" },
-                { "data": "a4" },
+                { "data": "a3" }
             ],
             "columnDefs": [{
-                "targets": [0, 1, 2, 3], // column or columns numbers
+                "targets": [0, 1, 2], // column or columns numbers
                 "orderable": false,  // set orderable for selected columns
             }],
         });
