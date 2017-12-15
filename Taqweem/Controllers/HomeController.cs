@@ -10,21 +10,26 @@ using System.Xml;
 using Taqweem.Classes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Taqweem.Data;
 
 namespace Taqweem.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ApplicationDbContext _context;
+        private readonly EFRepository Repository;
+
+        public HomeController(ApplicationDbContext context)
+        {
+            _context = context;
+            Repository = new EFRepository(_context);
+        }
+
         public IActionResult Index()
         {
             Markers Model = new Markers();
 
-            Masjid X = new Masjid("1", -30, 28, 0, 2);
-            X.Name = "ABC";
-            X.Town = "DEF";
-            X.Country = "GHI";
-
-            Model.Marker.Add(X);
+            var Mas = Repository.GetAll<Masjid>().ToList();
 
             Model.Marker.Add(new Masjid("1", -28, 28, 0, 2));
 
