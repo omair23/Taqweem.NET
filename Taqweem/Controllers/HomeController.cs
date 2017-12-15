@@ -65,7 +65,27 @@ namespace Taqweem.Controllers
 
         public IActionResult AddMasjid()
         {
-            return View();
+            Masjid masjid = new Masjid();
+            return View(masjid);
+        }
+
+        public IActionResult PostAddMasjid(Masjid masjid)
+        {
+            Masjid Masjid = new Masjid();
+            Masjid.Name = masjid.Name;
+            Masjid.Town = masjid.Town;
+            Masjid.Country = masjid.Country;
+
+            Masjid.TimeZone = masjid.TimeZone;
+            Masjid.Address = masjid.Address;
+            Masjid.Contact = masjid.Contact;
+            Masjid.GeneralInfo = masjid.GeneralInfo;
+            Masjid.LadiesFacility = masjid.LadiesFacility;
+
+            Masjid.Latitude = masjid.Latitude;
+            Masjid.Longitude = masjid.Longitude;
+
+            return Ok();
         }
 
         public IActionResult PerpetualCalendar(string Id)
