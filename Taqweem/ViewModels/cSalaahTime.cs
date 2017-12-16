@@ -7,7 +7,7 @@ namespace Taqweem.ViewModels
 {
     public class cSalaahTime
     {
-        public DateTime FajrAdhaan { get; set; } = new DateTime(1, 1, 1, 3, 1, 0);
+        public DateTime FajrAdhaan { get; set; }
 
         public DateTime FajrSalaah { get; set;}
 

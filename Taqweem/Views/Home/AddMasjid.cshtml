@@ -1,71 +1,89 @@
-﻿@model Masjid 
+﻿@model MasjidViewModel 
 
 @{
     ViewData["Title"] = "AddMasjid";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Add Masjid</h2>
+<div id="preAdd">
 
-<h6>Select the location of the masjid on the map to automatically input the co-ordinates</h6>
+    <h2>Add Masjid</h2>
 
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUs6gpwmJ8WRZXjIPQH-wyPEu_P2hdHo0&sensor=false"></script>
+    <h6>Select the location of the masjid on the map to automatically input the co-ordinates</h6>
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="thumbnail">
-            <div class="caption">
-                <div id="map" style="height: 600px; width:100%"></div>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUs6gpwmJ8WRZXjIPQH-wyPEu_P2hdHo0&sensor=false"></script>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="thumbnail">
+                <div class="caption">
+                    <div id="map" style="height: 600px; width:100%"></div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-6">
-        <div class="thumbnail">
-            <div class="caption">
-                <form asp-antiforgery="true" id="submitMasjidForm">
-                    <fieldset class="form-group">
-                        <label>Name</label>
-                        <input type="text" asp-for="Name" placeholder="Enter Masjid Name" class="form-control typeahead" style="width:100% !important;" required />
-                        <span asp-validation-for="Name" class="text-danger"></span>
+        <div class="col-md-6">
+            <div class="thumbnail">
+                <div class="caption">
+                    <form asp-antiforgery="true" name="submitMasjidForm" id="submitMasjidForm">
+                        <fieldset class="form-group">
+                            <label>Name</label>
+                            <input type="text" asp-for="Name" placeholder="Enter Masjid Name" class="form-control typeahead" style="width:100% !important;" required />
+                            <span asp-validation-for="Name" class="text-danger"></span>
 
-                        <label>Town</label>
-                        <input type="text" asp-for="Town" placeholder="Enter Masjid Town" class="form-control typeahead" style="width:100% !important;" required />
-                        <span asp-validation-for="Town" class="text-danger"></span>
+                            <label>Town</label>
+                            <input type="text" asp-for="Town" placeholder="Enter Masjid Town" class="form-control typeahead" style="width:100% !important;" required />
+                            <span asp-validation-for="Town" class="text-danger"></span>
 
-                        <label>Country</label>
-                        <input type="text" asp-for="Country" placeholder="Enter Masjid Country" class="form-control typeahead" style="width:100% !important;" required />
-                        <span asp-validation-for="Country" class="text-danger"></span>
+                            <label>Country</label>
+                            <input type="text" asp-for="Country" placeholder="Enter Masjid Country" class="form-control typeahead" style="width:100% !important;" required />
+                            <span asp-validation-for="Country" class="text-danger"></span>
 
-                        <label>Physical Address</label>
-                        <input type="text" asp-for="Address" placeholder="Enter Physical Address" class="form-control typeahead" style="width:100% !important;" required />
-                        <span asp-validation-for="Address" class="text-danger"></span>
+                            <label>Physical Address</label>
+                            <input type="text" asp-for="Address" placeholder="Enter Physical Address" class="form-control typeahead" style="width:100% !important;" required />
+                            <span asp-validation-for="Address" class="text-danger"></span>
 
-                        <label><input type="checkbox" asp-for="LadiesFacility"> Ladies Facility</label><br>
+                            <label><input type="checkbox" asp-for="LadiesFacility"> Ladies Facility</label><br>
 
-                        <label>Time Zone</label>
-                        <input asp-for="TimeZone" type="number" class="form-control" value="0" placeholder="Time Zone" required autofocus>
-                        <span asp-validation-for="TimeZone" class="text-danger"></span>
+                            <label>Time Zone</label>
+                            <input asp-for="TimeZone" type="number" class="form-control" value="0" placeholder="Time Zone" required autofocus>
+                            <span asp-validation-for="TimeZone" class="text-danger"></span>
 
-                        <label>Latitude</label>
-                        <input asp-for="Latitude" name="inputLatitude" type="text" id="inputLatitude" class="form-control" placeholder="Latitude" required autofocus>
-                        <span asp-validation-for="Latitude" class="text-danger"></span>
+                            <label>Latitude</label>
+                            <input asp-for="Latitude" type="text" class="form-control" placeholder="Latitude" required autofocus>
+                            <span asp-validation-for="Latitude" class="text-danger"></span>
 
-                        <label>Longitude</label>
-                        <input asp-for="Longitude" name="inputLongitude" type="text" id="inputLongitude" class="form-control" placeholder="Longitude" required autofocus>
-                        <span asp-validation-for="Longitude" class="text-danger"></span>
-                    </fieldset>
+                            <label>Longitude</label>
+                            <input asp-for="Longitude" type="text" class="form-control" placeholder="Longitude" required autofocus>
+                            <span asp-validation-for="Longitude" class="text-danger"></span>
 
-                    <fieldset class="form-group">
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Add Musjid</button>
-                    </fieldset>
-                </form>
+                            <label>Security Question - What is 3 added to 3?</label>
+                            <input asp-for="SecurityQuestion" type="text" class="form-control" placeholder="Security Question" required autofocus>
+                            <span asp-validation-for="SecurityQuestion" class="text-danger"></span>
+                        </fieldset>
 
+                        <fieldset class="form-group">
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">Add Masjid</button>
+                        </fieldset>
+                    </form>
+
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<div id="postAdd" style="display:none">
+    <h2>Successful</h2>
+
+    <h5>Shukran, the new masjid details which you have supplied have been captured into our database. May Allah reward you for your efforts</h5>
+</div>
+
+<div id="failAdd" style="display:none">
+    <h2>Unsuccessful</h2>
+
+    <h5>Unfortunately the Masjid details which you have supplied could not be captured successfully. Please try again later.</h5>
+</div>
 
 <script type="text/javascript">
         var map;
@@ -96,10 +114,9 @@
 
                 var lng = event.latLng.lng();
 
-                document.getElementById('inputLatitude').value = lat;
+                $("#Latitude").val(lat);
 
-                document.getElementById('inputLongitude').value = lng;
-
+                $("#Longitude").val(lng);
             });
         }
 
@@ -111,22 +128,28 @@
         $("#home_nav").removeClass("active");
         $("#add_nav").addClass("active");
         load();
-    });
+        });
 
-    function submitMasjidForm() {
-        if (!$("#submitMasjidForm").valid()) {
-            return false;
-        }
+    $("#submitMasjidForm").submit(function (event) {
+
+        event.preventDefault();
 
         $.ajax({
             type: 'post',
-            url: '@Url.Action("","")',
+            url: '@Url.Action("PostAddMasjid", "Home")',
             data: $("#submitMasjidForm").serialize(),
             success: function (data) {
-                $("#submitMasjidForm").trigger('reset');
-                $('#create_department_modal').modal('hide');
-                createDepartmentTable();
+                if (data == "Successful") {
+                    $("#postAdd").css("display", "inline");
+                    $("#preAdd").css("display", "none");
+                    $("#submitMasjidForm").trigger('reset');
+                }
+                else {
+                    $("#failAdd").css("display", "inline");
+                    $("#preAdd").css("display", "none");
+                    $("#submitMasjidForm").trigger('reset');
+                }
             }
-        })
-    }
+        });
+    });
 </script>

@@ -94,42 +94,23 @@ namespace Taqweem.ViewModels
                 CALC_ASAR2 = (Math.Acos(CALC_ASAR2) * (180 / PI)) / 15;
                 zAsr2 = zZawaal + CALC_ASAR2;
 
-                int Day = Dval.Day;// DateTime.Now.Day;
-                int Month = Dval.Month;// DateTime.Now.Month;
-                int Year = Dval.Year;// DateTime.Now.Year;
+                int Day = Dval.Day;
+                int Month = Dval.Month;
+                int Year = Dval.Year;
 
-                int SehriEndsHour = Convert.ToInt32(Math.Floor(zSehriEnds));
-                int SunriseHour = Convert.ToInt32(Math.Floor(zSunrise));
-                int IshraaqHour = Convert.ToInt32(Math.Floor(zIshraaq));
-                int ZawaalHour = Convert.ToInt32(Math.Floor(zZawaal));
-                int Asr1Hour = Convert.ToInt32(Math.Floor(zAsr1));
-                int Asr2Hour = Convert.ToInt32(Math.Floor(zAsr2));
-                int SunsetHour = Convert.ToInt32(Math.Floor(zSunset));
-                int IshaHour = Convert.ToInt32(Math.Floor(zIsha));
+                SehriEnds = DoubleToDateTime(zSehriEnds, Year, Month, Day);
+                Fajr = DoubleToDateTime(zFajr, Year, Month, Day);
+                Sunrise = DoubleToDateTime(zSunrise, Year, Month, Day);
+                Ishraaq = DoubleToDateTime(zIshraaq, Year, Month, Day);
 
-                int SehriEndsMinute = Convert.ToInt32((zSehriEnds - (int)(zSehriEnds)) * 60);
-                int SunriseMinute = Convert.ToInt32((zSunrise - (int)(zSunrise)) * 60);
-                int IshraaqMinute = Convert.ToInt32((zIshraaq - (int)(zIshraaq)) * 60);
-                int ZawaalMinute = Convert.ToInt32((zZawaal - (int)(zZawaal)) * 60);
-                int Asr1Minute = Convert.ToInt32((zAsr1 - (int)(zAsr1)) * 60);
-                int Asr2Minute = Convert.ToInt32((zAsr2 - (int)(zAsr2)) * 60);
-                int SunsetMinute = Convert.ToInt32((zSunset - (int)(zSunset)) * 60);
-                int IshaMinute = Convert.ToInt32((zIsha - (int)(zIsha)) * 60);
-
-                int FajrHour = Convert.ToInt32(Math.Floor(zFajr));
-                int FajrMinute = Convert.ToInt32((zFajr - (int)(zFajr)) * 60);
-
-                SehriEnds = new DateTime(Year, Month, Day, SehriEndsHour, SehriEndsMinute, 0);
-                Fajr = new DateTime(Year, Month, Day, FajrHour, FajrMinute, 0);
-                Sunrise = new DateTime(Year, Month, Day, SunriseHour, SunriseMinute, 0);
-                Ishraaq = new DateTime(Year, Month, Day, IshraaqHour, IshraaqMinute, 0);
-                Zawaal = new DateTime(Year, Month, Day, ZawaalHour, ZawaalMinute, 0);
+                Zawaal = DoubleToDateTime(zZawaal, Year, Month, Day);
                 Dhuhr = Zawaal.AddMinutes(5);
-                AsrShafi = new DateTime(Year, Month, Day, Asr1Hour, Asr1Minute, 0);
-                AsrHanafi = new DateTime(Year, Month, Day, Asr2Hour, Asr2Minute, 0);
-                Sunset = new DateTime(Year, Month, Day, SunsetHour, SunsetMinute, 0);
+                AsrShafi = DoubleToDateTime(zAsr1, Year, Month, Day);
+                AsrHanafi = DoubleToDateTime(zAsr2, Year, Month, Day);
+
+                Sunset = DoubleToDateTime(zSunset, Year, Month, Day);
                 Maghrib = Sunset.AddMinutes(3);
-                Isha = new DateTime(Year, Month, Day, IshaHour, IshaMinute, 0);
+                Isha = DoubleToDateTime(zIsha, Year, Month, Day);
             }
             catch (Exception ex)
             {
@@ -137,9 +118,24 @@ namespace Taqweem.ViewModels
             }
         }
 
+        public DateTime DoubleToDateTime(double Val, int Year, int Month, int Day)
+        {
+            int Hour = Convert.ToInt32(Math.Floor(Val));
+
+            int Minute = Convert.ToInt32((Val - (int)(Val)) * 60);
+
+            while (Minute >= 60)
+            {
+                Hour += 1;
+                Minute = (Minute - 60);
+            }
+
+            return new DateTime(Year, Month, Day, Hour, Minute, 0);
+        }
+
         public DateTime Date { get; set; }
 
-        public DateTime SehriEnds { get; set; } = new DateTime(1, 1, 1, 3, 1, 0);
+        public DateTime SehriEnds { get; set; }
 
         public DateTime Fajr { get; set;}
 

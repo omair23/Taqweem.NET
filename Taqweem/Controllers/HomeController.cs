@@ -29,6 +29,35 @@ namespace Taqweem.Controllers
         {
             List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
 
+            //DB INIT
+            if(AllMasjids.Count < 1)
+            {
+                List<Masjid> NewMasjids = new List<Masjid>();
+
+                Masjid s = new Masjid();
+                s.Name = "Masjid Muaadh bin Jabal - Crosby";
+                s.Town = "Johannesburg";
+                s.Country = "South Africa";
+                s.Latitude = -26.195149;
+                s.Longitude = 27.990238;
+                s.TimeZone = 2;
+                NewMasjids.Add(s);
+
+                Masjid r = new Masjid();
+                r.Name = "Masjid-e-Khair - Mayfair West";
+                r.Town = "Johannesburg";
+                r.Country = "South Africa";
+                r.Latitude = -26.197940;
+                r.Longitude = 27.997250;
+                r.TimeZone = 2;
+                NewMasjids.Add(r);
+
+                Repository.AddMultiple(NewMasjids);
+
+                AllMasjids = Repository.GetAll<Masjid>().ToList();
+            }
+            ////
+
             Markers Model = new Markers();
 
             Model.Marker = AllMasjids;
@@ -65,27 +94,40 @@ namespace Taqweem.Controllers
 
         public IActionResult AddMasjid()
         {
-            Masjid masjid = new Masjid();
-            return View(masjid);
+            return View();
         }
 
-        public IActionResult PostAddMasjid(Masjid masjid)
+        [HttpPost]
+        public string PostAddMasjid(MasjidViewModel MasjidVM)
         {
-            Masjid Masjid = new Masjid();
-            Masjid.Name = masjid.Name;
-            Masjid.Town = masjid.Town;
-            Masjid.Country = masjid.Country;
+            try
+            {
+                if (MasjidVM.SecurityQuestion != "6")
+                    return "Fail - Security Question";
 
-            Masjid.TimeZone = masjid.TimeZone;
-            Masjid.Address = masjid.Address;
-            Masjid.Contact = masjid.Contact;
-            Masjid.GeneralInfo = masjid.GeneralInfo;
-            Masjid.LadiesFacility = masjid.LadiesFacility;
+                Masjid Masjid = new Masjid();
+                Masjid.Name = MasjidVM.Name;
+                Masjid.Town = MasjidVM.Town;
+                Masjid.Country = MasjidVM.Country;
 
-            Masjid.Latitude = masjid.Latitude;
-            Masjid.Longitude = masjid.Longitude;
+                Masjid.TimeZone = MasjidVM.TimeZone;
+                Masjid.Address = MasjidVM.Address;
+                Masjid.Contact = MasjidVM.Contact;
+                Masjid.GeneralInfo = MasjidVM.GeneralInfo;
+                Masjid.LadiesFacility = MasjidVM.LadiesFacility;
 
-            return Ok();
+                Masjid.Latitude = MasjidVM.Latitude;
+                Masjid.Longitude = MasjidVM.Longitude;
+
+                Repository.Add(Masjid);
+
+                return "Successful";
+            }
+            catch(Exception ex)
+            {
+                return "Fail" + ex.Message;
+            }
+
         }
 
         public IActionResult PerpetualCalendar(string Id)

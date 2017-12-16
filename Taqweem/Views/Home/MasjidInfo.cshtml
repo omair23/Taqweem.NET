@@ -96,27 +96,53 @@
                 <h4 style="text-align:center">SALAAH TIMES</h4>
                 <br />
 
-                <table class="table table-condensed table-striped" style="color:#f2f2f2" 
-                       @*style="background-color: White; border-color: rgb(204, 204, 204); border-width: 1px; border-style: none; border-collapse: collapse; color: Black; "*@
-                       >
+                <table class="table table-condensed table-striped" style="color:#f2f2f2">
                     <tr>
                         <th>&nbsp;</th>
                         <th>&nbsp;</th>
                         <th style="text-align:left;">ADHAAN</th>
                         <th style="text-align:left;">SALAAH</th>
                     </tr>
-                    <tr><td>FAJR</td><td><img src="~/icons/Fajr.png" width="50px"></td><td>@Model.SalaahTime.FajrAdhaan.ToString("HH:mm")</td><td>@Model.SalaahTime.FajrSalaah.ToString("HH:mm")</td></tr>
+
+                    @if (Model.SalaahTime != null)
+                    {
+                        <tr>
+                            <td>FAJR</td>
+                            <td><img src="~/icons/Fajr.png" width="50px"></td>
+                            <td>@Model.SalaahTime.FajrAdhaan.ToString("HH:mm")</td>
+                            <td>@Model.SalaahTime.FajrSalaah.ToString("HH:mm")</td>
+                        </tr>
+
+                        <tr>
+                            <td>DHUHR</td>
+                            <td><img src="~/icons/Dhuhr.png" width="50px"></td>
+                            <td>@Model.SalaahTime.DhuhrAdhaan.ToString("HH:mm")</td>
+                            <td>@Model.SalaahTime.DhuhrSalaah.ToString("HH:mm")</td>
+                        </tr>
+
+                        <tr>
+                            <td>ASR</td>
+                            <td><img src="~/icons/Asar2.png" width="50px"></td>
+                            <td>@Model.SalaahTime.AsrAdhaan.ToString("HH:mm")</td>
+                            <td>@Model.SalaahTime.AsrSalaah.ToString("HH:mm")</td>
+                        </tr>
+                    }
+
                     <tr>
-                        <td>
-                            DHUHR
-                        </td>
-                        <td><img src="~/icons/Dhuhr.png" width="50px"></td>
-                        <td>@Model.SalaahTime.DhuhrAdhaan.ToString("HH:mm")</td>
-                        <td>@Model.SalaahTime.DhuhrSalaah.ToString("HH:mm")</td>
+                        <td>MAGHRIB</td>
+                        <td><img src="~/icons/Sunset.png" width="50px"></td>
+                        <td colspan="2">@Model.PerpetualTime.Maghrib.ToString("HH:mm")</td>
                     </tr>
-                    <tr><td>ASR</td><td><img src="~/icons/Asar2.png" width="50px"></td><td>@Model.SalaahTime.AsrAdhaan.ToString("HH:mm")</td><td>@Model.SalaahTime.AsrSalaah.ToString("HH:mm")</td></tr>
-                    <tr><td>MAGHRIB</td><td><img src="~/icons/Sunset.png" width="50px"></td><td colspan="2">@Model.PerpetualTime.Maghrib.ToString("HH:mm")</td></tr>
-                    <tr><td>ISHA</td><td><img src="~/icons/Isha.png" width="50px"></td><td>@Model.SalaahTime.IshaAdhaan.ToString("HH:mm")</td><td>@Model.SalaahTime.IshaSalaah.ToString("HH:mm")</td></tr>
+
+                    @if (Model.SalaahTime != null)
+                    {
+                        <tr>
+                            <td>ISHA</td>
+                            <td><img src="~/icons/Isha.png" width="50px"></td>
+                            <td>@Model.SalaahTime.IshaAdhaan.ToString("HH:mm")</td>
+                            <td>@Model.SalaahTime.IshaSalaah.ToString("HH:mm")</td>
+                        </tr>
+                    }
                 </table>
 
             </div>
