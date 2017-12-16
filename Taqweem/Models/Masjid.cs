@@ -64,6 +64,8 @@ namespace Taqweem.Models
         [NotMapped]
         public double Distance { get; set; }
 
+        public virtual ICollection<SalaahTime> SalaahTimes { get; set; }
+
         public Masjid()
         {
 

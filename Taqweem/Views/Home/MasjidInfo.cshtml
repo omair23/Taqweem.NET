@@ -15,15 +15,6 @@
             background-color: #272626;
         }
     </style>
-
-    @*<style>
-        .table-striped > tbody > tr:nth-child(odd) > td,
-        .table-striped > tbody > tr:nth-child(odd) > th {
-            background-color: #cccccc;
-            color: #d90909;
-            font-weight: bold;
-        }
-    </style>*@
 }
 
 <div class="row">
@@ -231,6 +222,18 @@
                     {<text>No</text> }</td></tr>
                     <tr><td style="text-align:left">CONTACT</td><td>@Model.Masjid.Contact</td></tr>
                     <tr><td style="text-align:left">PHYSICAL ADDRESS</td><td>@Model.Masjid.Address</td></tr>
+
+                    @if (Model.Masjid.AllowRegistration)
+                    {
+                        <tr>
+                            <td style="text-align:left" colspan="3">
+                                <a href="#" class="btn btn-lg btn-success btn-block" >
+                                    Register as the Masjid's Administrator
+                                </a>                              
+                            </td>
+                        </tr>
+                    }
+
                 </table>
 
             </div>
@@ -249,6 +252,8 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUs6gpwmJ8WRZXjIPQH-wyPEu_P2hdHo0&sensor=false"></script>
 
 <script>
     $(document).ready(function () {
