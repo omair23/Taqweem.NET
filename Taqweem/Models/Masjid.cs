@@ -66,6 +66,8 @@ namespace Taqweem.Models
 
         public virtual ICollection<SalaahTime> SalaahTimes { get; set; }
 
+        public virtual ICollection<Notice> Notices { get; set; }
+
         public Masjid()
         {
 

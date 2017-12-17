@@ -84,6 +84,10 @@ namespace Taqweem.Controllers
 
             MasjidInfoViewModel Model = new MasjidInfoViewModel(Info);
 
+            var AllMasjids = Repository.GetAll<Masjid>().ToList();
+
+            Model.Markers.Marker = AllMasjids;
+
             return View(Model);
         }
 

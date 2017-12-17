@@ -7,22 +7,41 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="description" content="Masjid: @Model.Masjid.Name - @Model.Masjid.Town - @Model.Masjid.Country - Salaah Times - Perpetual Times - Salaah Calendar - Perpetual Calendar - Adhaan - Salaah - Masjid - Map - Fajr - Dhuhr - Asr - Maghrib - Isha" />
 
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-
     <style>
         .table-striped > tbody > tr:nth-child(odd) > td,
         .table-striped > tbody > tr:nth-child(odd) > th {
             background-color: #272626;
+        }
+
+        .adp-text {
+            color: black;
+        }
+
+        .adp, .adp table {
+            font-family: Roboto,Arial,sans-serif;
+            font-weight: 300;
+            color: #FFF;
+        }
+
+        .gm-style .gm-style-iw {
+            background-color: #808080 !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 120px !important;
+            padding: 10px;
+            display: block !important;
         }
     </style>
 }
 
 <div class="row">
     <div class="col-md-12">
-        <div class="panel-heading thumbnail"  style="background-color: #333">
+        <div class="panel-heading thumbnail" style="background-color: #333">
 
             <div class="row">
-                <center><h3>@Model.Masjid.Name, @Model.Masjid.Town, @Model.Masjid.Country</h3></center>
+                <center><h3>@Model.Masjid.Name - @Model.Masjid.Town - @Model.Masjid.Country</h3></center>
             </div>
 
             <div class="row">
@@ -33,9 +52,13 @@
                 <div class="col-md-4">
                     <center><h4><strong>@DateTime.Now.ToLongDateString()</strong></h4></center>
 
-                    <center><h4><strong>
-                        <div id="currenttime"></div>
-                    </strong></h4></center>
+                    <center>
+                        <h4>
+                            <strong>
+                                <div id="currenttime"></div>
+                            </strong>
+                        </h4>
+                    </center>
                 </div>
 
                 <div class="col-md-4">
@@ -68,7 +91,7 @@
                     <tr><td>ISHRAAQ</td><td><img src="~/icons/Ishraaq.png" width="50px"></td><td>@Model.PerpetualTime.Ishraaq.ToString("HH:mm")</td></tr>
                     <tr><td>ZAWAAL</td><td><img src="~/icons/Dhuhr.png" width="50px"></td><td>@Model.PerpetualTime.Zawaal.ToString("HH:mm")</td></tr>
                     <tr><td>DHUHR</td><td><img src="~/icons/Dhuhr.png" width="50px"></td><td>@Model.PerpetualTime.Dhuhr.ToString("HH:mm")</td></tr>
-                    
+
                     <tr><td>ASR SHAFI</td><td><img src="~/icons/Asar1.png" width="50px"></td><td>@Model.PerpetualTime.AsrShafi.ToString("HH:mm")</td></tr>
                     <tr><td>ASR HANAFI</td><td><img src="~/icons/Asar2.png" width="50px"></td><td>@Model.PerpetualTime.AsrHanafi.ToString("HH:mm")</td></tr>
                     <tr><td>SUNSET</td><td><img src="~/icons/Sunset.png" width="50px"></td><td>@Model.PerpetualTime.Sunset.ToString("HH:mm")</td></tr>
@@ -78,8 +101,6 @@
             </div>
         </div>
     </div>
-
-    <div class="col-md-4"></div>
 
     <div class="col-md-4">
         <div class="thumbnail">
@@ -104,19 +125,19 @@
                             <td>@Model.SalaahTime.FajrSalaah.ToString("HH:mm")</td>
                         </tr>
 
-                        <tr>
-                            <td>DHUHR</td>
-                            <td><img src="~/icons/Dhuhr.png" width="50px"></td>
-                            <td>@Model.SalaahTime.DhuhrAdhaan.ToString("HH:mm")</td>
-                            <td>@Model.SalaahTime.DhuhrSalaah.ToString("HH:mm")</td>
-                        </tr>
+                                <tr>
+                                    <td>DHUHR</td>
+                                    <td><img src="~/icons/Dhuhr.png" width="50px"></td>
+                                    <td>@Model.SalaahTime.DhuhrAdhaan.ToString("HH:mm")</td>
+                                    <td>@Model.SalaahTime.DhuhrSalaah.ToString("HH:mm")</td>
+                                </tr>
 
-                        <tr>
-                            <td>ASR</td>
-                            <td><img src="~/icons/Asar2.png" width="50px"></td>
-                            <td>@Model.SalaahTime.AsrAdhaan.ToString("HH:mm")</td>
-                            <td>@Model.SalaahTime.AsrSalaah.ToString("HH:mm")</td>
-                        </tr>
+                                <tr>
+                                    <td>ASR</td>
+                                    <td><img src="~/icons/Asar2.png" width="50px"></td>
+                                    <td>@Model.SalaahTime.AsrAdhaan.ToString("HH:mm")</td>
+                                    <td>@Model.SalaahTime.AsrSalaah.ToString("HH:mm")</td>
+                                </tr>
                     }
 
                     <tr>
@@ -139,11 +160,31 @@
             </div>
         </div>
     </div>
+
+    <div class="col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h4 style="text-align:center">NOTICES</h4>
+                    @if (Model.Notices.Any())
+                    {
+                        @foreach (var Notice in Model.Notices)
+                        {
+                            <p>@Notice.NoticeContent</p>
+                        }
+                    }
+
+                <br />
+                <h4 style="text-align:center">Salaah Time Changes</h4>
+
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <div class="row">
 
-    <div class="col-md-5">
+    <div class="col-md-6">
         <div class="thumbnail">
             <div class="caption">
                 <h4>GEOGRAPHY</h4>
@@ -175,9 +216,7 @@
         </div>
     </div>
 
-    <div class="col-md-2"></div>
-
-    <div class="col-md-5">
+    <div class="col-md-6">
         <div class="thumbnail">
             <div class="caption">
                 <h4>INFORMATION</h4>
@@ -192,44 +231,60 @@
                     <tr>
                         <td style="text-align:left">JURISTIC METHOD</td>
                         <td>
-                        @if (Model.Masjid.JuristMethod == JuristicMethod.UniversityOfIslamicSciencesKarachi)
-                        {
-                            <text>University of Islamic Sciences, Karachi</text>
-                        }else if (Model.Masjid.JuristMethod == JuristicMethod.EgyptianGeneralAuthorityOfSurvey)
-                        {
-                            <text>Egyptian General Authority of Survey</text>
-                        }else if (Model.Masjid.JuristMethod == JuristicMethod.IslamicSocietyOfNorthAmerica)
-                        {
-                            <text>Islamic Society of North America (ISNA)</text>
-                        }else if (Model.Masjid.JuristMethod == JuristicMethod.MuslimWorldLeague)
-                        {
-                            <text>Muslim World League</text>
-                        }else if (Model.Masjid.JuristMethod == JuristicMethod.UmmAlQuraUniversityMakkah)
-                        {
-                            <text>Umm al-Qura University, Makkah</text>
-                        }
-                            
+                            @if (Model.Masjid.JuristMethod == JuristicMethod.UniversityOfIslamicSciencesKarachi)
+                            {
+                                <text>University of Islamic Sciences, Karachi</text>
+                            }
+                            else if (Model.Masjid.JuristMethod == JuristicMethod.EgyptianGeneralAuthorityOfSurvey)
+                            {
+                                <text>Egyptian General Authority of Survey</text>
+                            }
+                            else if (Model.Masjid.JuristMethod == JuristicMethod.IslamicSocietyOfNorthAmerica)
+                            {
+                                <text>Islamic Society of North America (ISNA)</text>
+                            }
+                            else if (Model.Masjid.JuristMethod == JuristicMethod.MuslimWorldLeague)
+                            {
+                                <text>Muslim World League</text>
+                            }
+                            else if (Model.Masjid.JuristMethod == JuristicMethod.UmmAlQuraUniversityMakkah)
+                            {
+                                <text>Umm al-Qura University, Makkah</text>
+                            }
+
                         </td>
                     </tr>
 
 
-                    <tr><td style="text-align:left">LADIES FACILITY</td><td>@if (Model.Masjid.LadiesFacility)
-                    {<text>Yes</text>}
-                    else {<text>No</text> }</td></tr>
+                    <tr>
+                        <td style="text-align:left">LADIES FACILITY</td>
+                        <td>
+                            @if (Model.Masjid.LadiesFacility)
+                            {<text>Yes</text>}
+                            else
+                            {<text>No</text> }
+                        </td>
+                    </tr>
 
-                    <tr><td style="text-align:left">JUMMAH FACILITY</td><td>@if (Model.Masjid.JummahFacility){< text > Yes </ text >}
-                    else
-                    {<text>No</text> }</td></tr>
+                    <tr>
+                        <td style="text-align:left">JUMMAH FACILITY</td>
+                        <td>
+                            @if (Model.Masjid.JummahFacility)
+                            {< text > Yes </ text >}
+                            else
+                            {<text>No</text> }
+                        </td>
+                    </tr>
                     <tr><td style="text-align:left">CONTACT</td><td>@Model.Masjid.Contact</td></tr>
                     <tr><td style="text-align:left">PHYSICAL ADDRESS</td><td>@Model.Masjid.Address</td></tr>
 
                     @if (Model.Masjid.AllowRegistration)
-                    {
+            {
                         <tr>
                             <td style="text-align:left" colspan="3">
-                                <a href="#" class="btn btn-lg btn-success btn-block" >
+                                <a href="#" class="btn btn-lg btn-success btn-block">
                                     Register as the Masjid's Administrator
-                                </a>                              
+                                </a>
                             </td>
                         </tr>
                     }
@@ -242,13 +297,22 @@
 </div>
 
 <div class="row">
-    <div class="col-md-12">
+    <div id="mapC" class="col-md-12">
         <div class="map">
             <h4 style="color:#88E0AC; "> MAP </h4>
             <h6>Select your location on the map to receive directions</h6>
-            <div id="map" align="center"></div>
-            <div class="timetable " id="ptimes"></div>
-            <div id="directionsPanel" class="Font12BrownTahoma"></div>
+
+            <div id="map" align="center" style="height: 600px; width:100%"></div>
+        </div>
+    </div>
+
+    <div id="dirC" class="col-md-5" style="display: none;">
+        <h4 style="color:#88E0AC; "> DIRECTIONS</h4>
+
+        <div class="thumbnail">
+            <div class="caption">
+                <div id="directionsPanel"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -258,6 +322,7 @@
 <script>
     $(document).ready(function () {
         $("#home_nav").removeClass("active");
+        load();
     });
 
         (function () {
@@ -280,4 +345,122 @@
             }
             startTime();
         })();
+</script>
+
+<script type="text/javascript">
+
+       var directionsDisplay;
+       var directionsService = new google.maps.DirectionsService();
+       var map;
+       var markers;
+
+       var customIcons = {
+           Yes: {
+               icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png'
+           },
+           No: {
+               icon: 'http://labs.google.com/ridefinder/images/mm_20_red.png'
+           }
+       };
+
+       function load() {
+           var UserLatitude = @Model.Masjid.Latitude;
+           var UserLongitude = @Model.Masjid.Longitude;
+           var ZoomLength = 6;
+
+           var map = new google.maps.Map(document.getElementById("map"), {
+               center: new google.maps.LatLng(UserLatitude, UserLongitude),
+               zoom: ZoomLength,
+               mapTypeId: 'roadmap'
+           });
+
+            var masjidPoint = new google.maps.LatLng(
+                    parseFloat(@Model.Masjid.Latitude),
+                    parseFloat(@Model.Masjid.Longitude));
+
+            var micon = customIcons.No || {};
+
+            var marker = new google.maps.Marker({
+                    map: map,
+                    position: masjidPoint,
+                    icon: micon.icon
+                });
+
+           var infoWindow = new google.maps.InfoWindow;
+
+           geocoder = new google.maps.Geocoder();
+
+           directionsDisplay = new google.maps.DirectionsRenderer();
+
+            @foreach (var Item in Model.Markers.Marker)
+            {
+                if (Item.Id == Model.Masjid.Id)
+                {
+                    continue;
+                }
+
+
+                <text>
+                var point = new google.maps.LatLng(
+                        parseFloat(@Item.Latitude),
+                        parseFloat(@Item.Longitude));
+
+                var html = "<b>" + '@Item.Name' + "</b> <br/>" + '@Item.Town' +
+                            "<br>" + '@Item.Country' + "<br>" + '@Item.Address' +
+                            "<br> <a href='#'>View Masjid</a>";
+
+                var icon = customIcons.Yes || {};
+
+                var marker = new google.maps.Marker({
+                        map: map,
+                        position: point,
+                        icon: icon.icon
+                    });
+
+            bindInfoWindow(marker, map, infoWindow, html);
+                </text>
+            }
+
+           google.maps.event.addListener(map, 'click', function (event) {
+               marker = new google.maps.Marker({ position: event.latLng, map: map });
+               var lat = event.latLng.lat();
+               var lng = event.latLng.lng();
+
+               directionsDisplay.setMap(map);
+
+               directionsDisplay.setPanel(document.getElementById("directionsPanel"));
+
+               calcRoute(event.latLng, masjidPoint);
+
+               $("#mapC").removeClass("col-md-12");
+               $("#mapC").addClass("col-md-7");
+
+               $('#dirC').css('display', 'inline');
+           });
+       }
+
+    function calcRoute(pointa, pointb) {
+           var request = {
+               origin: pointa,
+               destination: pointb,
+               travelMode: google.maps.TravelMode.DRIVING
+           };
+
+           directionsService.route(request, function (response, status) {
+               if (status == google.maps.DirectionsStatus.OK) {
+                   directionsDisplay.setDirections(response);
+               }
+           });
+       }
+
+       function rad(x) { return x * Math.PI / 180; }
+
+       function bindInfoWindow(marker, map, infoWindow, html) {
+           google.maps.event.addListener(marker, 'click', function () {
+               infoWindow.setContent(html);
+               infoWindow.open(map, marker);
+           });
+       }
+
+       function doNothing() { }
 </script>

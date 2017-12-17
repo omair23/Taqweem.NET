@@ -14,6 +14,8 @@ namespace Taqweem.Data
 
         public DbSet<SalaahTime> SalaahTimes { get; set; }
 
+        public DbSet<Notice> Notices { get; set; }
+
         public DbSet<Configuration> Configurations { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -26,6 +28,8 @@ namespace Taqweem.Data
             builder.Entity<Masjid>().ToTable("Masjid");
 
             builder.Entity<SalaahTime>().ToTable("SalaahTime");
+
+            builder.Entity<Notice>().ToTable("Notice");
 
             builder.Entity<Configuration>().ToTable("Configuration");
 

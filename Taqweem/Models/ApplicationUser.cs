@@ -9,6 +9,8 @@ namespace Taqweem.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+        public string FullName { get; set; }
+
         public string MasjidId { get; set; }
 
         public virtual Masjid Masjid { get; set; }
