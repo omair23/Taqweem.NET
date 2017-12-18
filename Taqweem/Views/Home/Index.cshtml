@@ -108,7 +108,7 @@
             </div>
 
             <h4 style="color:#88E0AC; "> PERPTUAL TIMES</h4>
-            <h4 style="color:#88E0AC; "> For your location</h4>
+            <h4 style="color:#88E0AC; "> FOR YOUR LOCATION</h4>
 
             <div class="thumbnail">
                 <div class="caption">
@@ -123,6 +123,7 @@
                         <tr><td>ASR SHAFI</td><td><img src="~/icons/Asar1.png" width="50px"></td><td></td></tr>
                         <tr><td>ASR HANAFI</td><td><img src="~/icons/Asar2.png" width="50px"></td><td></td></tr>
                         <tr><td>SUNSET</td><td><img src="~/icons/Sunset.png" width="50px"></td><td></td></tr>
+                        <tr><td>MAGHRIB</td><td><img src="~/icons/Suhoor.png" width="50px"></td><td></td></tr>
                         <tr><td>ISHA</td><td><img src="~/icons/Isha.png" width="50px"></td><td></td></tr>
                     </table>
                 </div>
@@ -308,8 +309,8 @@
 <script type="text/javascript">
 
        function updateTextInput(val) {
-            var latitude = $("#Latitude").val();
-            var longitude = $("#Longitude").val();
+            var latitude = $("#Latitude").html();
+            var longitude = $("#Longitude").html();
 
             document.getElementById('textInput').innerHTML = val + "KM";
 
