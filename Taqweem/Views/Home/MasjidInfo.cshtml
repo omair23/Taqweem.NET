@@ -362,14 +362,16 @@
                     <br />
 
                     <table class="table table-condensed  table-striped" style="color:#f2f2f2">
-                        <thead>
-                            <tr>
-                                <th>User Name</th>
-                                <th>Registration Date</th>
-                            </tr>
-                        </thead>
+                        @if (Model.Users.Count > 0)
+                        {
+                            <thead>
+                                <tr>
+                                    <th>User Name</th>
+                                    <th>Registration Date</th>
+                                </tr>
+                            </thead>
+                        }
                         
-
                         @foreach(var User in Model.Users)
                         {
                             <tr>
@@ -479,10 +481,10 @@
             var micon = customIcons.No || {};
 
             var marker = new google.maps.Marker({
-                    map: map,
-                    position: masjidPoint,
-                    icon: micon.icon
-                });
+                map: map,
+                position: masjidPoint,
+                icon: micon.icon
+            });
 
            var infoWindow = new google.maps.InfoWindow;
 

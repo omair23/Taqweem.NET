@@ -11,6 +11,7 @@ using Taqweem.Classes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Taqweem.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Taqweem.Controllers
 {
@@ -92,6 +93,7 @@ namespace Taqweem.Controllers
         {
             Masjid Info = Repository
                             .Find<Masjid>(s => s.Id == Id)
+                            .Include(s => s.SalaahTimes)
                             .FirstOrDefault();
 
             MasjidInfoViewModel Model = new MasjidInfoViewModel(Info);
@@ -104,53 +106,55 @@ namespace Taqweem.Controllers
 
             Model.Notices = Repository
                                     .Find<Notice>(s => s.MasjidId == Id)
-                                    .ToList(); 
+                                    .ToList();
 
-            if (Model.Masjid.SalaahTimesType == SalaahTimesType.ScheduleTime)
-            {
-                Model.SalaahTime = Repository
-                            .Find<SalaahTime>(s => s.MasjidId == Id
-                            && s.DayNumber <= DateTime.Now.DayOfYear)
-                            .OrderByDescending(x => x.DayNumber)
-                            .FirstOrDefault();
+            Model.SalaahTime = GetSalaahTime(Info, DateTime.Now);
 
-                Model.NextSalaahTime = Repository
-                                .Find<SalaahTime>(s => s.MasjidId == Id
-                                && s.DayNumber > DateTime.Now.DayOfYear)
-                                .OrderBy(x => x.DayNumber)
-                                .FirstOrDefault();
+            //if (Model.Masjid.SalaahTimesType == SalaahTimesType.ScheduleTime)
+            //{
+            //    Model.SalaahTime = Repository
+            //                .Find<SalaahTime>(s => s.MasjidId == Id
+            //                && s.DayNumber <= DateTime.Now.DayOfYear)
+            //                .OrderByDescending(x => x.DayNumber)
+            //                .FirstOrDefault();
 
-                if (Model.NextSalaahTime != null)
-                {
-                    DateTime NextDate = new DateTime(DateTime.Now.Year, 1, 1);
-                    NextDate = NextDate.AddDays(Model.NextSalaahTime.DayNumber - 1);
+            //    Model.NextSalaahTime = Repository
+            //                    .Find<SalaahTime>(s => s.MasjidId == Id
+            //                    && s.DayNumber > DateTime.Now.DayOfYear)
+            //                    .OrderBy(x => x.DayNumber)
+            //                    .FirstOrDefault();
 
-                    Model.NextPerpetualTime = new cPerpetualTime(NextDate, Info);
-                }
-            }
-            else
-            {
-                Model.SalaahTime = Repository
-                            .Find<SalaahTime>(s => s.MasjidId == Id
-                            && s.DayNumber == DateTime.Now.DayOfYear)
-                            .FirstOrDefault();
+            //    if (Model.NextSalaahTime != null)
+            //    {
+            //        DateTime NextDate = new DateTime(DateTime.Now.Year, 1, 1);
+            //        NextDate = NextDate.AddDays(Model.NextSalaahTime.DayNumber - 1);
 
-                //TO DO Implement Calculation for next salaah time for huge list
+            //        Model.NextPerpetualTime = new cPerpetualTime(NextDate, Info);
+            //    }
+            //}
+            //else
+            //{
+            //    Model.SalaahTime = Repository
+            //                .Find<SalaahTime>(s => s.MasjidId == Id
+            //                && s.DayNumber == DateTime.Now.DayOfYear)
+            //                .FirstOrDefault();
 
-                Model.NextSalaahTime = Repository
-                                .Find<SalaahTime>(s => s.MasjidId == Id
-                                && s.DayNumber > DateTime.Now.DayOfYear)
-                                .OrderBy(x => x.DayNumber)
-                                .FirstOrDefault();
+            //    //TO DO Implement Calculation for next salaah time for huge list
 
-                if (Model.NextSalaahTime != null)
-                {
-                    DateTime NextDate = new DateTime(DateTime.Now.Year, 1, 1);
-                    NextDate = NextDate.AddDays(Model.NextSalaahTime.DayNumber - 1);
+            //    Model.NextSalaahTime = Repository
+            //                    .Find<SalaahTime>(s => s.MasjidId == Id
+            //                    && s.DayNumber > DateTime.Now.DayOfYear)
+            //                    .OrderBy(x => x.DayNumber)
+            //                    .FirstOrDefault();
 
-                    Model.NextPerpetualTime = new cPerpetualTime(NextDate, Info);
-                }
-            }
+            //    if (Model.NextSalaahTime != null)
+            //    {
+            //        DateTime NextDate = new DateTime(DateTime.Now.Year, 1, 1);
+            //        NextDate = NextDate.AddDays(Model.NextSalaahTime.DayNumber - 1);
+
+            //        Model.NextPerpetualTime = new cPerpetualTime(NextDate, Info);
+            //    }
+            //}
 
             return View(Model);
         }
@@ -221,7 +225,10 @@ namespace Taqweem.Controllers
 
         public List<Masjid> NearestMasjids(double Latitude, double Longitude, int Radius)
         {
-            List<Masjid> Markers = Repository.GetAll<Masjid>().ToList();
+            List<Masjid> Markers = Repository
+                                    .GetAll<Masjid>()
+                                    .Include(s => s.SalaahTimes)
+                                    .ToList();
 
             List<Masjid> Nearest = new List<Masjid>();
 
@@ -240,6 +247,129 @@ namespace Taqweem.Controllers
             return Nearest.OrderBy(s => s.Distance).ToList();
         }
 
+        public SalaahTime GetSalaahTime(Masjid Masjid, DateTime Val)
+        {
+            if (Masjid.SalaahTimesType == SalaahTimesType.ScheduleTime)
+            {
+                return Masjid.SalaahTimes
+                            .Where(s => s.DayNumber <= Val.DayOfYear)
+                            .OrderByDescending(x => x.DayNumber)
+                            .FirstOrDefault();
+            }
+            else
+            {
+                return Masjid.SalaahTimes
+                            .Where(s => s.DayNumber == Val.DayOfYear)
+                            .FirstOrDefault();
+            }
+        }
+
+        public Masjid GetCountDown(Masjid Masjid)
+        {
+            MasjidCountDown CountDown = new MasjidCountDown();
+
+            SalaahTime Times = GetSalaahTime(Masjid, DateTime.Now);
+
+            DateTime Now = DateTime.Now;
+
+            cPerpetualTime PepTime = new cPerpetualTime(DateTime.Now, Masjid);
+
+            if (Now.TimeOfDay < Times.FajrAdhaan.TimeOfDay)
+            {
+                CountDown.NextSalaah = "Fajr Adhaan";
+                CountDown.CountDown = TimeDiff(Times.FajrAdhaan);
+                CountDown.SalaahTime = Times.FajrAdhaan.ToString("HH:mm");
+            }
+            else if (Now.TimeOfDay < Times.FajrSalaah.TimeOfDay)
+            {
+                CountDown.NextSalaah = "Fajr Salaah";
+                CountDown.CountDown = TimeDiff(Times.FajrSalaah);
+                CountDown.SalaahTime = Times.FajrSalaah.ToString("HH:mm");
+            }
+
+            // JUMMAH//
+            else if (Now.TimeOfDay < Times.JumuahAdhaan.TimeOfDay
+                    && Masjid.JummahFacility
+                    && Now.DayOfWeek == DayOfWeek.Friday)
+            {
+                CountDown.NextSalaah = "Jumuah Adhaan";
+                CountDown.CountDown = TimeDiff(Times.JumuahAdhaan);
+                CountDown.SalaahTime = Times.JumuahAdhaan.ToString("HH:mm");
+            }
+            else if (Now.TimeOfDay < Times.JumuahSalaah.TimeOfDay
+                    && Masjid.JummahFacility
+                    && Now.DayOfWeek == DayOfWeek.Friday)
+            {
+                CountDown.NextSalaah = "Jumuah Salaah";
+                CountDown.CountDown = TimeDiff(Times.JumuahSalaah);
+                CountDown.SalaahTime = Times.JumuahSalaah.ToString("HH:mm");
+            }
+
+            //DHUHR//
+            else if (Now.TimeOfDay < Times.DhuhrAdhaan.TimeOfDay)
+            {
+                CountDown.NextSalaah = "Dhuhr Adhaan";
+                CountDown.CountDown = TimeDiff(Times.DhuhrAdhaan);
+                CountDown.SalaahTime = Times.DhuhrAdhaan.ToString("HH:mm");
+            }
+            else if (Now.TimeOfDay < Times.DhuhrSalaah.TimeOfDay)
+            {
+                CountDown.NextSalaah = "Dhuhr Salaah";
+                CountDown.CountDown = TimeDiff(Times.DhuhrSalaah);
+                CountDown.SalaahTime = Times.DhuhrSalaah.ToString("HH:mm");
+            }
+
+            else if (Now.TimeOfDay < Times.DhuhrAdhaan.TimeOfDay)
+            {
+                CountDown.NextSalaah = "Asr Adhaan";
+                CountDown.CountDown = TimeDiff(Times.DhuhrAdhaan);
+                CountDown.SalaahTime = Times.DhuhrAdhaan.ToString("HH:mm");
+            }
+            else if (Now.TimeOfDay < Times.DhuhrSalaah.TimeOfDay)
+            {
+                CountDown.NextSalaah = "Asr Salaah";
+                CountDown.CountDown = TimeDiff(Times.DhuhrSalaah);
+                CountDown.SalaahTime = Times.DhuhrSalaah.ToString("HH:mm");
+            }
+
+            else if (Now.TimeOfDay < PepTime.Maghrib.TimeOfDay)
+            {
+                CountDown.NextSalaah = "Maghrib";
+                CountDown.CountDown = TimeDiff(PepTime.Maghrib);
+                CountDown.SalaahTime = PepTime.Maghrib.ToString("HH:mm");
+            }
+
+            else if (Now.TimeOfDay < Times.IshaAdhaan.TimeOfDay)
+            {
+                CountDown.NextSalaah = "Isha Adhaan";
+                CountDown.CountDown = TimeDiff(Times.IshaAdhaan);
+                CountDown.SalaahTime = Times.IshaAdhaan.ToString("HH:mm");
+            }
+            else if (Now.TimeOfDay < Times.IshaSalaah.TimeOfDay)
+            {
+                CountDown.NextSalaah = "Isha Salaah";
+                CountDown.CountDown = TimeDiff(Times.IshaSalaah);
+                CountDown.SalaahTime = Times.IshaSalaah.ToString("HH:mm");
+            }
+            else
+            {
+                //Check Next Days Fajr
+                SalaahTime TomorrowsTime = GetSalaahTime(Masjid, DateTime.Now.AddDays(1));
+                CountDown.NextSalaah = "Fajr Adhaan";
+                CountDown.CountDown = "N/A";// TimeDiff(TomorrowsTime.FajrAdhaan);
+                CountDown.SalaahTime = TomorrowsTime.FajrAdhaan.ToString("HH:mm");
+            }
+
+            Masjid.CountDown = CountDown;
+
+            return Masjid;
+        }
+
+        public string TimeDiff(DateTime Val)
+        {
+            TimeSpan Diff = Val.Subtract(DateTime.Now);
+            return Diff.Hours.ToString() + ":" + Diff.Minutes.ToString();
+        }
 
         public IActionResult NearestMasjidsTable(double Latitude, double Longitude, int Radius)
         {
@@ -247,15 +377,20 @@ namespace Taqweem.Controllers
             {
                 List<Masjid> NearestM = NearestMasjids(Latitude, Longitude, Radius);
 
+                foreach(var M in NearestM)
+                {
+                    M.CountDown = GetCountDown(M).CountDown;
+                }
+
                 var _json = NearestM.Select(u => new
                 {
                     Id = u.Id,
                     Masjid = u.Name + ", " + u.Town + ", " + u.Country,
                     Distance = u.Distance + " KM",
-                    NextSalaah = "",
-                    Countdown = "",
-                    SalaahTime = "",
-                    LadiesFacility = "",
+                    NextSalaah = u.CountDown.NextSalaah,
+                    Countdown = u.CountDown.CountDown,
+                    SalaahTime = u.CountDown.SalaahTime,
+                    LadiesFacility = (u.LadiesFacility) ? "Yes" : "No",
                 })
                 .ToList();
 

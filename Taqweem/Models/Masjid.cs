@@ -17,6 +17,13 @@ namespace Taqweem.Models
         EgyptianGeneralAuthorityOfSurvey = 5
     }
 
+    public class MasjidCountDown
+    {
+        public string NextSalaah;
+        public string CountDown;
+        public string SalaahTime;
+    }
+
     public enum SalaahTimesType
     {
         ScheduleTime = 1,
@@ -68,6 +75,9 @@ namespace Taqweem.Models
 
         [NotMapped]
         public double Distance { get; set; }
+
+        [NotMapped]
+        public virtual MasjidCountDown CountDown { get; set; }
 
         public virtual ICollection<SalaahTime> SalaahTimes { get; set; }
 

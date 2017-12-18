@@ -160,7 +160,7 @@
                ZoomLength = 12;
            }
 
-           var map = new google.maps.Map(document.getElementById("map"), {
+           map = new google.maps.Map(document.getElementById("map"), {
                center: new google.maps.LatLng(UserLatitude, UserLongitude),
                zoom: ZoomLength,
                mapTypeId: 'roadmap'
@@ -310,61 +310,58 @@
                     if (Timer == 6) {
 
                         if (Location.lat != undefined) {
-
                             UserLatitude = Location.lat;
-
                             UserLongitude = Location.lng;
-
                             ZoomLength = 12;
 
                             var todayz = new Date();
-
                             var tzn = todayz.getTimezoneOffset();
-
                             tzn = tzn / -60;
 
                             document.getElementById("Latitude").innerHTML = UserLatitude;
-
                             document.getElementById("Longitude").innerHTML = UserLongitude;
 
                             var PerpetualLink = "<a href='report_perpetual_location.php?Lat=" + UserLatitude + "&Lng=" + UserLongitude + "&TZ=" + tzn + "'>View Perpetual Times</a>";
-
                             document.getElementById("cperp").innerHTML = PerpetualLink;
 
-                            //GetRadiusTimes(UserLatitude, UserLongitude, 7, 'Init');
+                            map.setCenter({
+                                lat: UserLatitude,
+                                lng: UserLongitude
+                            });
 
+                            map.setZoom(16);
+
+                            var micon = customIcons.No || {};
+
+                            var marker = new google.maps.Marker({
+                                map: map,
+                                position: Location,
+                                icon: micon.icon
+                            });
+
+                            GetRadiusTimes(UserLatitude, UserLongitude, 7, 'Init');
                         }
-
                     }
 
                     if (Timer == 120) {
-
                         location.reload();
                     }
 
                     var today = new Date(),
-
                         h = checkTime(today.getHours()),
-
                         m = checkTime(today.getMinutes()),
-
                         s = checkTime(today.getSeconds());
 
                     var n = today.getTimezoneOffset();
-
                     n = n / -60;
 
                     document.getElementById('currentdate').innerHTML = today.toDateString();
-
                     document.getElementById('currenttime').innerHTML = h + ":" + m + ":" + s;
-
                     document.getElementById('ctimezone').innerHTML = "Device Timezone: " + n;
 
                     t = setTimeout(function () { startTime() }, 500);
-
                 }
 
                 startTime();
             })();
-
 </script>
