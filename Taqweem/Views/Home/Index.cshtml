@@ -29,7 +29,7 @@
 <div class="row">
     <div class="col-md-12">
         <h1>Taqweem Masjid Guide</h1>
-        <h4>Select your location on the map</h4>
+        <h4 id="secondHeading">Select your location on the map</h4>
     </div>
 </div>
 
@@ -113,18 +113,18 @@
             <div class="thumbnail">
                 <div class="caption">
                     <table class="table table-condensed table-striped" style="color: #f2f2f2; border-top: none; border:none">
-                        <tr><td>SEHRI ENDS</td><td><img src="~/icons/Suhoor.png" width="50px"></td><td>8:15</td></tr>
-                        <tr><td>FAJR</td><td><img src="~/icons/Fajr.png" width="50px"></td><td></td></tr>
-                        <tr><td>SUNRISE</td><td><img src="~/icons/Sunrise.png" width="50px"></td><td></td></tr>
-                        <tr><td>ISHRAAQ</td><td><img src="~/icons/Ishraaq.png" width="50px"></td><td></td></tr>
-                        <tr><td>ZAWAAL</td><td><img src="~/icons/Dhuhr.png" width="50px"></td><td></td></tr>
-                        <tr><td>DHUHR</td><td><img src="~/icons/Dhuhr.png" width="50px"></td><td></td></tr>
+                        <tr><td>SEHRI ENDS</td><td><img src="~/icons/Suhoor.png" width="50px"></td><td id="p_sehri"></td></tr>
+                        <tr><td>FAJR</td><td><img src="~/icons/Fajr.png" width="50px"></td><td id="p_fajr"></tdid="p_sehri"></tr>
+                        <tr><td>SUNRISE</td><td><img src="~/icons/Sunrise.png" width="50px"></td><td id="p_sunrise"></td></tr>
+                        <tr><td>ISHRAAQ</td><td><img src="~/icons/Ishraaq.png" width="50px"></td><td id="p_ishraaq"></td></tr>
+                        <tr><td>ZAWAAL</td><td><img src="~/icons/Dhuhr.png" width="50px"></td><td id="p_zawaal"></td></tr>
+                        <tr><td>DHUHR</td><td><img src="~/icons/Dhuhr.png" width="50px"></td><td id="p_dhuhr"></td></tr>
 
-                        <tr><td>ASR SHAFI</td><td><img src="~/icons/Asar1.png" width="50px"></td><td></td></tr>
-                        <tr><td>ASR HANAFI</td><td><img src="~/icons/Asar2.png" width="50px"></td><td></td></tr>
-                        <tr><td>SUNSET</td><td><img src="~/icons/Sunset.png" width="50px"></td><td></td></tr>
-                        <tr><td>MAGHRIB</td><td><img src="~/icons/Suhoor.png" width="50px"></td><td></td></tr>
-                        <tr><td>ISHA</td><td><img src="~/icons/Isha.png" width="50px"></td><td></td></tr>
+                        <tr><td>ASR SHAFI</td><td><img src="~/icons/Asar1.png" width="50px"></td><td id="p_asar1"></td></tr>
+                        <tr><td>ASR HANAFI</td><td><img src="~/icons/Asar2.png" width="50px"></td><td id="p_asar2"></td></tr>
+                        <tr><td>SUNSET</td><td><img src="~/icons/Sunset.png" width="50px"></td><td id="p_sunset"></td></tr>
+                        <tr><td>MAGHRIB</td><td><img src="~/icons/Suhoor.png" width="50px"></td><td id="p_maghrib"></td></tr>
+                        <tr><td>ISHA</td><td><img src="~/icons/Isha.png" width="50px"></td><td id="p_isha"></td></tr>
                     </table>
                 </div>
             </div>
@@ -146,17 +146,12 @@
        var customIcons = {
 
            Yes: {
-
-               icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png'
-
+               icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png' //"../icons/Asar1.jpg" //
            },
 
            No: {
-
                icon: 'http://labs.google.com/ridefinder/images/mm_20_red.png'
-
            }
-
        };
 
        navigator.geolocation.getCurrentPosition(GetLocation);
@@ -272,8 +267,31 @@
                 }]
            });
 
+           var tz = $("#ctimezone").html();
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("PerpetualTimes", "Home")',
+                data: { "Latitude": lat, "Longitude": lng, "TimeZone": tz },
+                success: function (data) {
+                    $("#p_sehri").html(data["sehriEnds"]);
+                    $("#p_fajr").html(data["fajr"]);
+                    $("#p_sunrise").html(data["sunrise"]);
+                    $("#p_ishraaq").html(data["ishraaq"]);
+                    $("#p_zawaal").html(data["zawaal"]);
+                    $("#p_dhuhr").html(data["dhuhr"]);
+                    $("#p_asar1").html(data["asar1"]);
+                    $("#p_asar2").html(data["asar2"]);
+                    $("#p_sunset").html(data["sunset"]);
+                    $("#p_maghrib").html(data["maghrib"]);
+                    $("#p_isha").html(data["isha"]);
+                }
+            });
+
            $('#nearestInfo').css('display', 'inline');
            $('#located').css('display', 'inline');
+
+           $("#secondHeading").html("Closest Masajid within a " + radius + "KM Radius (Straight-line distance)");
        }
 
        function checkTime(i) {

@@ -213,6 +213,33 @@ namespace Taqweem.Controllers
             return View(Model);
         }
 
+        public IActionResult PerpetualTimes(double Latitude, double Longitude, double TimeZone)
+        {
+            Masjid TempMasjid = new Masjid();
+            TempMasjid.Latitude = Latitude;
+            TempMasjid.Longitude = Longitude;
+            TempMasjid.TimeZone = TimeZone;
+
+            cPerpetualTime Time = new cPerpetualTime(DateTime.Now, TempMasjid);
+
+            var _json = new
+            {
+                sehriEnds = Time.SehriEnds.ToString("HH:mm"),
+                fajr = Time.Fajr.ToString("HH:mm"),
+                sunrise = Time.Sunrise.ToString("HH:mm"),
+                ishraaq = Time.Ishraaq.ToString("HH:mm"),
+                zawaal = Time.Zawaal.ToString("HH:mm"),
+                dhuhr = Time.Dhuhr.ToString("HH:mm"),
+                asar1 = Time.AsrShafi.ToString("HH:mm"),
+                asar2 = Time.AsrShafi.ToString("HH:mm"),
+                sunset = Time.Sunset.ToString("HH:mm"),
+                maghrib = Time.Maghrib.ToString("HH:mm"),
+                isha = Time.Isha.ToString("HH:mm"),
+            };
+
+            return Json(_json);
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
