@@ -25,38 +25,50 @@ namespace Taqweem.Controllers
             Repository = new EFRepository(_context);
         }
 
-        public IActionResult Index()
+        public void DBInit()
         {
             List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
 
             //DB INIT
-            if(AllMasjids.Count < 1)
+            if (AllMasjids.Count < 1)
             {
-                List<Masjid> NewMasjids = new List<Masjid>();
-
                 Masjid s = new Masjid();
+                s.Id = "5f3e7169-ab20-4b34-bb27-2e86eefee2c1";
                 s.Name = "Masjid Muaadh bin Jabal - Crosby";
                 s.Town = "Johannesburg";
                 s.Country = "South Africa";
                 s.Latitude = -26.195149;
                 s.Longitude = 27.990238;
                 s.TimeZone = 2;
-                NewMasjids.Add(s);
 
-                Masjid r = new Masjid();
-                r.Name = "Masjid-e-Khair - Mayfair West";
-                r.Town = "Johannesburg";
-                r.Country = "South Africa";
-                r.Latitude = -26.197940;
-                r.Longitude = 27.997250;
-                r.TimeZone = 2;
-                NewMasjids.Add(r);
-
-                Repository.AddMultiple(NewMasjids);
-
-                AllMasjids = Repository.GetAll<Masjid>().ToList();
+                Repository.Add(s);
             }
             ////
+
+            List<ApplicationUser> Users = Repository.GetAll<ApplicationUser>().ToList();
+
+            if (Users.Count < 1)
+            {
+                ApplicationUser user = new ApplicationUser();
+                user.Id = "513f1fe1-8e01-4c62-b332-ee8a0f7e2c29";
+                user.Email = "omair334@gmail.com";
+                user.EmailConfirmed = true;
+                user.FullName = "Omair Kazi";
+                user.MasjidId = "5f3e7169-ab20-4b34-bb27-2e86eefee2c1";
+                user.UserName = "omair334@gmail.com";
+                user.NormalizedUserName = "OMAIR KAZI";
+                user.NormalizedEmail = "OMAIR334@GMAIL.COM";
+
+                Repository.Add(user);
+            }
+
+        }
+
+        public IActionResult Index()
+        {
+            DBInit();
+
+            List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
 
             Markers Model = new Markers();
 
@@ -84,9 +96,61 @@ namespace Taqweem.Controllers
 
             MasjidInfoViewModel Model = new MasjidInfoViewModel(Info);
 
-            var AllMasjids = Repository.GetAll<Masjid>().ToList();
+            Model.Markers.Marker = Repository.GetAll<Masjid>().ToList();
 
-            Model.Markers.Marker = AllMasjids;
+            Model.Users = Repository
+                            .Find<ApplicationUser>(s => s.MasjidId == Id)
+                            .ToList();
+
+            Model.Notices = Repository
+                                    .Find<Notice>(s => s.MasjidId == Id)
+                                    .ToList(); 
+
+            if (Model.Masjid.SalaahTimesType == SalaahTimesType.ScheduleTime)
+            {
+                Model.SalaahTime = Repository
+                            .Find<SalaahTime>(s => s.MasjidId == Id
+                            && s.DayNumber <= DateTime.Now.DayOfYear)
+                            .OrderByDescending(x => x.DayNumber)
+                            .FirstOrDefault();
+
+                Model.NextSalaahTime = Repository
+                                .Find<SalaahTime>(s => s.MasjidId == Id
+                                && s.DayNumber > DateTime.Now.DayOfYear)
+                                .OrderBy(x => x.DayNumber)
+                                .FirstOrDefault();
+
+                if (Model.NextSalaahTime != null)
+                {
+                    DateTime NextDate = new DateTime(DateTime.Now.Year, 1, 1);
+                    NextDate = NextDate.AddDays(Model.NextSalaahTime.DayNumber - 1);
+
+                    Model.NextPerpetualTime = new cPerpetualTime(NextDate, Info);
+                }
+            }
+            else
+            {
+                Model.SalaahTime = Repository
+                            .Find<SalaahTime>(s => s.MasjidId == Id
+                            && s.DayNumber == DateTime.Now.DayOfYear)
+                            .FirstOrDefault();
+
+                //TO DO Implement Calculation for next salaah time for huge list
+
+                Model.NextSalaahTime = Repository
+                                .Find<SalaahTime>(s => s.MasjidId == Id
+                                && s.DayNumber > DateTime.Now.DayOfYear)
+                                .OrderBy(x => x.DayNumber)
+                                .FirstOrDefault();
+
+                if (Model.NextSalaahTime != null)
+                {
+                    DateTime NextDate = new DateTime(DateTime.Now.Year, 1, 1);
+                    NextDate = NextDate.AddDays(Model.NextSalaahTime.DayNumber - 1);
+
+                    Model.NextPerpetualTime = new cPerpetualTime(NextDate, Info);
+                }
+            }
 
             return View(Model);
         }

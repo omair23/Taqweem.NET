@@ -17,6 +17,12 @@ namespace Taqweem.Models
         EgyptianGeneralAuthorityOfSurvey = 5
     }
 
+    public enum SalaahTimesType
+    {
+        ScheduleTime = 1,
+        DailyTime = 2
+    }
+
     //    if (JMethod == 1) { FajrAngle = 18; IshaAngle = 18; txtJuristicM.Text = "University of Islamic Sciences, Karachi"; }
     //else if (JMethod == 2) { FajrAngle = 18; IshaAngle = 17; txtJuristicM.Text = "Muslim World League"; }
     //else if (JMethod == 3) { FajrAngle = 15; IshaAngle = 15; txtJuristicM.Text = "Islamic Society of North America"; }
@@ -38,7 +44,7 @@ namespace Taqweem.Models
 
         public double Longitude { get; set; }
 
-        public double Height { get; set; }
+        public double Height { get; set; } = 0;
 
         public double TimeZone { get; set; }
 
@@ -58,8 +64,7 @@ namespace Taqweem.Models
 
         public int MaghribAdhaanDelay { get; set; } = 3;
 
-        [NotMapped]
-        public virtual cSalaahTime SalaahTime {get; set;}
+        public SalaahTimesType SalaahTimesType { get; set; } = SalaahTimesType.ScheduleTime;
 
         [NotMapped]
         public double Distance { get; set; }

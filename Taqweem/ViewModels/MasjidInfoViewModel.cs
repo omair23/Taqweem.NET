@@ -9,11 +9,17 @@ namespace Taqweem.ViewModels
     {
         public Markers Markers { get; set; }
 
+        public List<ApplicationUser> Users { get; set; }
+
         public Masjid Masjid { get; set; }
 
         public cPerpetualTime PerpetualTime { get; set; }
 
-        public cSalaahTime SalaahTime { get; set; }
+        public cPerpetualTime NextPerpetualTime { get; set; }
+
+        public SalaahTime SalaahTime { get; set; }
+
+        public SalaahTime NextSalaahTime { get; set; }
 
         public List<Notice> Notices { get; set; }
 
@@ -32,10 +38,6 @@ namespace Taqweem.ViewModels
             Masjid = pMasjid;
 
             PerpetualTime = new cPerpetualTime(DateTime.Now, Masjid);
-
-            //SalaahTime = new cSalaahTime();
-
-            Notices = new List<Notice>();
 
             //Static Conversions
             QiblaDistance = Math.Round(cCalculations.DistanceTo(Masjid.Latitude, Masjid.Longitude, 21.4225, 39.8262));

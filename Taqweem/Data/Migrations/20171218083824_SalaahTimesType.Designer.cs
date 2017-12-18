@@ -12,9 +12,10 @@ using Taqweem.Models;
 namespace Taqweem.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171218083824_SalaahTimesType")]
+    partial class SalaahTimesType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,17 +137,8 @@ namespace Taqweem.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<int>("ActiveStatus");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
-
-                    b.Property<DateTime>("CreatedAt");
-
-                    b.Property<DateTime?>("DeletedAt");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(38);
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
@@ -176,8 +168,6 @@ namespace Taqweem.Data.Migrations
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<DateTime?>("UpdatedAt");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
@@ -273,10 +263,7 @@ namespace Taqweem.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(38);
-
-                    b.Property<string>("CreatedId");
+                    b.Property<string>("CreatedById");
 
                     b.Property<DateTime?>("DeletedAt");
 
@@ -295,7 +282,7 @@ namespace Taqweem.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedId");
+                    b.HasIndex("CreatedById");
 
                     b.HasIndex("MasjidId");
 
@@ -402,9 +389,9 @@ namespace Taqweem.Data.Migrations
 
             modelBuilder.Entity("Taqweem.Models.Notice", b =>
                 {
-                    b.HasOne("Taqweem.Models.ApplicationUser", "Created")
+                    b.HasOne("Taqweem.Models.ApplicationUser", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("CreatedId");
+                        .HasForeignKey("CreatedById");
 
                     b.HasOne("Taqweem.Models.Masjid", "Masjid")
                         .WithMany("Notices")

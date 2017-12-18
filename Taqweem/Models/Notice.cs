@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Taqweem.Classes;
 
 namespace Taqweem.Models
@@ -11,8 +13,14 @@ namespace Taqweem.Models
 
         public bool IsDeleted { get; set; } = false;
 
-        public string CreatedById { get; set; }
+        public string MasjidId { get; set; }
 
-        public virtual ApplicationUser CreatedBy { get; set; }
+        public virtual Masjid Masjid { get; set; }
+
+        [StringLength(38)]
+        [DefaultValue(null)]
+        public string CreatedBy { get; set; } = null;
+
+        public virtual ApplicationUser Created { get; set; }
     }
 }
