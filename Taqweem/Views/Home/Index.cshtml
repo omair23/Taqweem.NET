@@ -33,51 +33,9 @@
     </div>
 </div>
 
-<div id="located" style="text-align:center; visibility: visible;" class="row">
-    <div class="row">
-        <div class="col-md-3">
-            <h4>My Location</h4>
-        </div>
-        <div class="col-md-3">
-            <h4 id="currentdate" style="text-align:center; font-size:18px;" />
-        </div>
-        <div class="col-md-3">
-            <h4 id="currenttime" style="text-align:center; font-size:18px;" />
-        </div>
-        <div class="col-md-3">
-            <h4 id="ctimezone" style="text-align:center; font-size:18px;" />
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-3">
-            <div id="slider">
-                <div id="custom-handle" class="ui-slider-handle"></div>
-            </div>
-
-            <form>
-                <input type="range" id="rangeInput" name="rangeInput" value="7" min="3" max="300" onchange="updateTextInput(this.value);">
-
-                <div id="textInput">Radius: 7 KM</div>
-            </form>
-        </div>
-        <div class="col-md-3">
-            <h4 style="text-align:center; font-size:18px;">Latitude:</h4>
-            <h4 id="Latitude" style="text-align:center; font-size:18px;"></h4>
-        </div>
-        <div class="col-md-3">
-            <h4 style="text-align:center; font-size:18px;">Longitude:</h4>
-            <h4 id="Longitude" style="text-align:center; font-size:18px;"></h4>
-        </div>
-        <div class="col-md-3">
-            <h4 id="cperp" style="text-align:center; font-size:18px;" />
-        </div>
-    </div>
-
+<div style="text-align:center;" class="row">
     <div class="row" id="nearestInfo" style="display:none;">
-        <div class="col-md-12" id="users">
-            @*<h3>Masajid within a " + radius + " KM Radius of your marker</h3><br>*@
-
+        <div class="col-md-12">
             <table id="nearestDetail" class="table table-bordered table-striped" style="width: 100%;">
                 <thead class="thead-inverse">
                     <tr>
@@ -92,27 +50,86 @@
                 </thead>
                 <tbody></tbody>
             </table>
-
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-12">
+    <div id="mapC" class="col-md-8">
         <div id="map" style="height: 600px; width:100%"></div>
     </div>
+
+    <div class="col-md-4">
+
+        <h4 style="color:#88E0AC; "> SETTINGS </h4>
+        <div class="thumbnail">
+            <div class="caption">
+                <div class="row">
+                    <div class="col-md-6">
+                        <form>
+                            <input type="range" id="rangeInput" name="rangeInput" value="7" min="3" max="300" onchange="updateTextInput(this.value);">
+                            
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="textInput">Radius: 7 KM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="located" style="display: none;">
+            <h4 style="color:#88E0AC; "> MY LOCATION </h4>
+            <div class="thumbnail">
+                <div class="caption">
+                    <table class="table table-condensed table-striped" style="color: #f2f2f2; border-top: none; border:none">
+                        <tr>
+                            <th>Date:</th>
+                            <td id="currentdate"></td>
+                        </tr>
+                        <tr>
+                            <th>Time:</th>
+                            <td id="currenttime"></td>
+                        </tr>
+                        <tr>
+                            <th>Device Timezone:</th>
+                            <td id="ctimezone"></td>
+                        </tr>
+                        <tr>
+                            <th>Latitude:</th>
+                            <td id="Latitude"></td>
+                        </tr>
+                        <tr>
+                            <th>Longitude:</th>
+                            <td id="Longitude"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <h4 style="color:#88E0AC; "> PERPTUAL TIMES</h4>
+            <h4 style="color:#88E0AC; "> For your location</h4>
+
+            <div class="thumbnail">
+                <div class="caption">
+                    <table class="table table-condensed table-striped" style="color: #f2f2f2; border-top: none; border:none">
+                        <tr><td>SEHRI ENDS</td><td><img src="~/icons/Suhoor.png" width="50px"></td><td>8:15</td></tr>
+                        <tr><td>FAJR</td><td><img src="~/icons/Fajr.png" width="50px"></td><td></td></tr>
+                        <tr><td>SUNRISE</td><td><img src="~/icons/Sunrise.png" width="50px"></td><td></td></tr>
+                        <tr><td>ISHRAAQ</td><td><img src="~/icons/Ishraaq.png" width="50px"></td><td></td></tr>
+                        <tr><td>ZAWAAL</td><td><img src="~/icons/Dhuhr.png" width="50px"></td><td></td></tr>
+                        <tr><td>DHUHR</td><td><img src="~/icons/Dhuhr.png" width="50px"></td><td></td></tr>
+
+                        <tr><td>ASR SHAFI</td><td><img src="~/icons/Asar1.png" width="50px"></td><td></td></tr>
+                        <tr><td>ASR HANAFI</td><td><img src="~/icons/Asar2.png" width="50px"></td><td></td></tr>
+                        <tr><td>SUNSET</td><td><img src="~/icons/Sunset.png" width="50px"></td><td></td></tr>
+                        <tr><td>ISHA</td><td><img src="~/icons/Isha.png" width="50px"></td><td></td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-
-<table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
-    <tr>
-        <td colspan="2"></td>
-    </tr>
-    <tr>
-        <td><div class="timetable" id="ptimes"></div>
-        <td><div id="directionsPanel" class="Font12BrownTahoma"></div></td>
-    </tr>
-</table>
 
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUs6gpwmJ8WRZXjIPQH-wyPEu_P2hdHo0&sensor=false"></script>
 
@@ -255,6 +272,7 @@
            });
 
            $('#nearestInfo').css('display', 'inline');
+           $('#located').css('display', 'inline');
        }
 
        function checkTime(i) {
@@ -289,10 +307,17 @@
 
 <script type="text/javascript">
 
-            function updateTextInput(val) {
-                document.getElementById('textInput').innerHTML = val + "KM";
-                GetRadiusTimes(document.getElementById('Latitude').innerHTML, document.getElementById('Longitude').innerHTML, val);
-            }
+       function updateTextInput(val) {
+            var latitude = $("#Latitude").val();
+            var longitude = $("#Longitude").val();
+
+            document.getElementById('textInput').innerHTML = val + "KM";
+
+            if (latitude == "" || longitude == "")
+                return;
+
+            GetRadiusTimes(latitude, longitude, val);
+        }
 
             var Timer = 0;
 
@@ -320,9 +345,6 @@
 
                             document.getElementById("Latitude").innerHTML = UserLatitude;
                             document.getElementById("Longitude").innerHTML = UserLongitude;
-
-                            var PerpetualLink = "<a href='report_perpetual_location.php?Lat=" + UserLatitude + "&Lng=" + UserLongitude + "&TZ=" + tzn + "'>View Perpetual Times</a>";
-                            document.getElementById("cperp").innerHTML = PerpetualLink;
 
                             map.setCenter({
                                 lat: UserLatitude,
@@ -357,7 +379,7 @@
 
                     document.getElementById('currentdate').innerHTML = today.toDateString();
                     document.getElementById('currenttime').innerHTML = h + ":" + m + ":" + s;
-                    document.getElementById('ctimezone').innerHTML = "Device Timezone: " + n;
+                    document.getElementById('ctimezone').innerHTML = n;
 
                     t = setTimeout(function () { startTime() }, 500);
                 }

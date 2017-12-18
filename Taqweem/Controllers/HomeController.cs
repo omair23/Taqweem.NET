@@ -319,17 +319,17 @@ namespace Taqweem.Controllers
                 CountDown.SalaahTime = Times.DhuhrSalaah.ToString("HH:mm");
             }
 
-            else if (Now.TimeOfDay < Times.DhuhrAdhaan.TimeOfDay)
+            else if (Now.TimeOfDay < Times.AsrAdhaan.TimeOfDay)
             {
                 CountDown.NextSalaah = "Asr Adhaan";
-                CountDown.CountDown = TimeDiff(Times.DhuhrAdhaan);
-                CountDown.SalaahTime = Times.DhuhrAdhaan.ToString("HH:mm");
+                CountDown.CountDown = TimeDiff(Times.AsrAdhaan);
+                CountDown.SalaahTime = Times.AsrAdhaan.ToString("HH:mm");
             }
-            else if (Now.TimeOfDay < Times.DhuhrSalaah.TimeOfDay)
+            else if (Now.TimeOfDay < Times.AsrSalaah.TimeOfDay)
             {
                 CountDown.NextSalaah = "Asr Salaah";
-                CountDown.CountDown = TimeDiff(Times.DhuhrSalaah);
-                CountDown.SalaahTime = Times.DhuhrSalaah.ToString("HH:mm");
+                CountDown.CountDown = TimeDiff(Times.AsrSalaah);
+                CountDown.SalaahTime = Times.AsrSalaah.ToString("HH:mm");
             }
 
             else if (Now.TimeOfDay < PepTime.Maghrib.TimeOfDay)
@@ -368,7 +368,11 @@ namespace Taqweem.Controllers
         public string TimeDiff(DateTime Val)
         {
             TimeSpan Diff = Val.Subtract(DateTime.Now);
-            return Diff.Hours.ToString() + ":" + Diff.Minutes.ToString();
+
+            if (Diff.Minutes < 10)
+                return Diff.Hours.ToString() + ":0" + Diff.Minutes.ToString();
+            else
+                return Diff.Hours.ToString() + ":" + Diff.Minutes.ToString();
         }
 
         public IActionResult NearestMasjidsTable(double Latitude, double Longitude, int Radius)
