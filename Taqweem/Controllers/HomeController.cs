@@ -379,7 +379,8 @@ namespace Taqweem.Controllers
 
                 foreach(var M in NearestM)
                 {
-                    M.CountDown = GetCountDown(M).CountDown;
+                    if (M.SalaahTimes.Count > 0)
+                        M.CountDown = GetCountDown(M).CountDown;
                 }
 
                 var _json = NearestM.Select(u => new
@@ -387,9 +388,9 @@ namespace Taqweem.Controllers
                     Id = u.Id,
                     Masjid = u.Name + ", " + u.Town + ", " + u.Country,
                     Distance = u.Distance + " KM",
-                    NextSalaah = u.CountDown.NextSalaah,
-                    Countdown = u.CountDown.CountDown,
-                    SalaahTime = u.CountDown.SalaahTime,
+                    NextSalaah = (u.CountDown != null) ? u.CountDown.NextSalaah : "",
+                    Countdown = (u.CountDown != null) ? u.CountDown.CountDown : "",
+                    SalaahTime = (u.CountDown != null) ? u.CountDown.SalaahTime : "",
                     LadiesFacility = (u.LadiesFacility) ? "Yes" : "No",
                 })
                 .ToList();
@@ -398,7 +399,7 @@ namespace Taqweem.Controllers
             }
             catch (Exception ex)
             {
-                return null;
+                return Json(new { data = "" }, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });
             }
         }
     }
