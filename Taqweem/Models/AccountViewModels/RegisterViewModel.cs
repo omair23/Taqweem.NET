@@ -23,5 +23,14 @@ namespace Taqweem.Models.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Full Name")]
+        [Required]
+        public string FullName { get; set; }
+
+        [Required]
+        public string MasjidId { get; set; }
+
+        public Masjid Masjid { get; set; }
     }
 }

@@ -384,7 +384,8 @@
                         {
                             <tr>
                                 <td style="text-align:left" colspan="3">
-                                    <a style="color: #ff6a00;" href="#">Register as the Masjid's Administrator</a>
+                                    <a style="color: #ff6a00;" href="@Url.Action("Register", "Account", new { MasjidId = Model.Masjid.Id })" > 
+                                    Register as the Masjid's Administrator</a>
                                 </td>
                             </tr>
                         }

@@ -13,6 +13,8 @@ using Microsoft.Extensions.Options;
 using Taqweem.Models;
 using Taqweem.Models.AccountViewModels;
 using Taqweem.Services;
+using System.Security.Cryptography;
+using Taqweem.Data;
 
 namespace Taqweem.Controllers
 {
@@ -24,8 +26,11 @@ namespace Taqweem.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly ApplicationDbContext _context;
+        private readonly EFRepository Repository;
 
         public AccountController(
+            ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
@@ -35,6 +40,9 @@ namespace Taqweem.Controllers
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+
+            _context = context;
+            Repository = new EFRepository(_context);
         }
 
         [TempData]
@@ -46,6 +54,8 @@ namespace Taqweem.Controllers
         {
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            await _signInManager.SignOutAsync();
 
             ViewData["ReturnUrl"] = returnUrl;
             return View();
@@ -65,7 +75,8 @@ namespace Taqweem.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Manage");
+                    //return RedirectToLocal(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -206,11 +217,24 @@ namespace Taqweem.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
+        public IActionResult Register(string MasjidId)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            RegisterViewModel Model = new RegisterViewModel();
+
+            Model.MasjidId = MasjidId;
+
+            Model.Masjid = Repository.Find<Masjid>(s => s.Id == MasjidId).FirstOrDefault();
+
+            return View(Model);
         }
+
+        //[HttpGet]
+        //[AllowAnonymous]
+        //public IActionResult Register(string returnUrl = null)
+        //{
+        //    ViewData["ReturnUrl"] = returnUrl;
+        //    return View();
+        //}
 
         [HttpPost]
         [AllowAnonymous]
@@ -220,7 +244,29 @@ namespace Taqweem.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                ApplicationUser ExistingUser = _userManager.FindByEmailAsync(model.Email).Result;
+
+                if (ExistingUser != null)
+                {
+                    _logger.LogInformation("Username already exists with that email");
+                    return RedirectToLocal(returnUrl);
+                }
+
+                if (model.MasjidId == null)
+                {
+                    _logger.LogInformation("No Masjid specified");
+                    return RedirectToLocal(returnUrl);
+                }
+
+                Masjid masjid = Repository.Find<Masjid>(s => s.Id == model.MasjidId).FirstOrDefault();
+
+                if (masjid == null | masjid.AllowRegistration == false)
+                {
+                    _logger.LogInformation("Unable to register with the specified Masjid");
+                    return RedirectToLocal(returnUrl);
+                }
+
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, MasjidId = model.MasjidId, FullName = model.FullName  };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -247,6 +293,7 @@ namespace Taqweem.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
+            //return Redirect.RedirectToAction("Index", "Home");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 

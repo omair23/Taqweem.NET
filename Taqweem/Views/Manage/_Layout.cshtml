@@ -1,23 +1,89 @@
-﻿@{ 
-    Layout = "/Views/Shared/_Layout.cshtml";
-}
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Taqweem</title>
 
-<h2>Manage your account</h2>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/animate.css" rel="stylesheet">
+    <link href="~/css/skin-blue.css" rel="stylesheet">
 
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
-            @await Html.PartialAsync("_ManageNav")
+    <link rel="shortcut icon" href="~/ico/favicon.png">
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+    <link href="~/lib/datatables/datatables.css" rel="stylesheet" />
+    <script src="~/lib/datatables/datatables.js"></script>
+
+    <style>
+        * {
+            font-family: Verdana;
+        }
+    </style>
+
+</head>
+
+<body>
+    <nav id="topnav" class="navbar navbar-fixed-top navbar-default" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#top-section">TAQWEEM</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="@Url.Action("Index", "Manage")">Profile</a></li>
+                    <li><a href="@Url.Action("ChangePassword", "Manage")">Password</a></li>
+                    @*<li><a href="@Url.Action("TwoFactorAuthentication", "Manage")">Two-factor authentication</a></li>*@
+                    <li><a href="#">Masjid</a></li>
+                    <li><a href="#">Salaah Times</a></li>
+                    <li><a href="@Url.Action("Login", "Account")">Logout</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
-        <div class="col-md-9">
-            @RenderBody()
-        </div>
+    </nav>
+
+    <div class="body-content">
+
+        <section id="Section-2" class="fullbg color-white">
+
+            <div class="container">
+
+                <br /><br /><br />
+
+                @RenderBody()
+            </div>
+
+        </section>
+
+        <footer id="foot-sec">
+            <div class="footerdivide">
+            </div>
+            <div class="container ">
+                <div class="row">
+                    <div class="text-center color-white col-sm-12 col-lg-12">
+                        <p>
+                            All Rights reserved. <br />
+                            © Taqweem @DateTime.Now.Year.ToString()
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
-</div>
 
-@section Scripts {
     @RenderSection("Scripts", required: false)
-}
-        
+</body>
+</html>

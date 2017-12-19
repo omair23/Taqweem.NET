@@ -12,16 +12,19 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Taqweem.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Taqweem.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
         private readonly EFRepository Repository;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
             Repository = new EFRepository(_context);
         }
@@ -50,19 +53,21 @@ namespace Taqweem.Controllers
 
             if (Users.Count < 1)
             {
-                ApplicationUser user = new ApplicationUser();
-                user.Id = "513f1fe1-8e01-4c62-b332-ee8a0f7e2c29";
-                user.Email = "omair334@gmail.com";
-                user.EmailConfirmed = true;
-                user.FullName = "Omair Kazi";
-                user.MasjidId = "5f3e7169-ab20-4b34-bb27-2e86eefee2c1";
-                user.UserName = "omair334@gmail.com";
-                user.NormalizedUserName = "OMAIR KAZI";
-                user.NormalizedEmail = "OMAIR334@GMAIL.COM";
+                var OmairEmail = "omair334@gmail.com";
 
-                Repository.Add(user);
+                var user = new ApplicationUser {
+                                                UserName = OmairEmail,
+                                                Email = OmairEmail,
+                                                Id = "513f1fe1-8e01-4c62-b332-ee8a0f7e2c29",
+                                                FullName = "Omair Kazi",
+                                                EmailConfirmed = true,
+                                                ActiveStatus = UserStatus.Active,
+                                                MasjidId = "5f3e7169-ab20-4b34-bb27-2e86eefee2c1"};
+
+                var Password = "Open@1";
+
+                var result = _userManager.CreateAsync(user, Password).Result;
             }
-
         }
 
         public IActionResult Index()
@@ -76,6 +81,11 @@ namespace Taqweem.Controllers
             Model.Marker = AllMasjids;
 
             return View(Model);
+        }
+
+        public IActionResult Login()
+        {
+            return View();
         }
 
         public IActionResult MasjidList()
