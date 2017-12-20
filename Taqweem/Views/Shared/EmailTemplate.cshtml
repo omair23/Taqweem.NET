@@ -1,0 +1,497 @@
+﻿@model EmailModel
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- So that mobile will display zoomed in -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- enable media queries for windows phone 8 -->
+    <meta name="format-detection" content="telephone=no"> <!-- disable auto telephone linking in iOS -->
+    <title>Taqweem</title>
+    <style type="text/css">
+        p {
+            font: normal normal 9.5pt Arial, Helvetica, sans-serif;
+            margin: 0 0 20px 0;
+            padding: 0;
+            line-height: 14pt;
+            color: #000000;
+        }
+
+        a:link {
+            color: #0563C1;
+            text-decoration: underline;
+        }
+
+        a:visited {
+            color: #0563C1;
+            text-decoration: underline;
+        }
+
+        a:focus {
+            color: #0563C1 !important;
+        }
+
+        a:hover {
+            color: #0563C1 !important;
+            text-underline-position: #0563C1;
+            text-decoration: underline;
+        }
+
+        .paragraph {
+            padding: 0;
+            font: normal normal 9.5pt Arial;
+            margin: 0 0 20px 0;
+            line-height: 11.5pt;
+            margin-right: 35px;
+            color: #000000;
+        }
+
+            .paragraph a:link {
+                color: #0563C1;
+            }
+
+            .paragraph a:visited {
+                color: #0563C1;
+            }
+
+
+        h1 {
+            margin: 0 0 8pt 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 30pt;
+            line-height: 40pt;
+            font-weight: bold;
+            font-style: normal;
+            color: #002776;
+        }
+
+        h2 {
+            margin: 0 0 8pt 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12pt;
+            line-height: 14pt;
+            font-weight: bold;
+            font-style: normal;
+            color: #0091DA;
+            margin-right: 25px;
+        }
+
+        h3 {
+            margin: 0 0 10pt 0;
+            padding: 0;
+            color: #483698;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            font-size: 10.5pt;
+            line-height: 12.5pt;
+            color: #0091DA;
+            margin-right: 25px;
+        }
+
+        .boxtext {
+            color: #000000;
+            font: normal normal 8pt Arial, Helvetica, sans-serif;
+            padding: 0;
+        }
+
+            .boxtext a:link {
+                color: #0563C1;
+            }
+
+            .boxtext a:visited {
+                color: #0563C1;
+            }
+
+        .boxtextwhite {
+            color: #FFFFFF;
+            font: normal normal .7em Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .disclaimer {
+            color: #747678;
+            font: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-size: 7.5pt;
+            line-height: 8pt;
+            -webkit-text-size-adjust: none;
+            margin-top: 0px;
+        }
+
+            .disclaimer a:link {
+                color: #0563C1;
+                text-decoration: none;
+            }
+
+            .disclaimer a:visited {
+                color: #0563C1;
+                text-decoration: none;
+            }
+
+        .disclaimer1 {
+            color: #747678;
+            font: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-size: 7.5pt;
+            line-height: 8pt;
+            -webkit-text-size-adjust: none;
+        }
+
+            .disclaimer1 a:link {
+                color: #747678;
+                text-decoration: none;
+            }
+
+            .disclaimer1 a:visited {
+                color: #747678;
+                text-decoration: none;
+            }
+
+        .bluelinksocial {
+            color: #0563C1;
+            font: normal normal 7.5pt Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            margin-top: 0px;
+            -webkit-text-size-adjust: none;
+        }
+
+            .bluelinksocial a:link, .bluelinksocial a:visited {
+                color: #0563C1;
+            }
+
+        .red {
+            color: #F00;
+        }
+
+        .redunderlined {
+            color: #F00;
+            text-decoration: underline;
+        }
+
+        .list {
+            font: normal normal 9.5pt Arial;
+            color: #000;
+            margin-left: 5px;
+            line-height: 11.5pt;
+        }
+
+        .tablee {
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 9.5pt;
+            line-height: normal;
+            font-weight: normal;
+            font-style: normal;
+            padding: 0px;
+            margin-bottom: 20px;
+            padding-bottom: 0px;
+            color: #000;
+            vertical-align: top;
+        }
+
+        .totop {
+            padding: 0;
+            font: normal normal 9.5pt Arial;
+            line-height: 11.5pt;
+            color: #000000;
+            margin-bottom: 0px;
+            margin-top: 0px;
+            vertical-align: middle;
+        }
+
+            .totop a:visited {
+                color: #000000;
+            }
+
+            .totop a:link,
+            .totop a:visited {
+                color: #000000;
+            }
+
+        @@media only screen and (max-width: 640px) {
+
+            *[class=wrapto100pc] {
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            *[class=hide] {
+                display: none !important;
+                width: 0px !important;
+            }
+
+            *[class=show] {
+                width: 100% !important;
+                height: auto !important;
+                display: table !important;
+            }
+
+            *[class=me] {
+                display: block !important;
+                width: 100% !important;
+                max-height: inherit !important;
+                overflow: visible !important;
+            }
+
+            *[class=themoney] {
+                display: block !important;
+                width: 85% !important;
+                height: auto !important;
+                text-align: left !important;
+                float: none !important;
+            }
+        }
+
+        @@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+            *[class=wrapto100pc] {
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            *[class=hide] {
+                display: none !important;
+                width: 0px !important;
+            }
+
+            *[class=show] {
+                width: 100% !important;
+                height: auto !important;
+                display: table !important;
+            }
+
+            *[class=me] {
+                display: block !important;
+                width: 100% !important;
+                max-height: inherit !important;
+                overflow: visible !important;
+            }
+
+            *[class=themoney] {
+                display: block !important;
+                width: 90% !important;
+                height: auto !important;
+                text-align: left !important;
+                float: none !important;
+            }
+        }
+
+        @@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (-webkit-min-device-pixel-ratio: 2) {
+            *[class=wrapto100pc] {
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            *[class=hide] {
+                display: none !important;
+                width: 0px !important;
+            }
+
+            *[class=show] {
+                width: 100% !important;
+                height: auto !important;
+                display: table !important;
+            }
+
+            *[class=me] {
+                display: block !important;
+                width: 100% !important;
+                max-height: inherit !important;
+                overflow: visible !important;
+            }
+
+            *[class=themoney] {
+                display: block !important;
+                width: 90% !important;
+                height: auto !important;
+                text-align: left !important;
+                float: none !important;
+            }
+        }
+
+        body {
+            background-color: #E4E4E4;
+        }
+        /* Column Drop Layout Pattern CSS */
+        @@media only screen and (max-width: 450px) {
+            td[class="column"] {
+                display: block;
+                width: 100%;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+        }
+
+        h4 {
+            margin: 0 0 8pt 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 9pt;
+            line-height: 12pt;
+            font-weight: normal;
+            font-style: normal;
+            color: #0091DA;
+            margin-right: 25px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <table align="center" cellpadding="0" cellspacing="0">
+        <tbody>
+            <tr>
+                <td width="6%" bgcolor="#1FA154" class="pattern">&nbsp;</td>
+                <td width="2%" bgcolor="#FFFFFF" class="pattern">&nbsp;</td>
+                <td width="91%" bgcolor="#FFFFFF" class="pattern">
+                    <table align="center" cellpadding="0" cellspacing="10" bgcolor="#FFFFFF">
+                        <tbody>
+                            <tr>
+                                <td class="pattern">
+                                    <table cellpadding="0" cellspacing="0" style="margin-left:25px;">
+                                        <tbody>
+                                            <tr>
+                                                <td width="550" height="38" align="left" bgcolor="#FFFFFF" class="pattern"><a name="_top" id="_top"></a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table><table cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="margin-left:25px;">
+                                        <tbody>
+                                            <tr>
+                                                <td width="550" class="pattern">
+                                                    <table width="94" border="0" align="left" cellpadding="0" cellspacing="0" style="margin-right:15px; margin-bottom:5px; margin-top:0px;">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    @if (Model.useTaqweemLogo == true)
+                                                                    {
+                                                                        <a href="http://taqweem.rapidsoft.co.za/">
+                                                                            <img src="http://taqweem.rapidsoft.co.za/img/logo.gif" class="header-img" style="width:100%" />
+                                                                        </a>
+                                                                    }
+                                                                    <br />
+                                                                    <h1>Taqweem</h1>
+                                                                </td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table><table align="default" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="margin-left:23px;">
+                                        <tbody>
+                                            <tr>
+                                                <td width="550" class="pattern">
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <table width="550" border="0" cellspacing="0" cellpadding="0" align="center" class="wrapto100pc">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td align="center">
+                                                                                    <!---HIDE ON MOBILE--->
+                                                                                    <table width="500" border="0" align="left" cellpadding="0" cellspacing="0" class="hide">
+                                                                                        <tbody>
+                                                                                            <tr>
+                                                                                                <td width="550" align="left"><h1 style="color:#1A2956; font-size:26pt; line-height:30pt; margin-bottom:0px;">@Model.Header</h1></td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                    <!---REVEAL ON MOBILE--->
+                                                                                    <!--[if !mso]><!-->
+                                                                                    <table cellpadding="0" cellspacing="0" border="0" style="display:none;" class="show">
+                                                                                        <tbody>
+                                                                                            <tr style="width:0; overflow:hidden; float:left; display:none; max-height:0px; mso-hide:all;" class="me">
+                                                                                                <td class="themoney" align="left"><h1 class="KPMGWeb"><span style="color:#002776; font-size:36pt; line-height:40pt; margin-bottom:0px;" class="KPMGWeb-ExtraLight">@Model.Header</span></h1></td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                    <!--<![endif]-->
+                                                                                    <!---END REVEAL ON MOBILE--->
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table><table cellpadding="0" cellspacing="0" style="margin-left:25px;">
+                                        <tbody>
+                                            <tr>
+                                                <td width="550" height="38" align="left" bgcolor="#FFFFFF" class="pattern"><h2 style="color:#1A2956; margin-top:0px;">@Model.Subheading</h2></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table cellpadding="0" cellspacing="0" style="margin-left:25px;">
+                                        <tbody>
+                                            <tr>
+                                                <td width="550" height="16" align="center" bgcolor="#FFFFFF" class="pattern"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table><table cellpadding="0" cellspacing="0" style="margin-left:25px;">
+                                        <tbody>
+                                            <tr>
+                                                <td width="550" height="38" align="left" bgcolor="#FFFFFF" class="pattern" style="font-family:Arial">
+                                                    @Html.Raw(Model.Content)
+                                                    <br>
+                                                    @Html.Raw(Model.ContentWell)
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table><table cellpadding="0" cellspacing="0" style="margin-left:25px; margin-right:20px;">
+                                        <tbody>
+                                            <tr>
+                                                <td width="550" align="left" bgcolor="#FFFFFF" class="pattern">
+                                                    <table border="0" cellpadding="0" cellspacing="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td width="550" height="15"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table><table border="0" cellpadding="0" cellspacing="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td width="550" height="15" align="left" bgcolor="#FFFFFF" class="pattern"><hr align="left" width="95%" class="hr1"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table><table border="0" cellpadding="0" cellspacing="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td width="550" height="8"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table cellpadding="0" cellspacing="0" style="margin-left:25px;">
+                                        <tbody>
+                                            <tr>
+                                                <td width="550" height="20" align="center" bgcolor="#FFFFFF" class="pattern">&nbsp;</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

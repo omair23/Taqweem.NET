@@ -143,13 +143,14 @@ section {
             height: 100%;
             opacity: 0.05;
         }
- 	 footer {
-		background-color:#4ba2dc;
-		width:100%;
-		min-width:100%;
-		position:relative;
-		font-size:13px;
-		padding-bottom:10px;
+footer {
+    background-color: #1FA154;
+    color: #fff;
+    width: 100%;
+    min-width: 100%;
+    position: relative;
+    font-size: 13px;
+    padding-bottom: 10px;
 }
 footer ul.social-icons li {
 display: inline-block;
@@ -504,10 +505,11 @@ input,button,select,textarea {
 	background:skyblue;
 }
 .footerdivide {
-	background:#4ba2dc;
-	height:20px;
-	padding-bottom:30px;
-	border-top:1px solid rgba(255,255,255,0.5);
+    background: #1FA154;
+    color: #fff;
+    height: 20px;
+    padding-bottom: 30px;
+    border-top: 1px solid rgba(255,255,255,0.5);
 }
 #MYFORM input[type="text"],#MYFORM textarea {
 	background:rgba(0,0,0,0.2);

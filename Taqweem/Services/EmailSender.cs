@@ -1,14 +1,17 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Taqweem.Classes;
 
 namespace Taqweem.Services
 {
@@ -16,6 +19,24 @@ namespace Taqweem.Services
     // For more details see https://go.microsoft.com/fwlink/?LinkID=532713
     public class EmailSender : IEmailSender
     {
+        private readonly RazorViewToStringRenderer _renderer;
+
+        public EmailSender(RazorViewToStringRenderer renderer)
+        {
+            _renderer = renderer;
+        }
+
+        public string EmailBody(string message)
+        {
+            EmailModel Model = new EmailModel();
+
+            Model.Content = message;
+
+            string content = _renderer.RenderViewToString(Model.EmailTemplate, Model);
+
+            return content;
+        }
+
         public async Task SendEmailAsync(string email, string subject, string message)
         {
             using (var client = new System.Net.Mail.SmtpClient())
@@ -36,7 +57,7 @@ namespace Taqweem.Services
                 Mymessage.Subject = subject;
                 Mymessage.IsBodyHtml = true;
 
-                Mymessage.Body = message;
+                Mymessage.Body = EmailBody(message);
 
                 client.Send(Mymessage);
             }
@@ -48,6 +69,5 @@ namespace Taqweem.Services
         //{
         //    return Task.CompletedTask;
         //}
-
     }
 }

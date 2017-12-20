@@ -8,6 +8,8 @@ namespace Microsoft.AspNetCore.Mvc
 {
     public static class UrlHelperExtensions
     {
+        //TO DO Update links on live site
+
         public static string EmailConfirmationLink(this IUrlHelper urlHelper, string userId, string code, string scheme)
         {
             return urlHelper.Action(

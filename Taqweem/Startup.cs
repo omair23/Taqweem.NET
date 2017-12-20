@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Taqweem.Data;
 using Taqweem.Models;
 using Taqweem.Services;
+using Taqweem.Classes;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Taqweem
 {
@@ -35,6 +37,8 @@ namespace Taqweem
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+
+            services.AddScoped<RazorViewToStringRenderer>();
 
             services.AddMvc();
         }

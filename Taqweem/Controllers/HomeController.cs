@@ -13,6 +13,7 @@ using Newtonsoft.Json.Serialization;
 using Taqweem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Taqweem.Services;
 
 namespace Taqweem.Controllers
 {
@@ -81,6 +82,12 @@ namespace Taqweem.Controllers
             Model.Marker = AllMasjids;
 
             return View(Model);
+
+            //EmailModel Model = new EmailModel();
+
+            //Model.Content = "TEXT";
+
+            //return View("EmailTemplate", Model);
         }
 
         public IActionResult Login()
