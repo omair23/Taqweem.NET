@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ContactViewModel
+
+@{
     ViewData["Title"] = "About";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -32,9 +34,86 @@
     </div>
 </div>
 
+<div id="preAdd">
+
+    <h2>Contact Us</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="thumbnail">
+                <div class="caption">
+                    <form asp-antiforgery="true" name="submitFeedbackForm" id="submitFeedbackForm">
+                        <fieldset class="form-group">
+                            <label>Name</label>
+                            <input type="text" asp-for="Name" placeholder="Enter Your Name" class="form-control typeahead" style="width:100% !important;" required />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+
+                            <label>Location</label>
+                            <input type="text" asp-for="Location" placeholder="Enter Your Location" class="form-control typeahead" style="width:100% !important;" required />
+                            <span asp-validation-for="Location" class="text-danger"></span>
+
+                            <label>Email Address</label>
+                            <input type="text" asp-for="Email" placeholder="Enter Your Email Address" class="form-control typeahead" style="width:100% !important;" required />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+
+                            <label>Message</label>
+                            <input type="text" asp-for="Message" placeholder="Enter Your Message" class="form-control typeahead" style="width:100% !important;" required />
+                            <span asp-validation-for="Message" class="text-danger"></span>
+
+                            <label>Security Question - What is 3 added to 3?</label>
+                            <input asp-for="SecurityQuestion" type="text" class="form-control" placeholder="Security Question" required autofocus>
+                            <span asp-validation-for="SecurityQuestion" class="text-danger"></span>
+                        </fieldset>
+
+                        <fieldset class="form-group">
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">Send Query</button>
+                        </fieldset>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="postAdd" style="display:none">
+    <h2>Successful</h2>
+
+    <h5>Shukran, we have received your feedback and will contact you shortly</h5>
+</div>
+
+<div id="failAdd" style="display:none">
+    <h2>Unsuccessful</h2>
+
+    <h5>Unfortunately the your feedback message could not be sent. Please try again later.</h5>
+</div>
+
 <script>
     $(document).ready(function () {
         $("#home_nav").removeClass("active");
         $("#about_nav").addClass("active");
+    });
+
+    $("#submitFeedbackForm").submit(function (event) {
+
+        event.preventDefault();
+
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("PostSendFeedback", "Home")',
+            data: $("#submitFeedbackForm").serialize(),
+            success: function (data) {
+                if (data == "Successful") {
+                    $("#postAdd").css("display", "inline");
+                    $("#preAdd").css("display", "none");
+                    $("#submitMasjidForm").trigger('reset');
+                }
+                else {
+                    $("#failAdd").css("display", "inline");
+                    $("#preAdd").css("display", "none");
+                    $("#submitMasjidForm").trigger('reset');
+                }
+            }
+        });
     });
 </script>

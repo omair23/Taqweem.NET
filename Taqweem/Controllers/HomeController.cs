@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Taqweem.Models;
 using Taqweem.ViewModels;
-using System.Xml;
 using Taqweem.Classes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -22,12 +20,14 @@ namespace Taqweem.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
         private readonly EFRepository Repository;
+        private readonly IEmailSender _emailSender;
 
-        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _context = context;
             Repository = new EFRepository(_context);
+            _emailSender = emailSender;
         }
 
         public void DBInit()
@@ -218,6 +218,28 @@ namespace Taqweem.Controllers
             }
 
         }
+
+        [HttpPost]
+        public string PostSendFeedback(ContactViewModel CVM)
+        {
+            try
+            {
+                if (CVM.SecurityQuestion != "6")
+                    return "Fail - Security Question";
+
+                string Message = String.Format("Name: {0} <br>Email Address: {1} <br>Location: {2} <br>Message: {3}", CVM.Name, CVM.Email, CVM.Location, CVM.Message);
+
+                _emailSender.SendEmailAsync(CVM.Email, "Taqweem Feedback", Message);
+
+                return "Successful";
+            }
+            catch (Exception ex)
+            {
+                return "Fail" + ex.Message;
+            }
+
+        }
+
 
         public IActionResult PerpetualCalendar(string Id)
         {
