@@ -14,7 +14,9 @@ namespace Taqweem.ViewModels
 
         public double Longitude { get; set; }
 
-        public double TimeZone { get; set; }
+        public string TimeZoneId { get; set; }
+
+        //public double TimeZone { get; set; }
 
         public bool LadiesFacility { get; set; }
 

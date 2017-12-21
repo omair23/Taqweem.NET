@@ -12,9 +12,10 @@ using Taqweem.Models;
 namespace Taqweem.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171221093159_MasjidTimeZones")]
+    partial class MasjidTimeZones
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,7 +252,7 @@ namespace Taqweem.Data.Migrations
 
                     b.Property<int>("SalaahTimesType");
 
-                    b.Property<double>("TimeZoneDiff");
+                    b.Property<double>("TimeZone");
 
                     b.Property<string>("TimeZoneId");
 
@@ -263,8 +264,6 @@ namespace Taqweem.Data.Migrations
                     b.Property<DateTime?>("UpdatedAt");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TimeZoneId");
 
                     b.ToTable("Masjid");
                 });
@@ -422,13 +421,6 @@ namespace Taqweem.Data.Migrations
                     b.HasOne("Taqweem.Models.Masjid", "Masjid")
                         .WithMany()
                         .HasForeignKey("MasjidId");
-                });
-
-            modelBuilder.Entity("Taqweem.Models.Masjid", b =>
-                {
-                    b.HasOne("Taqweem.Models.TimeZone", "TimeZone")
-                        .WithMany()
-                        .HasForeignKey("TimeZoneId");
                 });
 
             modelBuilder.Entity("Taqweem.Models.Notice", b =>

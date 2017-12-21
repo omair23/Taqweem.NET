@@ -7,6 +7,37 @@ namespace Taqweem.Classes
 {
     public class cCalculations
     {
+        public static double GetTimeZoneDifference(string TimeZoneId, DateTime DateVal)
+        {
+            try
+            {
+                TimeZoneInfo TZ = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneId);
+
+                var Diff = TZ.GetUtcOffset(DateVal);
+
+                return TimeSpanToDouble(Diff);
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+
+        public static double TimeSpanToDouble(TimeSpan Val)
+        {
+            int Hour = Val.Hours;
+
+            double Minute = (double)Val.Minutes / (double)60;
+
+            while (Minute >= 1)
+            {
+                Hour += 1;
+                Minute = (Minute - 1);
+            }
+
+            return Hour + Minute;
+        }
+
         public static double DistanceTo(double lat1, double lon1, double lat2, double lon2)
         {
             double rlat1 = Math.PI * lat1 / 180;

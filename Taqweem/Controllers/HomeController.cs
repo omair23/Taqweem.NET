@@ -32,6 +32,27 @@ namespace Taqweem.Controllers
 
         public void DBInit()
         {
+            List<Models.TimeZone> TimeZones = Repository.GetAll<Models.TimeZone>().ToList();
+
+            if(TimeZones.Count < 1)
+            {
+                foreach(var Zone in TimeZoneInfo.GetSystemTimeZones())
+                {
+                    Models.TimeZone T = new Models.TimeZone();
+                    T.Id = Zone.Id;
+                    T.DaylightName = Zone.DaylightName;
+                    T.DisplayName = Zone.DisplayName;
+                    T.StandardName = Zone.StandardName;
+                    T.SupportsDaylightSavingTime = Zone.SupportsDaylightSavingTime;
+
+                    T.DefaultUTCDifference = cCalculations.GetTimeZoneDifference(T.Id, DateTime.Now);
+
+                    TimeZones.Add(T);
+                }
+
+                Repository.AddMultiple(TimeZones);
+            }
+
             List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
 
             //DB INIT
@@ -44,7 +65,8 @@ namespace Taqweem.Controllers
                 s.Country = "South Africa";
                 s.Latitude = -26.195149;
                 s.Longitude = 27.990238;
-                s.TimeZone = 2;
+                //s.TimeZone = 2;
+                s.TimeZoneId = "South Africa Standard Time";
 
                 Repository.Add(s);
             }
@@ -111,6 +133,7 @@ namespace Taqweem.Controllers
             Masjid Info = Repository
                             .Find<Masjid>(s => s.Id == Id)
                             .Include(s => s.SalaahTimes)
+                            .Include(s => s.TimeZone)
                             .FirstOrDefault();
 
             MasjidInfoViewModel Model = new MasjidInfoViewModel(Info);
@@ -199,7 +222,9 @@ namespace Taqweem.Controllers
                 Masjid.Town = MasjidVM.Town;
                 Masjid.Country = MasjidVM.Country;
 
-                Masjid.TimeZone = MasjidVM.TimeZone;
+                //Masjid.TimeZone = MasjidVM.TimeZone;
+                Masjid.TimeZoneId = MasjidVM.TimeZoneId;
+
                 Masjid.Address = MasjidVM.Address;
                 Masjid.Contact = MasjidVM.Contact;
                 Masjid.GeneralInfo = MasjidVM.GeneralInfo;
@@ -257,7 +282,8 @@ namespace Taqweem.Controllers
             Masjid TempMasjid = new Masjid();
             TempMasjid.Latitude = Latitude;
             TempMasjid.Longitude = Longitude;
-            TempMasjid.TimeZone = TimeZone;
+
+            TempMasjid.TimeZoneDiff = TimeZone;
 
             cPerpetualTime Time = new cPerpetualTime(DateTime.Now, TempMasjid);
 

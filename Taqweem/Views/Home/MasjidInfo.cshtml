@@ -271,6 +271,7 @@
                         <tr><td style="text-align:left">QIBLA BEARING FROM TRUE NORTH</td><td>@Model.QiblaBearing Degrees</td></tr>
                         <tr><td style="text-align:left">LATITUDE</td><td>@Model.Masjid.Latitude</td></tr>
                         <tr><td style="text-align:left">LONGITUTE</td><td>@Model.Masjid.Longitude</td></tr>
+                        <tr><td style="text-align:left">TIMEZONE</td><td>@Model.Masjid.TimeZone.StandardName - @Model.Masjid.TimeZone.DisplayName</td></tr>
                     </table>
 
                 </div>
@@ -439,7 +440,7 @@
                 var n = today.getTimezoneOffset();
                 n = n / -60;
                 document.getElementById('currenttime').innerHTML = h + ":" + m + ":" + s;
-                document.getElementById('currenttime2').innerHTML = "Time Zone - Masjid: @Model.Masjid.TimeZone.ToString() Device: " + n;
+                document.getElementById('currenttime2').innerHTML = "Time Zone - Masjid: @Model.Masjid.TimeZoneDiff.ToString() Device: " + n;
                 t = setTimeout(function () {
                     startTime()
                 }, 500);

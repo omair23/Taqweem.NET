@@ -10,6 +10,8 @@ namespace Taqweem.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Models.TimeZone> TimeZones { get; set; }
+
         public DbSet<Masjid> Masjids { get; set; }
 
         public DbSet<SalaahTime> SalaahTimes { get; set; }
@@ -25,6 +27,8 @@ namespace Taqweem.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Models.TimeZone>().ToTable("TimeZone");
+
             builder.Entity<Masjid>().ToTable("Masjid");
 
             builder.Entity<SalaahTime>().ToTable("SalaahTime");

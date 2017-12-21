@@ -37,7 +37,7 @@ namespace Taqweem.Models
     //else if (JMethod == 5) { FajrAngle = 19.5; IshaAngle = 17.5; txtJuristicM.Text = "Egyptian General Authority of Survey"; }
     //else { FajrAngle = 18; IshaAngle = 18; txtJuristicM.Text = "N/A"; }
 
-    public class Masjid: AuditableEntity
+    public class Masjid : AuditableEntity
     {
         public string Name { get; set; }
 
@@ -53,7 +53,11 @@ namespace Taqweem.Models
 
         public double Height { get; set; } = 0;
 
-        public double TimeZone { get; set; }
+        public string TimeZoneId { get; set; } = "South Africa Standard Time";
+
+        public virtual TimeZone TimeZone { get; set;}
+
+        public double TimeZoneDiff { get; set; }
 
         public JuristicMethod JuristMethod { get; set; } = JuristicMethod.UniversityOfIslamicSciencesKarachi;
 
@@ -86,17 +90,6 @@ namespace Taqweem.Models
         public Masjid()
         {
 
-        }
-
-        public Masjid(string pId, double pLatitude, double pLongitude, double pHeight, double pTimezone)
-        {
-            Id = pId;
-            Latitude = pLatitude;
-            Longitude = pLongitude;
-            Height = pHeight;
-            TimeZone = pTimezone;
-
-            LastUpdate = DateTime.UtcNow;
         }
     }
 }

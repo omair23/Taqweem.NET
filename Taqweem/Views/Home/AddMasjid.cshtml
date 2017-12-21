@@ -46,8 +46,13 @@
                             <label><input type="checkbox" asp-for="LadiesFacility"> Ladies Facility</label><br>
 
                             <label>Time Zone</label>
-                            <input asp-for="TimeZone" type="number" class="form-control" value="0" placeholder="Time Zone" required autofocus>
-                            <span asp-validation-for="TimeZone" class="text-danger"></span>
+                            <select asp-for="TimeZoneId" class="form-control" required>
+                                @foreach(var Item in TimeZoneInfo.GetSystemTimeZones())
+                                {
+                                    <option value="@Item.Id"> @Item.StandardName - @Item.DisplayName </option>
+                                }
+                            </select>
+                            <span asp-validation-for="TimeZoneId" class="text-danger"></span>
 
                             <label>Latitude</label>
                             <input asp-for="Latitude" type="text" class="form-control" placeholder="Latitude" required autofocus>

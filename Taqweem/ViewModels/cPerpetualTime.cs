@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Taqweem.Classes;
 using Taqweem.Models;
 
 namespace Taqweem.ViewModels
@@ -10,6 +11,8 @@ namespace Taqweem.ViewModels
     {
         public cPerpetualTime(DateTime Dval, Masjid Masjid)
         {
+            Masjid.TimeZoneDiff = cCalculations.GetTimeZoneDifference(Masjid.TimeZoneId, Dval);
+
             Date = Dval;
 
             try
@@ -33,7 +36,7 @@ namespace Taqweem.ViewModels
                 int GLO_YEAR = Dval.Year;// DateTime.Now.Year;
                 dblLatitude = Masjid.Latitude * (PI / 180);
                 dblLongitude = Masjid.Longitude;
-                dblTimeZone = Masjid.TimeZone * 15;
+                dblTimeZone = Masjid.TimeZoneDiff * 15;
                 dblHeight = Masjid.Height;
 
                 if (dblLatitude < 0)

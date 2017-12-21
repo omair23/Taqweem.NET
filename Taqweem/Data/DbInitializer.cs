@@ -21,7 +21,7 @@ namespace Taqweem.Data
             s.Country = "South Africa";
             s.Latitude = -26.195149;
             s.Longitude = 27.990238;
-            s.TimeZone = 2;
+            s.TimeZoneId = "South Africa Standard Time";
 
             context.Masjids.Add(s);
             context.SaveChanges();
