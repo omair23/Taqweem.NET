@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Taqweem.Models;
 using Taqweem.Models.ManageViewModels;
 using Taqweem.Services;
+using Taqweem.Data;
 
 namespace Taqweem.Controllers
 {
@@ -25,16 +26,21 @@ namespace Taqweem.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
+        private readonly ApplicationDbContext _context;
+        private readonly EFRepository Repository;
 
         private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
         public ManageController(
+          ApplicationDbContext context,
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
           UrlEncoder urlEncoder)
         {
+            _context = context;
+            Repository = new EFRepository(_context);
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
@@ -59,6 +65,7 @@ namespace Taqweem.Controllers
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
+                FullName = user.FullName,
                 IsEmailConfirmed = user.EmailConfirmed,
                 StatusMessage = StatusMessage
             };
@@ -99,6 +106,14 @@ namespace Taqweem.Controllers
                 {
                     throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
                 }
+            }
+
+            var FullName = user.FullName;
+            if (model.FullName != FullName)
+            {
+                ApplicationUser dbUser = Repository.Find<ApplicationUser>(s => s.Id == user.Id).FirstOrDefault();
+                dbUser.FullName = model.FullName;
+                Repository.Update(dbUser);
             }
 
             StatusMessage = "Your profile has been updated";

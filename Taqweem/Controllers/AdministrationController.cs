@@ -13,6 +13,7 @@ using OfficeOpenXml;
 using System.Collections.Generic;
 using Taqweem.Data;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Taqweem.Controllers
 {
@@ -47,8 +48,34 @@ namespace Taqweem.Controllers
             Repository = new EFRepository(_context);
         }
 
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
+        public bool IsSuperUser()
+        {
+            ApplicationUser user = GetCurrentUserAsync().Result;
+
+            var userId = user?.Id;
+
+            if (user == null | userId == null)
+            {
+                return false;
+            }
+
+            if(user.IsSuperUser == false)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public IActionResult Index()
         {
+            if (!IsSuperUser())
+            {
+                return RedirectToAction("Index", "Manage");
+            }
+
             FileViewModel Model = new FileViewModel();
 
             return View(Model);
@@ -59,6 +86,11 @@ namespace Taqweem.Controllers
         {
             try
             {
+                if (!IsSuperUser())
+                {
+                    return "Failed";
+                }
+
                 if (ModelState.IsValid)
                 {
                     using (MemoryStream stream = new MemoryStream())
@@ -129,6 +161,11 @@ namespace Taqweem.Controllers
         {
             try
             {
+                if (!IsSuperUser())
+                {
+                    return "Failed";
+                }
+
                 if (ModelState.IsValid)
                 {
                     using (MemoryStream stream = new MemoryStream())

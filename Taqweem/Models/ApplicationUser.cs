@@ -19,6 +19,8 @@ namespace Taqweem.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+        public bool IsSuperUser { get; set; } = false;
+
         [Required]
         [EnumDataType(typeof(UserStatus))]
         public UserStatus ActiveStatus { get; set; } = UserStatus.Active;
@@ -51,6 +53,7 @@ namespace Taqweem.Models
         {
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
+            IsSuperUser = false;
         }
     }
 }

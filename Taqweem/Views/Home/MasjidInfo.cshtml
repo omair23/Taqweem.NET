@@ -24,14 +24,23 @@
         }
 
         .gm-style .gm-style-iw {
-            background-color: #808080 !important;
-            top: 0 !important;
+            background-color: #383838 !important;
+            color: #000;
+            /*top: 0 !important;
             left: 0 !important;
             width: 100% !important;
             height: 100% !important;
             min-height: 120px !important;
             padding: 10px;
-            display: block !important;
+            display: block !important;*/
+        }
+
+        .pagination > li > a, .pagination > li > span {
+            background-color: #383838;
+        }
+
+        .pagination > li.active > a, .pagination > li.active > span {
+            background-color: #1FA154;
         }
     </style>
 }
@@ -507,9 +516,13 @@
                         parseFloat(@Item.Latitude),
                         parseFloat(@Item.Longitude));
 
-                var html = "<b>" + '@Item.Name' + "</b> <br/>" + '@Item.Town' +
-                            "<br>" + '@Item.Country' + "<br>" + '@Item.Address' +
-                            "<br> <a href='#'>View Masjid</a>";
+                var html = "<table class='table' style='background-color: #383838; color: #fff; border-top: none; border:none'>" +
+                        "<tr><td>" + '@Item.Name' + "</td></tr>" +
+                        "<tr><td>" + '@Item.Town' + "</td></tr>" +
+                        "<tr><td>" + '@Item.Country' + "</td></tr>" +
+                        "<tr><td>" + '@Item.Address' + "</td></tr>" +
+                        "<tr><td><a href='/Home/MasjidInfo/@Item.Id' style='color: #ff6a00;'>View Masjid</a></td></tr>" +
+                        "</table>";
 
                 var icon = customIcons.Yes || {};
 

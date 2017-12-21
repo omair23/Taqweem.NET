@@ -85,6 +85,7 @@ namespace Taqweem.Controllers
                                                 FullName = "Omair Kazi",
                                                 EmailConfirmed = true,
                                                 ActiveStatus = UserStatus.Active,
+                                                IsSuperUser = true,
                                                 MasjidId = "5f3e7169-ab20-4b34-bb27-2e86eefee2c1"};
 
                 var Password = "Open@1";
