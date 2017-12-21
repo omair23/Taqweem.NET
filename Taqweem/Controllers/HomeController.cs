@@ -65,7 +65,7 @@ namespace Taqweem.Controllers
                 s.Country = "South Africa";
                 s.Latitude = -26.195149;
                 s.Longitude = 27.990238;
-                //s.TimeZone = 2;
+                s.OldSiteId = 1;
                 s.TimeZoneId = "South Africa Standard Time";
 
                 Repository.Add(s);

@@ -39,6 +39,8 @@ namespace Taqweem.Models
 
     public class Masjid : AuditableEntity
     {
+        public int OldSiteId { get; set; }
+
         public string Name { get; set; }
 
         public string Town { get; set; }
