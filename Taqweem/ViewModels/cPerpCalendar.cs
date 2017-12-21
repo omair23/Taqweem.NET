@@ -8,12 +8,16 @@ namespace Taqweem.ViewModels
 {
     public class cPerpCalendar
     {
+        public Masjid Masjid;
+
         public List<DateTime> Months;
 
         public List<cPerpetualTime> Times;
 
-        public cPerpCalendar(Masjid Masjid)
+        public cPerpCalendar(Masjid pMasjid)
         {
+            Masjid = pMasjid;
+
             Months = new List<DateTime>();
 
             for(int i=1; i <=12; i++)

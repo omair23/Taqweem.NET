@@ -1,34 +1,37 @@
 ﻿@model cPerpCalendar
 
 @{
-    ViewData["Title"] = "PerpetualCalendar";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Perpetual Times Calendar " + @Model.Masjid.Name + " - " + @Model.Masjid.Town + " - " + @Model.Masjid.Country;
 
-    <style>
-        .table-striped > tbody > tr:nth-child(odd) > td,
-        .table-striped > tbody > tr:nth-child(odd) > th {
-            background-color: #272626;
-        }
-    </style>
+    Layout = null;
+
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+    <link href="~/lib/datatables/datatables.css" rel="stylesheet" />
+    <script src="~/lib/datatables/datatables.js"></script>
 }
 
-<center>
-    <h1>Perpetual Times Calendar</h1>
-    <h2>For The Year @DateTime.Now.Year.ToString()</h2>
-    <h3>@Model.Masjid.Name - @Model.Masjid.Town - @Model.Masjid.Country</h3>
-</center>
-
-<center><a href="@Url.Action("PerpetualCalendarPrinter", "Home", new { Id = Model.Masjid.Id })" target="_blank">Printer Friendly Format</a></center>
-@*<center><a href="#" class="export">Export to CSV</a></center>*@
+<h1>Perpetual Times Calendar</h1>
+<h2>For The Year @DateTime.Now.Year.ToString()</h2>
+<h3>@Model.Masjid.Name - @Model.Masjid.Town - @Model.Masjid.Country</h3>
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-9">
         <div class="thumbnail">
             <div class="caption">
-                <table class="table table-striped" id="perp" style="color: #fff">
+                <table class="table table-striped">
 
                     <thead class='thead'>
-                        <tr style="color: #00ff34;">
+                        <tr>
+                            <th colspan="12" style="font-size:larger; color: #1FA154; font-weight:bold; text-align:center">January</th>
+                        </tr>
+
+                        <tr style="color: #1FA154;">
                             <th>Date</th>
                             <th>Sehri-Ends</th>
                             <th>Fajr</th>
@@ -49,7 +52,11 @@
                         {
                             @if (Month.Month != 1)
                             {
-                                <tr style="color: #00ff34;">
+                                <tr>
+                                    <th colspan="12" style="font-size:larger; color: #1FA154; font-weight:bold; text-align:center">@Month.ToString("MMMM")</th>
+                                </tr>
+
+                                <tr style="color: #1FA154;">
                                     <th>Date</th>
                                     <th>Sehri-Ends</th>
                                     <th>Fajr</th>
@@ -71,7 +78,7 @@
                                                     .ToList())
                             {
                                 <tr>
-                                    <td>@Item.Date.ToString("d  MMMM")</td>
+                                    <td>@Item.Date.ToString("dd")</td>
                                     <td>@Item.SehriEnds.ToString("hh:mm")</td>
                                     <td>@Item.Fajr.ToString("hh:mm")</td>
                                     <td>@Item.Sunrise.ToString("hh:mm")</td>
@@ -94,38 +101,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(document).ready(function () {
-
-        $("#home_nav").removeClass("active");
-
-        var table = $('#perp').DataTable({
-            responsive: false,
-            "bLengthChange": false,
-            "Filter": false,
-            "Info": false,
-            "paging": false,
-            "dom": '',
-            "ordering": false,
-            "columns": [
-                { "data": "a1" },
-                { "data": "a2" },
-                { "data": "a3" },
-                { "data": "a4" },
-                { "data": "a5" },
-                { "data": "a6" },
-                { "data": "b1" },
-                { "data": "b2" },
-                { "data": "b3" },
-                { "data": "b4" },
-                { "data": "b5" },
-                { "data": "b6" },
-            ],
-            "columnDefs": [{
-                "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], // column or columns numbers
-                "orderable": false,  // set orderable for selected columns
-            }]
-        });
-    });
-</script>

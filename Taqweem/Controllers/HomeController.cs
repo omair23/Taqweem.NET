@@ -265,8 +265,18 @@ namespace Taqweem.Controllers
 
         }
 
-
         public IActionResult PerpetualCalendar(string Id)
+        {
+            Masjid Masjid = Repository
+                            .Find<Masjid>(s => s.Id == Id)
+                            .FirstOrDefault();
+
+            cPerpCalendar Model = new cPerpCalendar(Masjid);
+
+            return View(Model);
+        }
+
+        public IActionResult PerpetualCalendarPrinter(string Id)
         {
             Masjid Masjid = Repository
                             .Find<Masjid>(s => s.Id == Id)
