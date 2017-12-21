@@ -55,6 +55,68 @@ namespace Taqweem.Controllers
         public string StatusMessage { get; set; }
 
         [HttpGet]
+        public IActionResult AddSalaahTime()
+        {
+            SalaahTimeViewModel Model = new SalaahTimeViewModel();
+            return View(Model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddSalaahTime(SalaahTimeViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = _userManager.GetUserAsync(User).Result;
+
+            SalaahTime Time = new SalaahTime();
+
+            _mapper.Map(model, Time);
+
+            Time.MasjidId = user.MasjidId;
+            Time.Type = SalaahTimesType.ScheduleTime;
+            Time.DayNumber = model.EffectiveDate.DayOfYear;
+
+            Repository.Add(Time);
+
+            StatusMessage = "The Salaah Time has been created";
+            return RedirectToAction("SalaahTimes", "Manage");
+        }
+
+        public IActionResult SalaahTimes()
+        {
+            ApplicationUser user = _userManager.GetUserAsync(User).Result;
+
+            Masjid masjid = Repository.Find<Masjid>(s => s.Id == user.MasjidId).FirstOrDefault();
+
+            SalaahTimesViewModel Model = new SalaahTimesViewModel();
+
+            Model.MasjidId = masjid.Id;
+
+            Model.SalaahTimes = Repository.Find<SalaahTime>(s => s.MasjidId == masjid.Id
+                                                            && s.Type == masjid.SalaahTimesType)
+                                                            .ToList();
+
+            return View(Model);
+        }
+
+        public IActionResult Notices()
+        {
+            ApplicationUser user = _userManager.GetUserAsync(User).Result;
+
+            Masjid masjid = Repository.Find<Masjid>(s => s.Id == user.MasjidId).FirstOrDefault();
+
+            MasjidEditViewModel Model = new MasjidEditViewModel();
+
+            Model.Id = masjid.Id;
+
+            return View(Model);
+        }
+
+        [HttpGet]
         public IActionResult Masjid()
         {
             ApplicationUser user = _userManager.GetUserAsync(User).Result;

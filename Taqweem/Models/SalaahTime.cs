@@ -5,7 +5,11 @@ namespace Taqweem.Models
 {
     public class SalaahTime : AuditableEntity
     {
-       public string MasjidId { get; set; }
+        public string MasjidId { get; set; }
+
+        public SalaahTimesType Type { get; set; }
+
+        public bool IsATimeChange { get; set; }
 
         public int DayNumber { get; set; }
 

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using Taqweem.Models;
 
 namespace Taqweem.Services
 {
@@ -17,6 +20,13 @@ namespace Taqweem.Services
 
     public class RazorHelperService
     {
+        public DateTime GetDateTimeAddDays(int Days)
+        {
+            DateTime nDate = new DateTime(DateTime.Now.Year, 1, 1);
+            nDate = nDate.AddDays(Days);
+            return nDate;
+        }
+
         public List<SelectList> SalaahTimesTypeSelectList()
         {
             List<SelectList> List = new List<SelectList>();

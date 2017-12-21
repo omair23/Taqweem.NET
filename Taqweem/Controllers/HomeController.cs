@@ -151,52 +151,6 @@ namespace Taqweem.Controllers
 
             Model.SalaahTime = GetSalaahTime(Info, DateTime.Now);
 
-            //if (Model.Masjid.SalaahTimesType == SalaahTimesType.ScheduleTime)
-            //{
-            //    Model.SalaahTime = Repository
-            //                .Find<SalaahTime>(s => s.MasjidId == Id
-            //                && s.DayNumber <= DateTime.Now.DayOfYear)
-            //                .OrderByDescending(x => x.DayNumber)
-            //                .FirstOrDefault();
-
-            //    Model.NextSalaahTime = Repository
-            //                    .Find<SalaahTime>(s => s.MasjidId == Id
-            //                    && s.DayNumber > DateTime.Now.DayOfYear)
-            //                    .OrderBy(x => x.DayNumber)
-            //                    .FirstOrDefault();
-
-            //    if (Model.NextSalaahTime != null)
-            //    {
-            //        DateTime NextDate = new DateTime(DateTime.Now.Year, 1, 1);
-            //        NextDate = NextDate.AddDays(Model.NextSalaahTime.DayNumber - 1);
-
-            //        Model.NextPerpetualTime = new cPerpetualTime(NextDate, Info);
-            //    }
-            //}
-            //else
-            //{
-            //    Model.SalaahTime = Repository
-            //                .Find<SalaahTime>(s => s.MasjidId == Id
-            //                && s.DayNumber == DateTime.Now.DayOfYear)
-            //                .FirstOrDefault();
-
-            //    //TO DO Implement Calculation for next salaah time for huge list
-
-            //    Model.NextSalaahTime = Repository
-            //                    .Find<SalaahTime>(s => s.MasjidId == Id
-            //                    && s.DayNumber > DateTime.Now.DayOfYear)
-            //                    .OrderBy(x => x.DayNumber)
-            //                    .FirstOrDefault();
-
-            //    if (Model.NextSalaahTime != null)
-            //    {
-            //        DateTime NextDate = new DateTime(DateTime.Now.Year, 1, 1);
-            //        NextDate = NextDate.AddDays(Model.NextSalaahTime.DayNumber - 1);
-
-            //        Model.NextPerpetualTime = new cPerpetualTime(NextDate, Info);
-            //    }
-            //}
-
             return View(Model);
         }
 
@@ -355,14 +309,17 @@ namespace Taqweem.Controllers
             if (Masjid.SalaahTimesType == SalaahTimesType.ScheduleTime)
             {
                 return Masjid.SalaahTimes
-                            .Where(s => s.DayNumber <= Val.DayOfYear)
+                            .Where(s => s.DayNumber <= Val.DayOfYear
+                                    && s.Type == SalaahTimesType.ScheduleTime)
                             .OrderByDescending(x => x.DayNumber)
                             .FirstOrDefault();
             }
             else
             {
                 return Masjid.SalaahTimes
-                            .Where(s => s.DayNumber == Val.DayOfYear)
+                            .Where(s => s.DayNumber == Val.DayOfYear
+                                    && s.Type == SalaahTimesType.DailyTime)
+                            .OrderByDescending(x => x.DayNumber)
                             .FirstOrDefault();
             }
         }

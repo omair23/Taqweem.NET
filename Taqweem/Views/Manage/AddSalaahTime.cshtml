@@ -1,0 +1,128 @@
+﻿@model Taqweem.ViewModels.ManageViewModels.SalaahTimeViewModel
+
+@{
+    ViewData["Title"] = "Add Salaah Time";
+    Layout = "~/Views/Manage/_Layout.cshtml";
+}
+
+<h2>Add Salaah Time</h2>
+
+<form asp-action="AddSalaahTime">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="EffectiveDate" class="control-label"></label>
+                <input asp-for="EffectiveDate" class="form-control" />
+                <span asp-validation-for="EffectiveDate" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="FajrAdhaan" class="control-label"></label>
+                <input asp-for="FajrAdhaan" class="form-control timepicker" />
+                <span asp-validation-for="FajrAdhaan" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="FajrSalaah" class="control-label"></label>
+                <input asp-for="FajrSalaah" class="form-control timepicker" />
+                <span asp-validation-for="FajrSalaah" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="DhuhrAdhaan" class="control-label"></label>
+                <input asp-for="DhuhrAdhaan" class="form-control timepicker" />
+                <span asp-validation-for="DhuhrAdhaan" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="DhuhrSalaah" class="control-label"></label>
+                <input asp-for="DhuhrSalaah" class="form-control timepicker" />
+                <span asp-validation-for="DhuhrSalaah" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="JumuahAdhaan" class="control-label"></label>
+                <input asp-for="JumuahAdhaan" class="form-control timepicker" />
+                <span asp-validation-for="JumuahAdhaan" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="JumuahSalaah" class="control-label"></label>
+                <input asp-for="JumuahSalaah" class="form-control timepicker" />
+                <span asp-validation-for="JumuahSalaah" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="AsrAdhaan" class="control-label"></label>
+                <input asp-for="AsrAdhaan" class="form-control timepicker" />
+                <span asp-validation-for="AsrAdhaan" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="AsrSalaah" class="control-label"></label>
+                <input asp-for="AsrSalaah" class="form-control timepicker" />
+                <span asp-validation-for="AsrSalaah" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="IshaAdhaan" class="control-label"></label>
+                <input asp-for="IshaAdhaan" class="form-control timepicker" />
+                <span asp-validation-for="IshaAdhaan" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="IshaSalaah" class="control-label"></label>
+                <input asp-for="IshaSalaah" class="form-control timepicker" />
+                <span asp-validation-for="IshaSalaah" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@*<script>
+        $('.timepicker').timepicker({
+            timeFormat: 'HH:mm',
+            interval: 60,
+            minTime: '0',
+            maxTime: '23:59',
+            defaultTime: '0',
+            startTime: '0',
+            dynamic: false,
+            dropdown: false,
+            scrollbar: false
+        });
+    </script>*@

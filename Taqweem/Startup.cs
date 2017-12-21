@@ -47,6 +47,8 @@ namespace Taqweem
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<MasjidEditViewModel, Masjid>().ForMember(x => x.UID, opt => opt.Ignore());
+
+                cfg.CreateMap<SalaahTimeViewModel, SalaahTime>().ForMember(x => x.UID, opt => opt.Ignore());
             });
 
             var mapper = config.CreateMapper();

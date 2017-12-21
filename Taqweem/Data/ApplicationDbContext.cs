@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Taqweem.Models;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Taqweem.ViewModels.ManageViewModels;
 
 namespace Taqweem.Data
 {
@@ -51,5 +52,7 @@ namespace Taqweem.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<Taqweem.ViewModels.ManageViewModels.SalaahTimeViewModel> SalaahTimeViewModel { get; set; }
     }
 }
