@@ -29,6 +29,8 @@ namespace Taqweem.Models
 
         public virtual Masjid Masjid { get; set; }
 
+        public DateTime LastLogin { get; set; }
+
         [Required]
         [DataType(DataType.Date)]
         public DateTime CreatedAt { get; set; }

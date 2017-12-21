@@ -28,6 +28,10 @@ namespace Taqweem.Classes
         [DefaultValue(null)]
         public DateTime? DeletedAt { get; set; } = null;
 
+        [StringLength(38)]
+        [DefaultValue(null)]
+        public string DeletedBy { get; set; } = null;
+
         public AuditableEntity()
         {
             Id = Guid.NewGuid().ToString();
