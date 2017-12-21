@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -9,11 +8,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Taqweem.Models;
 using Taqweem.Models.ManageViewModels;
 using Taqweem.Services;
 using Taqweem.Data;
+using Taqweem.ViewModels.ManageViewModels;
+using AutoMapper;
 
 namespace Taqweem.Controllers
 {
@@ -28,6 +28,7 @@ namespace Taqweem.Controllers
         private readonly UrlEncoder _urlEncoder;
         private readonly ApplicationDbContext _context;
         private readonly EFRepository Repository;
+        private readonly IMapper _mapper;
 
         private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
@@ -37,7 +38,8 @@ namespace Taqweem.Controllers
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          IMapper mapper)
         {
             _context = context;
             Repository = new EFRepository(_context);
@@ -46,10 +48,54 @@ namespace Taqweem.Controllers
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _mapper = mapper;
         }
 
         [TempData]
         public string StatusMessage { get; set; }
+
+        [HttpGet]
+        public IActionResult Masjid()
+        {
+            ApplicationUser user = _userManager.GetUserAsync(User).Result;
+
+            Masjid masjid = Repository.Find<Masjid>(s => s.Id == user.MasjidId).FirstOrDefault();
+
+            MasjidEditViewModel Model = new MasjidEditViewModel();
+
+            _mapper.Map(masjid, Model);
+
+            return View(Model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Masjid(MasjidEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = _userManager.GetUserAsync(User).Result;
+
+            if (user == null | user.MasjidId != model.Id)
+            {
+                throw new ApplicationException($"Unable to update the masjid");
+            }
+
+            Masjid masjid = Repository.Find<Masjid>(s => s.Id == user.MasjidId).FirstOrDefault();
+
+            masjid.UID = 0;
+            masjid.LastUpdate = DateTime.UtcNow;
+
+            _mapper.Map(model, masjid);
+
+            Repository.Update(masjid);
+
+            StatusMessage = "The Masjid has been updated";
+            return RedirectToAction(nameof(Masjid));
+        }
 
         [HttpGet]
         public async Task<IActionResult> Index()

@@ -13,6 +13,8 @@ using Taqweem.Models;
 using Taqweem.Services;
 using Taqweem.Classes;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using AutoMapper;
+using Taqweem.ViewModels.ManageViewModels;
 
 namespace Taqweem
 {
@@ -39,6 +41,17 @@ namespace Taqweem
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddScoped<RazorViewToStringRenderer>();
+
+            services.AddScoped<RazorHelperService>();
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<MasjidEditViewModel, Masjid>().ForMember(x => x.UID, opt => opt.Ignore());
+            });
+
+            var mapper = config.CreateMapper();
+
+            services.AddSingleton(mapper);
 
             services.AddMvc();
         }

@@ -120,7 +120,7 @@ namespace Taqweem.Controllers
 
         public IActionResult MasjidList()
         {
-            List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
+            List<Masjid> AllMasjids = Repository.GetAll<Masjid>().OrderBy(s => s.OldSiteId).ToList();
 
             MasjidListViewModel Model = new MasjidListViewModel();
 

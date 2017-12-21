@@ -77,10 +77,11 @@ namespace Taqweem.Data
             {
                 return false;
             }
+
             _context.Set<TEntity>().Attach(item);
             //_context.Set<TEntity>().Update(item);
             _context.Entry(item).State = EntityState.Modified;
-
+            
             _context.SaveChanges();
 
             return true;

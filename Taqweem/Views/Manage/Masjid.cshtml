@@ -1,0 +1,181 @@
+﻿@model MasjidEditViewModel
+
+@inject RazorHelperService service;
+
+@{
+    ViewData["Title"] = "Masjid";
+    Layout = "~/Views/Manage/_Layout.cshtml";
+}
+
+<h2>Masjid</h2>
+
+<form asp-action="Masjid">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Town" class="control-label"></label>
+                <input asp-for="Town" class="form-control" />
+                <span asp-validation-for="Town" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Country" class="control-label"></label>
+                <input asp-for="Country" class="form-control" />
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Latitude" class="control-label"></label>
+                <input asp-for="Latitude" class="form-control" />
+                <span asp-validation-for="Latitude" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Longitude" class="control-label"></label>
+                <input asp-for="Longitude" class="form-control" />
+                <span asp-validation-for="Longitude" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label">Height Above Sea Leavel (HASL)</label>
+                <input asp-for="Height" class="form-control" />
+                <span asp-validation-for="Height" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Time Zone</label>
+                <select asp-for="TimeZoneId" class="form-control" required>
+                    @foreach (var Item in TimeZoneInfo.GetSystemTimeZones())
+                    {
+                        @if (Item.Id == Model.Id)
+                        {
+                            <option value="@Item.Id" selected> @Item.StandardName - @Item.DisplayName </option>
+                        }
+                        else
+                        {
+                            <option value="@Item.Id"> @Item.StandardName - @Item.DisplayName </option>
+                        }
+                    }
+                </select>
+
+                <span asp-validation-for="TimeZoneId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Juristic Method</label>
+                <select asp-for="JuristMethod" class="form-control">
+                    @foreach(var Item in service.JuristicMethodSelectList())
+                    {
+                        @if (Item.Value == Model.JuristMethod.ToString())
+                        {
+                            <option value="@Item.Value" selected>@Item.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@Item.Value">@Item.Text</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="JuristMethod" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Salaah Times Method</label>
+                <select asp-for="SalaahTimesType" class="form-control">
+                    @foreach (var Item in service.SalaahTimesTypeSelectList())
+                    {
+                        @if (Item.Value == Model.SalaahTimesType.ToString())
+                        {
+                            <option value="@Item.Value" selected>@Item.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@Item.Value">@Item.Text</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="SalaahTimesType" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Maghrib Adhaan Delay (From Sunset)</label>
+                <input asp-for="MaghribAdhaanDelay" class="form-control" />
+                <span asp-validation-for="MaghribAdhaanDelay" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input asp-for="LadiesFacility" /> @Html.DisplayNameFor(model => model.LadiesFacility)
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input asp-for="JummahFacility" /> @Html.DisplayNameFor(model => model.JummahFacility)
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input asp-for="AllowRegistration" /> @Html.DisplayNameFor(model => model.AllowRegistration)
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Contact" class="control-label"></label>
+        <input asp-for="Contact" class="form-control" />
+        <span asp-validation-for="Contact" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Address" class="control-label"></label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">General Information</label>
+        <input asp-for="GeneralInfo" class="form-control" />
+        <span asp-validation-for="GeneralInfo" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+</form>
