@@ -23,7 +23,7 @@ namespace Taqweem.Services
         public DateTime GetDateTimeAddDays(int Days)
         {
             DateTime nDate = new DateTime(DateTime.Now.Year, 1, 1);
-            nDate = nDate.AddDays(Days);
+            nDate = nDate.AddDays(Days - 1);
             return nDate;
         }
 
