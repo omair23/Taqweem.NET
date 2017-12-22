@@ -243,194 +243,191 @@
                             <td>@Model.NextSalaahTime.IshaAdhaan.ToString("HH:mm")</td>
                             <td>@Model.NextSalaahTime.IshaSalaah.ToString("HH:mm")</td>
                         </tr>
-                        
+
                     </table>
                 }
-                </div>
             </div>
         </div>
-
     </div>
 
-    <div class="row">
+</div>
 
-        <div class="col-md-4">
-            <div class="thumbnail">
-                <div class="caption">
-                    <h4>GEOGRAPHY</h4>
-                    <br />
+<div class="row">
 
-                    <table class="table table-condensed table-striped" style="color:#f2f2f2">
-                        <tr>
-                            <td style="text-align:left">NAME</td>
-                            <td>@Model.Masjid.Name</td>
-                        </tr>
+    <div class="col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h4>GEOGRAPHY</h4>
+                <br />
 
-                        <tr>
-                            <td style="text-align:left">TOWN</td>
-                            <td>@Model.Masjid.Town</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:left">COUNTRY</td>
-                            <td>@Model.Masjid.Country</td>
-                            <td></td>
-                        </tr>
-                        <tr> <td style="text-align:left">QIBLA DISTANCE</td><td>@Model.QiblaDistance KM - @Model.QDNautical Nautical miles - @Model.QDStatute Statute miles</td></tr>
-                        <tr><td style="text-align:left">QIBLA BEARING FROM TRUE NORTH</td><td>@Model.QiblaBearing Degrees</td></tr>
-                        <tr><td style="text-align:left">LATITUDE</td><td>@Model.Masjid.Latitude</td></tr>
-                        <tr><td style="text-align:left">LONGITUTE</td><td>@Model.Masjid.Longitude</td></tr>
-                        <tr><td style="text-align:left">TIMEZONE</td><td>@Model.Masjid.TimeZone.StandardName - @Model.Masjid.TimeZone.DisplayName</td></tr>
-                    </table>
+                <table class="table table-condensed table-striped" style="color:#f2f2f2">
+                    <tr>
+                        <td style="text-align:left">NAME</td>
+                        <td>@Model.Masjid.Name</td>
+                    </tr>
 
-                </div>
+                    <tr>
+                        <td style="text-align:left">TOWN</td>
+                        <td>@Model.Masjid.Town</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left">COUNTRY</td>
+                        <td>@Model.Masjid.Country</td>
+                        <td></td>
+                    </tr>
+                    <tr> <td style="text-align:left">QIBLA DISTANCE</td><td>@Model.QiblaDistance KM - @Model.QDNautical Nautical miles - @Model.QDStatute Statute miles</td></tr>
+                    <tr><td style="text-align:left">QIBLA BEARING FROM TRUE NORTH</td><td>@Model.QiblaBearing Degrees</td></tr>
+                    <tr><td style="text-align:left">LATITUDE</td><td>@Model.Masjid.Latitude</td></tr>
+                    <tr><td style="text-align:left">LONGITUTE</td><td>@Model.Masjid.Longitude</td></tr>
+                    <tr><td style="text-align:left">TIMEZONE</td><td>@Model.Masjid.TimeZone.StandardName - @Model.Masjid.TimeZone.DisplayName</td></tr>
+                </table>
+
             </div>
         </div>
+    </div>
 
-        <div class="col-md-4">
-            <div class="thumbnail">
-                <div class="caption">
-                    <h4>INFORMATION</h4>
-                    <br />
+    <div class="col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h4>INFORMATION</h4>
+                <br />
 
-                    <table class="table table-condensed  table-striped" style="color:#f2f2f2">
-                        <tr>
-                            <td style="text-align:left"><a style="color: #ff6a00;" href="@Url.Action("PerpetualCalendar", "Home", new { Id = Model.Masjid.Id })">Perpetual Calendar</a></td>
-                            <td><a style="color: #ff6a00;" href="#">Salaah Calendar</a></td>
-                        </tr>
+                <table class="table table-condensed  table-striped" style="color:#f2f2f2">
+                    <tr>
+                        <td style="text-align:left"><a style="color: #ff6a00;" href="@Url.Action("PerpetualCalendar", "Home", new { Id = Model.Masjid.Id })">Perpetual Calendar</a></td>
 
-                        <tr>
-                            <td style="text-align:left">JURISTIC METHOD</td>
-                            <td>
-                                @if (Model.Masjid.JuristMethod == JuristicMethod.UniversityOfIslamicSciencesKarachi)
-                                {
-                                    <text>University of Islamic Sciences, Karachi</text>
-                                }
-                                else if (Model.Masjid.JuristMethod == JuristicMethod.EgyptianGeneralAuthorityOfSurvey)
-                                {
-                                    <text>Egyptian General Authority of Survey</text>
-                                }
-                                else if (Model.Masjid.JuristMethod == JuristicMethod.IslamicSocietyOfNorthAmerica)
-                                {
-                                    <text>Islamic Society of North America (ISNA)</text>
-                                }
-                                else if (Model.Masjid.JuristMethod == JuristicMethod.MuslimWorldLeague)
-                                {
-                                    <text>Muslim World League</text>
-                                }
-                                else if (Model.Masjid.JuristMethod == JuristicMethod.UmmAlQuraUniversityMakkah)
-                                {
-                                    <text>Umm al-Qura University, Makkah</text>
-                                }
+                        @if (Model.SalaahTime != null)
+                        {
+                            <td><a style="color: #ff6a00;" href="@Url.Action("SalaahCalendar", "Home", new { Id = Model.Masjid.Id })">Salaah Calendar</a></td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    </tr>
 
-                            </td>
-                        </tr>
+                    <tr>
+                        <td style="text-align:left">JURISTIC METHOD</td>
+                        <td>
+                            @if (Model.Masjid.JuristMethod == JuristicMethod.UniversityOfIslamicSciencesKarachi)
+                            {
+                                <text>University of Islamic Sciences, Karachi</text>
+                            }
+                            else if (Model.Masjid.JuristMethod == JuristicMethod.EgyptianGeneralAuthorityOfSurvey)
+                            {
+                                <text>Egyptian General Authority of Survey</text>
+                            }
+                            else if (Model.Masjid.JuristMethod == JuristicMethod.IslamicSocietyOfNorthAmerica)
+                            {
+                                <text>Islamic Society of North America (ISNA)</text>
+                            }
+                            else if (Model.Masjid.JuristMethod == JuristicMethod.MuslimWorldLeague)
+                            {
+                                <text>Muslim World League</text>
+                            }
+                            else if (Model.Masjid.JuristMethod == JuristicMethod.UmmAlQuraUniversityMakkah)
+                            {
+                                <text>Umm al-Qura University, Makkah</text>
+                            }
 
-    <tr>
-        <td style="text-align:left">LADIES FACILITY</td>
-        <td>
-            @if (Model.Masjid.LadiesFacility)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align:left">LADIES FACILITY</td>
+                        <td>
+                            @if (Model.Masjid.LadiesFacility)
             {<text>Yes</text>}
             else
             {<text>No</text> }
-        </td>
-    </tr>
+                        </td>
+                    </tr>
 
-    <tr>
-        <td style="text-align:left">JUMMAH FACILITY</td>
-        <td>
-            @if (Model.Masjid.JummahFacility)
+                    <tr>
+                        <td style="text-align:left">JUMMAH FACILITY</td>
+                        <td>
+                            @if (Model.Masjid.JummahFacility)
             {<text> Yes </text>}
             else
             {<text>No</text> }
-        </td>
-    </tr>
-    <tr><td style="text-align:left">CONTACT</td><td>@Model.Masjid.Contact</td></tr>
-    <tr><td style="text-align:left">PHYSICAL ADDRESS</td><td>@Model.Masjid.Address</td></tr>
-@*
-    @if (Model.Masjid.AllowRegistration)
-    {
-        <tr>
-            <td style="text-align:left" colspan="3">
-                <a href="#" class="btn btn-lg btn-success btn-block">
-                    Register as the Masjid's Administrator
-                </a>
-            </td>
-        </tr>
-    }*@
+                        </td>
+                    </tr>
+                    <tr><td style="text-align:left">CONTACT</td><td>@Model.Masjid.Contact</td></tr>
+                    <tr><td style="text-align:left">PHYSICAL ADDRESS</td><td>@Model.Masjid.Address</td></tr>
+                </table>
 
-                    </table>
-
-                </div>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-4">
-            <div class="thumbnail">
-                <div class="caption">
-                    <h4>MASJID ADMINS</h4>
-                    <br />
+    <div class="col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h4>MASJID ADMINS</h4>
+                <br />
 
-                    <table class="table table-condensed  table-striped" style="color:#f2f2f2">
-                        @if (Model.Users.Count > 0)
-                        {
-                            <thead>
-                                <tr>
-                                    <th>User Name</th>
-                                    <th>Registration Date</th>
-                                </tr>
-                            </thead>
-                        }
-                        
-                        @foreach(var User in Model.Users)
-                        {
+                <table class="table table-condensed  table-striped" style="color:#f2f2f2">
+                    @if (Model.Users.Count > 0)
+                    {
+                        <thead>
                             <tr>
-                                <td>@User.FullName</td>
+                                <th>User Name</th>
+                                <th>Registration Date</th>
+                            </tr>
+                        </thead>
+                    }
+
+                    @foreach (var User in Model.Users)
+                    {
+                        <tr>
+                            <td>@User.FullName</td>
                                 <td>@User.CreatedAt.ToString("dd/MM/yyyy")</td>
                             </tr>
-                        }
+                    }
 
-                        @if (Model.Masjid.AllowRegistration)
-                        {
-                            <tr>
-                                <td style="text-align:left" colspan="3">
-                                    <a style="color: #ff6a00;" href="@Url.Action("Register", "Account", new { MasjidId = Model.Masjid.Id })" > 
-                                    Register as the Masjid's Administrator</a>
-                                </td>
-                            </tr>
-                        }
+                    @if (Model.Masjid.AllowRegistration)
+                    {
+                        <tr>
+                            <td style="text-align:left" colspan="3">
+                                <a style="color: #ff6a00;" href="@Url.Action("Register", "Account", new { MasjidId = Model.Masjid.Id })">
+                                    Register as the Masjid's Administrator
+                                </a>
+                            </td>
+                        </tr>
+                    }
 
-                    </table>
+                </table>
 
-                </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="row">
-        <div id="mapC" class="col-md-12">
-            <div class="map">
-                <h4 style="color:#88E0AC; "> MAP </h4>
-                <h6>Select your location on the map to receive directions</h6>
+<div class="row">
+    <div id="mapC" class="col-md-12">
+        <div class="map">
+            <h4 style="color:#88E0AC; "> MAP </h4>
+            <h6>Select your location on the map to receive directions</h6>
 
-                <div id="map" align="center" style="height: 600px; width:100%"></div>
-            </div>
-        </div>
-
-        <div id="dirC" class="col-md-5" style="display: none;">
-            <h4 style="color:#88E0AC; "> DIRECTIONS</h4>
-
-            <div class="thumbnail">
-                <div class="caption">
-                    <div id="directionsPanel"></div>
-                </div>
-            </div>
+            <div id="map" align="center" style="height: 600px; width:100%"></div>
         </div>
     </div>
 
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUs6gpwmJ8WRZXjIPQH-wyPEu_P2hdHo0&sensor=false"></script>
+    <div id="dirC" class="col-md-5" style="display: none;">
+        <h4 style="color:#88E0AC; "> DIRECTIONS</h4>
 
-    <script>
+        <div class="thumbnail">
+            <div class="caption">
+                <div id="directionsPanel"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUs6gpwmJ8WRZXjIPQH-wyPEu_P2hdHo0&sensor=false"></script>
+
+<script>
     $(document).ready(function () {
         $("#home_nav").removeClass("active");
         load();
@@ -456,9 +453,9 @@
             }
             startTime();
         })();
-    </script>
+</script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
        var directionsDisplay;
        var directionsService = new google.maps.DirectionsService();
@@ -578,4 +575,4 @@
        }
 
        function doNothing() { }
-    </script>
+</script>

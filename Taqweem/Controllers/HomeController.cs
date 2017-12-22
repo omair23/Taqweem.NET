@@ -220,6 +220,17 @@ namespace Taqweem.Controllers
 
         }
 
+        public IActionResult SalaahCalendar(string Id)
+        {
+            Masjid Masjid = Repository
+                            .Find<Masjid>(s => s.Id == Id)
+                            .FirstOrDefault();
+
+            cSalaahCalendar Model = new cSalaahCalendar(Masjid, _context);
+
+            return View(Model);
+        }
+
         public IActionResult PerpetualCalendar(string Id)
         {
             Masjid Masjid = Repository

@@ -1,7 +1,7 @@
 ﻿@model cPerpCalendar
 
 @{
-    ViewData["Title"] = "PerpetualCalendar";
+    ViewData["Title"] = "Perpetual Calendar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     <style>
@@ -19,7 +19,6 @@
 </center>
 
 <center><a href="@Url.Action("PerpetualCalendarPrinter", "Home", new { Id = Model.Masjid.Id })" target="_blank">Printer Friendly Format</a></center>
-@*<center><a href="#" class="export">Export to CSV</a></center>*@
 
 <div class="row">
     <div class="col-md-12">

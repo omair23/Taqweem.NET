@@ -1,0 +1,150 @@
+﻿@model cSalaahCalendar
+
+@{
+    ViewData["Title"] = "Salaah Calendar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    <style>
+        .table-striped > tbody > tr:nth-child(odd) > td,
+        .table-striped > tbody > tr:nth-child(odd) > th {
+            background-color: #272626;
+        }
+    </style>
+}
+
+@inject RazorHelperService service;
+
+<center>
+    <h1>Salaah Times Calendar</h1>
+    <h2>For The Year @DateTime.Now.Year.ToString()</h2>
+    <h3>@Model.Masjid.Name - @Model.Masjid.Town - @Model.Masjid.Country</h3>
+</center>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="thumbnail">
+            <div class="caption">
+                <table class="table table-striped" id="perp" style="color: #fff">
+                    @if (Model.Times
+                    .Where(s => service.GetDateTimeAddDays(s.DayNumber).Month == 1)
+                    .ToList()
+                    .Count > 0)
+                    {
+                        <thead class='thead'>
+                            <tr style="color: #00ff34;">
+                                @if (Model.Type == SalaahTimesType.DailyTime)
+                                {
+                                    <th>Date</th>
+                                }
+                                else
+                                {
+                                    <th>Effective From Date</th>
+                                }
+                                <th>Fajr Adhaan</th>
+                                <th>Fajr Salaah</th>
+                                <th>Jumuah Adhaan</th>
+                                <th>Jumuah Salaah</th>
+                                <th>Dhuhr Adhaan</th>
+                                <th>Dhuhr Salaah</th>
+                                <th>Asr Adhaan</th>
+                                <th>Asr Salaah</th>
+                                <th>Isha Adhaan</th>
+                                <th>Isha Salaah</th>
+                            </tr>
+                        </thead>
+                    }
+
+                    <tbody>
+                        @foreach (var Month in Model.Months)
+                        {
+                            @if (Month.Month != 1 && (Model.Times
+                                                    .Where(s => service.GetDateTimeAddDays(s.DayNumber).Month == Month.Month)
+                                                    .ToList()
+                                                    .Count > 0))
+                            {
+                                <tr style="color: #00ff34;">
+                                    @if (Model.Type == SalaahTimesType.DailyTime)
+                                    {
+                                        <th>Date</th>
+                                    }
+                                    else
+                                    {
+                                        <th>Effective From Date</th>
+                                    }
+                                    <th>Fajr Adhaan</th>
+                                    <th>Fajr Salaah</th>
+                                    <th>Jumuah Adhaan</th>
+                                    <th>Jumuah Salaah</th>
+                                    <th>Dhuhr Adhaan</th>
+                                    <th>Dhuhr Salaah</th>
+                                    <th>Asr Adhaan</th>
+                                    <th>Asr Salaah</th>
+                                    <th>Isha Adhaan</th>
+                                    <th>Isha Salaah</th>
+                                </tr>
+                            }
+
+                            @foreach (var Item in Model.Times
+                                                    .Where(s => service.GetDateTimeAddDays(s.DayNumber).Month == Month.Month)
+                                                    .OrderBy(s => s.DayNumber)
+                                                    .ToList())
+                            {
+                                <tr>
+                                    <td>@service.GetDateTimeAddDays(Item.DayNumber).ToLongDateString()</td>
+
+                                    <td>@Item.FajrAdhaan.ToString("HH:mm")</td>
+                                    <td>@Item.FajrSalaah.ToString("HH:mm")</td>
+                                    <td>@Item.JumuahAdhaan.ToString("HH:mm")</td>
+                                    <td>@Item.JumuahSalaah.ToString("HH:mm")</td>
+                                    <td>@Item.DhuhrAdhaan.ToString("HH:mm")</td>
+                                    <td>@Item.DhuhrSalaah.ToString("HH:mm")</td>
+                                    <td>@Item.AsrAdhaan.ToString("HH:mm")</td>
+                                    <td>@Item.AsrSalaah.ToString("HH:mm")</td>
+                                    <td>@Item.IshaAdhaan.ToString("HH:mm")</td>
+                                    <td>@Item.IshaSalaah.ToString("HH:mm")</td>
+                                </tr>
+                            }
+
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#home_nav").removeClass("active");
+
+        var table = $('#perp').DataTable({
+            responsive: false,
+            "bLengthChange": false,
+            "Filter": false,
+            "Info": false,
+            "paging": false,
+            "dom": '',
+            "ordering": false,
+            "columns": [
+                { "data": "a1" },
+                { "data": "a2" },
+                { "data": "a3" },
+                { "data": "a4" },
+                { "data": "a5" },
+                { "data": "a6" },
+                { "data": "b1" },
+                { "data": "b2" },
+                { "data": "b3" },
+                { "data": "b4" },
+                { "data": "b5" },
+                { "data": "b6" },
+            ],
+            "columnDefs": [{
+                "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], // column or columns numbers
+                "orderable": false,  // set orderable for selected columns
+            }]
+        });
+    });
+</script>
