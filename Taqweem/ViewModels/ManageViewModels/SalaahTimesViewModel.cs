@@ -11,6 +11,8 @@ namespace Taqweem.ViewModels.ManageViewModels
         public string MasjidId { get; set; }
 
         public List<SalaahTime> SalaahTimes { get; set; }
+
+        public SalaahTimesType Type { get; set; }
     }
 
     public class SalaahTimeViewModel

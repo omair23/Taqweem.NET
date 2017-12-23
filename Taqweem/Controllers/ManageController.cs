@@ -14,6 +14,11 @@ using Taqweem.Services;
 using Taqweem.Data;
 using Taqweem.ViewModels.ManageViewModels;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using OfficeOpenXml;
 
 namespace Taqweem.Controllers
 {
@@ -54,10 +59,53 @@ namespace Taqweem.Controllers
         [TempData]
         public string StatusMessage { get; set; }
 
+        //TO DO Remove
+        [AllowAnonymous]
+        [HttpPost]
+        public string UploadRapidsoft(IFormFile file)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (var reader = new StreamReader(file.OpenReadStream()))
+                    {
+                        var text = reader.ReadToEnd();
+    
+                        text = text.Replace("\"", "");
+
+                        string[] lines = text.Split(
+                                        new[] { Environment.NewLine },
+                                        StringSplitOptions.None
+                                    );
+
+                        string[] z = lines[0].Split(
+                                        new[] { ',' },
+                                        StringSplitOptions.None
+                                    );
+
+                        int count = 1;
+
+                        var x = 1;
+                    }
+                    return "Success";
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                return "Fail" + ex.Message;
+            }
+        }
+
         [HttpGet]
         public IActionResult AddSalaahTime()
         {
             SalaahTimeViewModel Model = new SalaahTimeViewModel();
+
             return View(Model);
         }
 
@@ -86,13 +134,25 @@ namespace Taqweem.Controllers
             return RedirectToAction("SalaahTimes", "Manage");
         }
 
+        //TO DO Remove
+        [AllowAnonymous]
         public IActionResult SalaahTimes()
         {
             ApplicationUser user = _userManager.GetUserAsync(User).Result;
 
+            //TO DO Remove
+            if(user == null)
+            {
+                user = Repository
+                .Find<ApplicationUser>(s => s.Email == "omair334@gmail.com")
+                .FirstOrDefault();
+            }
+
             Masjid masjid = Repository.Find<Masjid>(s => s.Id == user.MasjidId).FirstOrDefault();
 
             SalaahTimesViewModel Model = new SalaahTimesViewModel();
+
+            Model.Type = masjid.SalaahTimesType;
 
             Model.MasjidId = masjid.Id;
 

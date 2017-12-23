@@ -96,6 +96,8 @@ namespace Taqweem.Controllers
 
         public IActionResult Index()
         {
+            return RedirectToAction("SalaahTimes", "Manage");
+
             DBInit();
 
             List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();

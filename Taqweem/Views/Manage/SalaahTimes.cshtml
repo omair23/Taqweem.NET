@@ -29,53 +29,100 @@
 <div class="row">
     <div class="col-md-12">
 
-        <a href="@Url.Action("AddSalaahTime", "Manage")"><h4>Add Salaah Time</h4></a>
+        @if (Model.Type == SalaahTimesType.ScheduleTime)
+        {
+            <a href="@Url.Action("AddSalaahTime", "Manage")"><h4>Add Salaah Time</h4></a>
+        }
+        else
+        {
+            <form name="submitFileForm" id="submitFileForm" method="post">
+                <label for="file">Upload RapidSoft MUST File:</label>
+                <input id="MyFile" name="MyFile" type="file" />
+                <input type="button" onclick="submitFile()" value="Upload" />
+            </form>
+        }
 
-        <table id="maintable" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th hidden>Id</th>
-                    <th>Date</th>
-                    <th>Fajr Adhaan</th>
-                    <th>Fajr Salaah</th>
-                    <th>Jumuah Adhaan</th>
-                    <th>Jumuah Salaah</th>
-                    <th>Dhuhr Adhaan</th>
-                    <th>Dhuhr Salaah</th>
-                    <th>Asr Adhaan</th>
-                    <th>Asr Salaah</th>
-                    <th>Isha Adhaan</th>
-                    <th>Isha Salaah</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var Item in Model.SalaahTimes)
-                {
+        @if (Model.SalaahTimes.Count > 1)
+        {
+            <table id="maintable" class="table table-bordered table-striped">
+                <thead>
                     <tr>
-                        <td>@Item.Id</td>
-                        <td>@service.GetDateTimeAddDays(Item.DayNumber).ToLongDateString()</td>
-                        <td>@Item.FajrAdhaan.ToString("HH:mm")</td>
-                        <td>@Item.FajrSalaah.ToString("HH:mm")</td>
-                        <td>@Item.JumuahAdhaan.ToString("HH:mm")</td>
-                        <td>@Item.JumuahSalaah.ToString("HH:mm")</td>
-                        <td>@Item.DhuhrAdhaan.ToString("HH:mm")</td>
-                        <td>@Item.DhuhrSalaah.ToString("HH:mm")</td>
-                        <td>@Item.AsrAdhaan.ToString("HH:mm")</td>
-                        <td>@Item.AsrSalaah.ToString("HH:mm")</td>
-                        <td>@Item.IshaAdhaan.ToString("HH:mm")</td>
-                        <td>@Item.IshaSalaah.ToString("HH:mm")</td>
+                        <th hidden>Id</th>
+                        <th>Date</th>
+                        <th>Fajr Adhaan</th>
+                        <th>Fajr Salaah</th>
+                        <th>Jumuah Adhaan</th>
+                        <th>Jumuah Salaah</th>
+                        <th>Dhuhr Adhaan</th>
+                        <th>Dhuhr Salaah</th>
+                        <th>Asr Adhaan</th>
+                        <th>Asr Salaah</th>
+                        <th>Isha Adhaan</th>
+                        <th>Isha Salaah</th>
                     </tr>
+                </thead>
+                <tbody>
+                    @foreach (var Item in Model.SalaahTimes)
+                {
+                        <tr>
+                            <td>@Item.Id</td>
+                            <td>@service.GetDateTimeAddDays(Item.DayNumber).ToLongDateString()</td>
+                            <td>@Item.FajrAdhaan.ToString("HH:mm")</td>
+                            <td>@Item.FajrSalaah.ToString("HH:mm")</td>
+                            <td>@Item.JumuahAdhaan.ToString("HH:mm")</td>
+                            <td>@Item.JumuahSalaah.ToString("HH:mm")</td>
+                            <td>@Item.DhuhrAdhaan.ToString("HH:mm")</td>
+                            <td>@Item.DhuhrSalaah.ToString("HH:mm")</td>
+                            <td>@Item.AsrAdhaan.ToString("HH:mm")</td>
+                            <td>@Item.AsrSalaah.ToString("HH:mm")</td>
+                            <td>@Item.IshaAdhaan.ToString("HH:mm")</td>
+                            <td>@Item.IshaSalaah.ToString("HH:mm")</td>
+                        </tr>
 
-                }
-            </tbody>
-        </table>
+                    }
+                </tbody>
+            </table>
+        }
+
     </div>
 </div>
 
 <script>
+    var data = new FormData();
+
+    $("#MyFile").change(handleFileSelect);
+
+    function handleFileSelect() {
+        data.append('file', $('#MyFile')[0].files[0]);
+    };
+
+    function submitFile() {
+        $.ajax({
+            type: 'post',
+            processData: false,
+            contentType: false,
+            url: '@Url.Action("UploadRapidsoft", "Manage")',
+            data: data,
+            dataType: 'json',
+            success: function (data) {
+                if (data == "Successful") {
+                    $("#MyFile").trigger('reset');
+                    alert("Succeeded");
+                }
+                else {
+                    $("#MyFile").trigger('reset');
+                    alert("Failed");
+                }
+            }
+        });
+    };
+
     $(document).ready(function () {
-        var table = $('#maintable').DataTable({
-            responsive: true,
+
+        @if(Model.SalaahTimes.Count > 0)
+                    { <text>
+                        var table = $('#maintable').DataTable({
+                            responsive: true,
             "dom": '<lf<t>ip>',
             "ordering": false,
             "columns": [
@@ -101,5 +148,10 @@
                     visible: false,
                 }],
         });
+
+                        </text>
+        }
+
+
     });
 </script>
