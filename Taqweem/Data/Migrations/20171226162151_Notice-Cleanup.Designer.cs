@@ -12,9 +12,10 @@ using Taqweem.Models;
 namespace Taqweem.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171226162151_Notice-Cleanup")]
+    partial class NoticeCleanup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -390,6 +391,38 @@ namespace Taqweem.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TimeZone");
+                });
+
+            modelBuilder.Entity("Taqweem.ViewModels.ManageViewModels.SalaahTimeViewModel", b =>
+                {
+                    b.Property<string>("KeyId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("AsrAdhaan");
+
+                    b.Property<DateTime>("AsrSalaah");
+
+                    b.Property<DateTime>("DhuhrAdhaan");
+
+                    b.Property<DateTime>("DhuhrSalaah");
+
+                    b.Property<DateTime>("EffectiveDate");
+
+                    b.Property<DateTime>("FajrAdhaan");
+
+                    b.Property<DateTime>("FajrSalaah");
+
+                    b.Property<DateTime>("IshaAdhaan");
+
+                    b.Property<DateTime>("IshaSalaah");
+
+                    b.Property<DateTime>("JumuahAdhaan");
+
+                    b.Property<DateTime>("JumuahSalaah");
+
+                    b.HasKey("KeyId");
+
+                    b.ToTable("SalaahTimeViewModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

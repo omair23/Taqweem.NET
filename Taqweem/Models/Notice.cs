@@ -11,8 +11,6 @@ namespace Taqweem.Models
 
         public bool IsHidden { get; set; } = false;
 
-        public bool IsDeleted { get; set; } = false;
-
         public string MasjidId { get; set; }
 
         public virtual Masjid Masjid { get; set; }

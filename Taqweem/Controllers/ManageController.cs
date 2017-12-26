@@ -261,9 +261,13 @@ namespace Taqweem.Controllers
 
             Masjid masjid = Repository.Find<Masjid>(s => s.Id == user.MasjidId).FirstOrDefault();
 
-            MasjidEditViewModel Model = new MasjidEditViewModel();
+            NoticesViewModel Model = new NoticesViewModel();
 
-            Model.Id = masjid.Id;
+            Model.MasjidId = masjid.Id;
+
+            Model.Notices = Repository
+                            .Find<Notice>(s => s.MasjidId == masjid.Id)
+                            .ToList();
 
             return View(Model);
         }

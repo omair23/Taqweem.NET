@@ -1,8 +1,132 @@
-﻿
+﻿@model NoticesViewModel
+
 @{
     ViewData["Title"] = "Notices";
     Layout = "~/Views/Manage/_Layout.cshtml";
+
+    <style>
+        .table-striped > tbody > tr:nth-child(odd) > td,
+        .table-striped > tbody > tr:nth-child(odd) > th {
+            background-color: #383838;
+        }
+
+        .pagination > li > a, .pagination > li > span {
+            background-color: #383838;
+        }
+
+        .pagination > li.active > a, .pagination > li.active > span {
+            background-color: #1FA154;
+        }
+
+        .table-striped > tbody > tr:nth-child(odd) > tr.selected {
+            background-color: #1FA154;
+        }
+
+        table.dataTable tbody tr.selected {
+            background-color: #1FA154;
+        }
+    </style>
 }
 
-<h2>Notices</h2>
+<h2>SalaahTimes</h2>
 
+<br /><br />
+
+<div class="row">
+    <div class="col-md-12">
+
+        <a href="#"><h4>Add Notice</h4></a>
+
+        @if (Model.Notices.Count >= 1)
+        {
+            <table id="maintable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Notice Text</th>
+                        <th>Created By</th>
+                        <th>Created On</th>
+                        <th>Hidden</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var Item in Model.Notices)
+                    {
+                        <tr>
+                            <td>@Item.Id</td>
+                            <td>@Item.NoticeContent</td>
+                            <td>@Item.Created.FullName</td>
+                            <td>@Item.CreatedAt.ToString("dd/MM/yyyy hh:mm")</td>
+                            <td>@(Item.IsHidden ? "Yes" : "No")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+    </div>
+</div>
+
+<script>
+    var data = new FormData();
+
+    $("#MyFile").change(handleFileSelect);
+
+    function handleFileSelect() {
+        data.append('file', $('#MyFile')[0].files[0]);
+    };
+
+    function submitFile() {
+        $.ajax({
+            type: 'post',
+            processData: false,
+            contentType: false,
+            url: '@Url.Action("UploadRapidsoft", "Manage")',
+            data: data,
+            dataType: 'json',
+            success: function (data) {
+                if (data == "Successful") {
+                    $("#MyFile").trigger('reset');
+                    alert("Succeeded");
+                }
+                else {
+                    $("#MyFile").trigger('reset');
+                    alert("Failed");
+                }
+            }
+        });
+    };
+
+    $(document).ready(function () {
+
+        @if(Model.Notices.Count > 0)
+                    { <text>
+        var table = $('#maintable').DataTable({
+            responsive: true,
+            select: "multiple",
+            "dom": '<lf<t>ip>',
+            "ordering": false,
+            "columns": [
+                { "data": "a1" },
+                { "data": "a2" },
+                { "data": "a3" },
+                { "data": "a4" },
+                { "data": "a5" }
+            ],
+            "columnDefs": [{
+                "targets": [0, 1, 2, 3, 4], // column or columns numbers
+                "orderable": false,  // set orderable for selected columns
+            }
+                ,
+                {
+                    "targets": [0],
+                    visible: false,
+                }],
+        });
+
+                        </text>
+        }
+
+
+    });
+</script>
