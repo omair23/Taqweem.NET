@@ -17,8 +17,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using OfficeOpenXml;
 
 namespace Taqweem.Controllers
 {
@@ -59,7 +57,6 @@ namespace Taqweem.Controllers
         [TempData]
         public string StatusMessage { get; set; }
 
-        //TO DO Remove
         [AllowAnonymous]
         [HttpPost]
         public string UploadRapidsoft(IFormFile file)
@@ -68,6 +65,10 @@ namespace Taqweem.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    List<SalaahTime> Times = new List<SalaahTime>();
+
+                    ApplicationUser user = _userManager.GetUserAsync(User).Result;
+
                     using (var reader = new StreamReader(file.OpenReadStream()))
                     {
                         var text = reader.ReadToEnd();
@@ -79,14 +80,66 @@ namespace Taqweem.Controllers
                                         StringSplitOptions.None
                                     );
 
-                        string[] z = lines[0].Split(
-                                        new[] { ',' },
-                                        StringSplitOptions.None
-                                    );
+                        bool SequenceFound = false;
+                        int SequenceNumber = 1;
 
-                        int count = 1;
+                        foreach(var Line in lines)
+                        {
+                            string[] z = Line.Split(
+                                new[] { ',' },
+                                StringSplitOptions.None
+                            );
 
-                        var x = 1;
+                            if (SequenceFound == true)
+                            {
+                                if (SequenceNumber > 365 && z[0] != "")
+                                {
+                                    break;
+                                }                          
+
+                                var y = z[1];
+
+                                SalaahTime Time = new SalaahTime();
+                                Time.Type = SalaahTimesType.DailyTime;
+                                Time.MasjidId = user.MasjidId;
+                                Time.DayNumber = SequenceNumber;
+
+                                Time.FajrAdhaan = StringToDateTime(z[10]);
+                                Time.FajrSalaah = StringToDateTime(z[11]);
+                                Time.DhuhrAdhaan = StringToDateTime(z[12]);
+                                Time.DhuhrSalaah = StringToDateTime(z[13]);
+                                Time.AsrAdhaan = StringToDateTime(z[14]);
+                                Time.AsrSalaah = StringToDateTime(z[15]);
+                                Time.IshaAdhaan = StringToDateTime(z[18]);
+                                Time.IshaSalaah = StringToDateTime(z[19]);
+
+                                if (z[2] == "Friday")
+                                {
+                                    Time.JumuahAdhaan = StringToDateTime(z[12]);
+                                    Time.JumuahSalaah = StringToDateTime(z[13]);
+                                }
+
+                                Times.Add(Time);
+                                SequenceNumber += 1;
+                            }
+
+                            if (z[0] == "#####")
+                            {
+                                SequenceFound = true;
+                            }
+                        }
+
+                        List<SalaahTime> OldTimes = Repository
+                                                    .Find<SalaahTime>(s => s.MasjidId == user.MasjidId)
+                                                    .ToList();
+
+                        Times = Times.OrderBy(s => s.DayNumber).ToList();
+
+                        CheckDbTimeChange(Times);
+
+                        Repository.AddMultiple(Times);
+
+                        Repository.DeleteMultiple(OldTimes);
                     }
                     return "Success";
                 }
@@ -98,6 +151,47 @@ namespace Taqweem.Controllers
             catch (Exception ex)
             {
                 return "Fail" + ex.Message;
+            }
+        }
+
+        public List<SalaahTime> CheckDbTimeChange(List<SalaahTime> Times)
+        {
+            foreach(var Time in Times)
+            {
+                SalaahTime PrevDay = Times.Where(s => s.DayNumber == Time.DayNumber - 1).FirstOrDefault();
+
+                if (PrevDay != null)
+                {
+                    if (PrevDay.FajrAdhaan.TimeOfDay != Time.FajrAdhaan.TimeOfDay |
+                        PrevDay.FajrSalaah.TimeOfDay != Time.FajrSalaah.TimeOfDay |
+                        PrevDay.AsrAdhaan.TimeOfDay != Time.AsrAdhaan.TimeOfDay |
+                        PrevDay.AsrSalaah.TimeOfDay != Time.AsrSalaah.TimeOfDay |
+                        PrevDay.IshaAdhaan.TimeOfDay != Time.IshaAdhaan.TimeOfDay |
+                        PrevDay.IshaSalaah.TimeOfDay != Time.IshaSalaah.TimeOfDay)
+                        Time.IsATimeChange = true;
+                }
+            }
+
+            return Times;
+        }
+
+        public DateTime StringToDateTime(string Val)
+        {
+            try
+            {
+                var t = Val.Split(':');
+
+                int hour = Convert.ToInt32(t[0]);
+
+                int minute = Convert.ToInt32(t[1]);
+
+                DateTime dVal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hour, minute, 0);
+
+                return dVal;
+            }
+            catch (Exception ex)
+            {
+                return DateTime.Now;
             }
         }
 
@@ -134,7 +228,6 @@ namespace Taqweem.Controllers
             return RedirectToAction("SalaahTimes", "Manage");
         }
 
-        //TO DO Remove
         [AllowAnonymous]
         public IActionResult SalaahTimes()
         {

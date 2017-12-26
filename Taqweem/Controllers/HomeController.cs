@@ -98,15 +98,15 @@ namespace Taqweem.Controllers
         {
             return RedirectToAction("SalaahTimes", "Manage");
 
-            DBInit();
+            //DBInit();
 
-            List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
+            //List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
 
-            Markers Model = new Markers();
+            //Markers Model = new Markers();
 
-            Model.Marker = AllMasjids;
+            //Model.Marker = AllMasjids;
 
-            return View(Model);
+            //return View(Model);
 
             //EmailModel Model = new EmailModel();
 
@@ -152,6 +152,22 @@ namespace Taqweem.Controllers
                                     .ToList();
 
             Model.SalaahTime = GetSalaahTime(Info, DateTime.Now);
+
+            Model.NextSalaahTime = NextSalaahTime(Info, DateTime.Now);
+
+            if (Model.NextSalaahTime != null)
+            {
+                DateTime val = new DateTime(DateTime.Now.Year, 1, 1);
+                val = val.AddDays(Model.NextSalaahTime.DayNumber - 1);
+
+                if (Model.NextSalaahTime.DayNumber < DateTime.Now.DayOfYear)
+                {
+                    val = new DateTime(DateTime.Now.Year + 1, 1, 1);
+                    val = val.AddDays(Model.NextSalaahTime.DayNumber - 1);
+                }                
+
+                Model.NextPerpetualTime = new cPerpetualTime(val, Info);
+            }
 
             return View(Model);
         }
@@ -335,6 +351,48 @@ namespace Taqweem.Controllers
                             .OrderByDescending(x => x.DayNumber)
                             .FirstOrDefault();
             }
+        }
+
+        public SalaahTime NextSalaahTime(Masjid Masjid, DateTime Val)
+        {
+            SalaahTime Time;
+
+            if (Masjid.SalaahTimesType == SalaahTimesType.ScheduleTime)
+            {
+                Time = Masjid.SalaahTimes
+                            .Where(s => s.DayNumber > Val.DayOfYear
+                                    && s.Type == SalaahTimesType.ScheduleTime)
+                            .OrderBy(x => x.DayNumber)
+                            .FirstOrDefault();
+
+                if (Time == null)
+                {
+                    Time = Masjid.SalaahTimes
+                            .Where(s => s.Type == SalaahTimesType.ScheduleTime)
+                            .OrderBy(x => x.DayNumber)
+                            .FirstOrDefault();
+                }
+            }
+            else
+            {
+                Time = Masjid.SalaahTimes
+                            .Where(s => s.DayNumber > Val.DayOfYear
+                                    && s.Type == SalaahTimesType.DailyTime
+                                    && s.IsATimeChange == true)
+                            .OrderBy(x => x.DayNumber)
+                            .FirstOrDefault();
+
+                if (Time == null)
+                {
+                    Time = Masjid.SalaahTimes
+                            .Where(s => s.Type == SalaahTimesType.DailyTime
+                                    && s.IsATimeChange == true)
+                            .OrderBy(x => x.DayNumber)
+                            .FirstOrDefault();
+                }
+            }
+
+            return Time;
         }
 
         public Masjid GetCountDown(Masjid Masjid)

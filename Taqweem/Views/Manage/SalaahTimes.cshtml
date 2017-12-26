@@ -47,7 +47,7 @@
             <table id="maintable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th hidden>Id</th>
+                        <th>Id</th>
                         <th>Date</th>
                         <th>Fajr Adhaan</th>
                         <th>Fajr Salaah</th>
@@ -78,7 +78,6 @@
                             <td>@Item.IshaAdhaan.ToString("HH:mm")</td>
                             <td>@Item.IshaSalaah.ToString("HH:mm")</td>
                         </tr>
-
                     }
                 </tbody>
             </table>
@@ -121,8 +120,8 @@
 
         @if(Model.SalaahTimes.Count > 0)
                     { <text>
-                        var table = $('#maintable').DataTable({
-                            responsive: true,
+        var table = $('#maintable').DataTable({
+            responsive: true,
             "dom": '<lf<t>ip>',
             "ordering": false,
             "columns": [
@@ -140,9 +139,10 @@
                 { "data": "a12" },
             ],
             "columnDefs": [{
-                "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], // column or columns numbers
+                "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], // column or columns numbers
                 "orderable": false,  // set orderable for selected columns
-            },
+            }
+                ,
                 {
                     "targets": [0],
                     visible: false,

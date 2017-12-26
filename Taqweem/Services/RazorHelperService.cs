@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using Taqweem.Models;
 
 namespace Taqweem.Services
 {
@@ -49,7 +47,5 @@ namespace Taqweem.Services
 
             return List;
         }
-
-
     }
 }

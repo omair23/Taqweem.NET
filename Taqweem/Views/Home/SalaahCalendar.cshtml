@@ -94,10 +94,22 @@
 
                                     <td>@Item.FajrAdhaan.ToString("HH:mm")</td>
                                     <td>@Item.FajrSalaah.ToString("HH:mm")</td>
-                                    <td>@Item.JumuahAdhaan.ToString("HH:mm")</td>
-                                    <td>@Item.JumuahSalaah.ToString("HH:mm")</td>
-                                    <td>@Item.DhuhrAdhaan.ToString("HH:mm")</td>
-                                    <td>@Item.DhuhrSalaah.ToString("HH:mm")</td>
+
+                                    @if (service.GetDateTimeAddDays(Item.DayNumber).DayOfWeek == DayOfWeek.Friday)
+                                    {
+                                        <td>@Item.JumuahAdhaan.ToString("HH:mm")</td>
+                                        <td>@Item.JumuahSalaah.ToString("HH:mm")</td>
+                                        <td></td>
+                                        <td></td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                        <td></td>
+                                        <td>@Item.DhuhrAdhaan.ToString("HH:mm")</td>
+                                        <td>@Item.DhuhrSalaah.ToString("HH:mm")</td>
+                                    }
+
                                     <td>@Item.AsrAdhaan.ToString("HH:mm")</td>
                                     <td>@Item.AsrSalaah.ToString("HH:mm")</td>
                                     <td>@Item.IshaAdhaan.ToString("HH:mm")</td>
