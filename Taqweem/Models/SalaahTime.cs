@@ -11,6 +11,8 @@ namespace Taqweem.Models
 
         public bool IsATimeChange { get; set; }
 
+        public DateTime TimeDate { get; set; }
+
         public int DayNumber { get; set; }
 
         public DateTime FajrAdhaan { get; set; }

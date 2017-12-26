@@ -17,6 +17,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Taqweem.Controllers
 {
@@ -67,7 +68,8 @@ namespace Taqweem.Controllers
                 {
                     List<SalaahTime> Times = new List<SalaahTime>();
 
-                    ApplicationUser user = _userManager.GetUserAsync(User).Result;
+                    //TO DO Uncomment
+                    //ApplicationUser user = _userManager.GetUserAsync(User).Result;
 
                     using (var reader = new StreamReader(file.OpenReadStream()))
                     {
@@ -81,10 +83,13 @@ namespace Taqweem.Controllers
                                     );
 
                         bool SequenceFound = false;
-                        int SequenceNumber = 1;
+                        string MonthLinker = "";
 
-                        foreach(var Line in lines)
+                        foreach (var Line in lines)
                         {
+                            if (Line == "" | Line == null)
+                                break;
+
                             string[] z = Line.Split(
                                 new[] { ',' },
                                 StringSplitOptions.None
@@ -92,17 +97,22 @@ namespace Taqweem.Controllers
 
                             if (SequenceFound == true)
                             {
-                                if (SequenceNumber > 365 && z[0] != "")
-                                {
-                                    break;
-                                }                          
-
-                                var y = z[1];
-
                                 SalaahTime Time = new SalaahTime();
                                 Time.Type = SalaahTimesType.DailyTime;
-                                Time.MasjidId = user.MasjidId;
-                                Time.DayNumber = SequenceNumber;
+                                Time.MasjidId = "5f3e7169-ab20-4b34-bb27-2e86eefee2c1";// user.MasjidId;
+
+                                if (z[0] != "")
+                                {
+                                    MonthLinker = z[0];
+                                }
+                                string DT = z[1] + " " + MonthLinker;
+                                Debug.WriteLine(DT);
+
+                                DateTime myDate = DateTime.ParseExact(DT, "d MMMM yyyy",
+                                       System.Globalization.CultureInfo.InvariantCulture);
+
+                                Time.TimeDate = myDate;
+                                Time.DayNumber = myDate.DayOfYear;
 
                                 Time.FajrAdhaan = StringToDateTime(z[10]);
                                 Time.FajrSalaah = StringToDateTime(z[11]);
@@ -120,7 +130,6 @@ namespace Taqweem.Controllers
                                 }
 
                                 Times.Add(Time);
-                                SequenceNumber += 1;
                             }
 
                             if (z[0] == "#####")
@@ -130,7 +139,7 @@ namespace Taqweem.Controllers
                         }
 
                         List<SalaahTime> OldTimes = Repository
-                                                    .Find<SalaahTime>(s => s.MasjidId == user.MasjidId)
+                                                    .Find<SalaahTime>(s => s.MasjidId == "5f3e7169-ab20-4b34-bb27-2e86eefee2c1")//user.MasjidId)
                                                     .ToList();
 
                         Times = Times.OrderBy(s => s.DayNumber).ToList();

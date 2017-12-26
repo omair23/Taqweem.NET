@@ -96,17 +96,20 @@ namespace Taqweem.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToAction("SalaahTimes", "Manage");
+            //List<SalaahTime> Times = Repository.GetAll<SalaahTime>().ToList();
+            //Repository.DeleteMultiple(Times);
 
-            //DBInit();
+            //return RedirectToAction("SalaahTimes", "Manage");
 
-            //List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
+            DBInit();
 
-            //Markers Model = new Markers();
+            List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
 
-            //Model.Marker = AllMasjids;
+            Markers Model = new Markers();
 
-            //return View(Model);
+            Model.Marker = AllMasjids;
+
+            return View(Model);
 
             //EmailModel Model = new EmailModel();
 
