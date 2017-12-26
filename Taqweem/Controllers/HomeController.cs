@@ -350,7 +350,9 @@ namespace Taqweem.Controllers
             {
                 return Masjid.SalaahTimes
                             .Where(s => s.DayNumber == Val.DayOfYear
+                                    && s.TimeDate.Year <= Val.Year
                                     && s.Type == SalaahTimesType.DailyTime)
+                            .OrderByDescending(x => x.TimeDate.Year)
                             .OrderByDescending(x => x.DayNumber)
                             .FirstOrDefault();
             }
@@ -374,6 +376,12 @@ namespace Taqweem.Controllers
                             .Where(s => s.Type == SalaahTimesType.ScheduleTime)
                             .OrderBy(x => x.DayNumber)
                             .FirstOrDefault();
+
+                    if (Time != null)
+                    {
+                        Time.TimeDate = new DateTime(Val.Year + 1, 1, 1);
+                        Time.TimeDate = Time.TimeDate.AddDays(Time.DayNumber - 1);
+                    }
                 }
             }
             else
@@ -381,7 +389,9 @@ namespace Taqweem.Controllers
                 Time = Masjid.SalaahTimes
                             .Where(s => s.DayNumber > Val.DayOfYear
                                     && s.Type == SalaahTimesType.DailyTime
+                                    && s.TimeDate.Year <= Val.Year
                                     && s.IsATimeChange == true)
+                            .OrderByDescending(s => s.TimeDate.Year)
                             .OrderBy(x => x.DayNumber)
                             .FirstOrDefault();
 
@@ -389,7 +399,9 @@ namespace Taqweem.Controllers
                 {
                     Time = Masjid.SalaahTimes
                             .Where(s => s.Type == SalaahTimesType.DailyTime
+                                    && s.TimeDate.Year <= Val.Year + 1
                                     && s.IsATimeChange == true)
+                            .OrderByDescending(s => s.TimeDate.Year)
                             .OrderBy(x => x.DayNumber)
                             .FirstOrDefault();
                 }

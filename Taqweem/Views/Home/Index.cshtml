@@ -42,7 +42,7 @@
     </div>
 </div>
 
-<div style="text-align:center;" class="row">
+<div class="row">
     <div class="row" id="nearestInfo" style="display:none;">
         <div class="col-md-12">
             <table id="nearestDetail" class="table table-bordered table-striped" style="width: 100%;">
@@ -277,7 +277,10 @@
                 }, {
                     "targets": 0,
                     "visible": false
-                }]
+                    }, {
+                        "width": "50%", 
+                        "targets": 1 
+                    }]
            });
 
            var tz = $("#ctimezone").html();

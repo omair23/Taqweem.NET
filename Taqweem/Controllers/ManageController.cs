@@ -68,8 +68,7 @@ namespace Taqweem.Controllers
                 {
                     List<SalaahTime> Times = new List<SalaahTime>();
 
-                    //TO DO Uncomment
-                    //ApplicationUser user = _userManager.GetUserAsync(User).Result;
+                    ApplicationUser user = _userManager.GetUserAsync(User).Result;
 
                     using (var reader = new StreamReader(file.OpenReadStream()))
                     {
@@ -99,7 +98,7 @@ namespace Taqweem.Controllers
                             {
                                 SalaahTime Time = new SalaahTime();
                                 Time.Type = SalaahTimesType.DailyTime;
-                                Time.MasjidId = "5f3e7169-ab20-4b34-bb27-2e86eefee2c1";// user.MasjidId;
+                                Time.MasjidId = user.MasjidId;
 
                                 if (z[0] != "")
                                 {
@@ -237,18 +236,9 @@ namespace Taqweem.Controllers
             return RedirectToAction("SalaahTimes", "Manage");
         }
 
-        [AllowAnonymous]
         public IActionResult SalaahTimes()
         {
             ApplicationUser user = _userManager.GetUserAsync(User).Result;
-
-            //TO DO Remove
-            if(user == null)
-            {
-                user = Repository
-                .Find<ApplicationUser>(s => s.Email == "omair334@gmail.com")
-                .FirstOrDefault();
-            }
 
             Masjid masjid = Repository.Find<Masjid>(s => s.Id == user.MasjidId).FirstOrDefault();
 

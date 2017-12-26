@@ -112,7 +112,17 @@ namespace Taqweem.ViewModels
                 AsrHanafi = DoubleToDateTime(zAsr2, Year, Month, Day);
 
                 Sunset = DoubleToDateTime(zSunset, Year, Month, Day);
-                Maghrib = Sunset.AddMinutes(3);
+
+                if (Masjid.MaghribAdhaanDelay != 0)
+                {
+                    Maghrib = Sunset.AddMinutes(Masjid.MaghribAdhaanDelay);
+                }
+                else
+                {
+                    Maghrib = Sunset.AddMinutes(3);
+                }
+
+                
                 Isha = DoubleToDateTime(zIsha, Year, Month, Day);
             }
             catch (Exception ex)
