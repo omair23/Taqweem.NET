@@ -30,6 +30,27 @@ namespace Taqweem.Controllers
             _emailSender = emailSender;
         }
 
+        public IActionResult OldSiteRedirect(string Id)
+        {
+            try
+            {
+                int OldId = Convert.ToInt32(Id);
+
+                Masjid masjid = Repository
+                                .Find<Masjid>(s => s.OldSiteId == OldId)
+                                .FirstOrDefault();
+
+                if (masjid != null)
+                    return RedirectToAction("MasjidInfo", "Home", new { Id = masjid.Id });
+                else
+                    return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
         public void DBInit()
         {
             List<Models.TimeZone> TimeZones = Repository.GetAll<Models.TimeZone>().ToList();

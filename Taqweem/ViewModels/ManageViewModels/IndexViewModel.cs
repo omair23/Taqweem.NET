@@ -12,6 +12,9 @@ namespace Taqweem.Models.ManageViewModels
 
         public bool IsEmailConfirmed { get; set; }
 
+        [Display(Name = "Show my details publicly")]
+        public bool ShowDetails { get; set; }
+
         [Required]
         [EmailAddress]
         public string Email { get; set; }

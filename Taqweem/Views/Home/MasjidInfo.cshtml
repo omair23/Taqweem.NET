@@ -375,6 +375,7 @@
                             <tr>
                                 <th>User Name</th>
                                 <th>Registration Date</th>
+                                <th>Contact</th>
                             </tr>
                         </thead>
                     }
@@ -383,8 +384,18 @@
                     {
                         <tr>
                             <td>@User.FullName</td>
-                                <td>@User.CreatedAt.ToString("dd/MM/yyyy")</td>
-                            </tr>
+                            <td>@User.CreatedAt.ToString("dd/MM/yyyy")</td>
+
+                            @if(User.ShowDetails)
+                            {
+                                <td>@User.Email</td>
+                            }
+                            else
+                            {
+                                <td>N/A</td>
+                            }
+
+                        </tr>
                     }
 
                     @if (Model.Masjid.AllowRegistration)

@@ -21,6 +21,8 @@ namespace Taqweem.Models
     {
         public bool IsSuperUser { get; set; } = false;
 
+        public bool ShowDetails { get; set; } = false;
+
         [Required]
         [EnumDataType(typeof(UserStatus))]
         public UserStatus ActiveStatus { get; set; } = UserStatus.Active;
@@ -54,6 +56,7 @@ namespace Taqweem.Models
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
             IsSuperUser = false;
+            ShowDetails = false;
         }
     }
 }

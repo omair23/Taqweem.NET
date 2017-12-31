@@ -331,7 +331,8 @@ namespace Taqweem.Controllers
                 PhoneNumber = user.PhoneNumber,
                 FullName = user.FullName,
                 IsEmailConfirmed = user.EmailConfirmed,
-                StatusMessage = StatusMessage
+                StatusMessage = StatusMessage,
+                ShowDetails = user.ShowDetails,
             };
 
             return View(model);
@@ -347,12 +348,14 @@ namespace Taqweem.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
+
             if (user == null)
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
             var email = user.Email;
+
             if (model.Email != email)
             {
                 var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
@@ -372,7 +375,17 @@ namespace Taqweem.Controllers
                 }
             }
 
+            var ShowDetails = user.ShowDetails;
+
+            if (model.ShowDetails != ShowDetails)
+            {
+                ApplicationUser dbUser = Repository.Find<ApplicationUser>(s => s.Id == user.Id).FirstOrDefault();
+                dbUser.ShowDetails = model.ShowDetails;
+                Repository.Update(dbUser);
+            }
+
             var FullName = user.FullName;
+
             if (model.FullName != FullName)
             {
                 ApplicationUser dbUser = Repository.Find<ApplicationUser>(s => s.Id == user.Id).FirstOrDefault();

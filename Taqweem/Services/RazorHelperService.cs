@@ -25,6 +25,13 @@ namespace Taqweem.Services
             return nDate;
         }
 
+        public DateTime GetDateTimeAddDays(int Days, DateTime dt)
+        {
+            DateTime nDate = new DateTime(dt.Year, 1, 1);
+            nDate = nDate.AddDays(Days - 1);
+            return nDate;
+        }
+
         public List<SelectList> SalaahTimesTypeSelectList()
         {
             List<SelectList> List = new List<SelectList>();

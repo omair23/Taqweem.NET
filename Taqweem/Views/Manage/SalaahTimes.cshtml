@@ -69,25 +69,53 @@
                         <th>Isha Salaah</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach (var Item in Model.SalaahTimes)
+
+                @if (Model.Type == SalaahTimesType.ScheduleTime)
                 {
-                        <tr>
-                            <td>@Item.Id</td>
-                            <td>@service.GetDateTimeAddDays(Item.DayNumber).ToLongDateString()</td>
-                            <td>@Item.FajrAdhaan.ToString("HH:mm")</td>
-                            <td>@Item.FajrSalaah.ToString("HH:mm")</td>
-                            <td>@Item.JumuahAdhaan.ToString("HH:mm")</td>
-                            <td>@Item.JumuahSalaah.ToString("HH:mm")</td>
-                            <td>@Item.DhuhrAdhaan.ToString("HH:mm")</td>
-                            <td>@Item.DhuhrSalaah.ToString("HH:mm")</td>
-                            <td>@Item.AsrAdhaan.ToString("HH:mm")</td>
-                            <td>@Item.AsrSalaah.ToString("HH:mm")</td>
-                            <td>@Item.IshaAdhaan.ToString("HH:mm")</td>
-                            <td>@Item.IshaSalaah.ToString("HH:mm")</td>
-                        </tr>
-                    }
-                </tbody>
+                    <tbody>
+                        @foreach (var Item in Model.SalaahTimes.OrderBy(s => service.GetDateTimeAddDays(s.DayNumber)))
+                        {
+                            <tr>
+                                <td>@Item.Id</td>
+                                <td>@service.GetDateTimeAddDays(Item.DayNumber).ToLongDateString()</td>
+                                <td>@Item.FajrAdhaan.ToString("HH:mm")</td>
+                                <td>@Item.FajrSalaah.ToString("HH:mm")</td>
+                                <td>@Item.JumuahAdhaan.ToString("HH:mm")</td>
+                                <td>@Item.JumuahSalaah.ToString("HH:mm")</td>
+                                <td>@Item.DhuhrAdhaan.ToString("HH:mm")</td>
+                                <td>@Item.DhuhrSalaah.ToString("HH:mm")</td>
+                                <td>@Item.AsrAdhaan.ToString("HH:mm")</td>
+                                <td>@Item.AsrSalaah.ToString("HH:mm")</td>
+                                <td>@Item.IshaAdhaan.ToString("HH:mm")</td>
+                                <td>@Item.IshaSalaah.ToString("HH:mm")</td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+                else
+                {
+                    <tbody>
+                        @foreach (var Item in Model.SalaahTimes.OrderBy(s => service.GetDateTimeAddDays(s.DayNumber, s.TimeDate)))
+                        {
+                            <tr>
+                                <td>@Item.Id</td>
+                                <td>@service.GetDateTimeAddDays(Item.DayNumber, Item.TimeDate).ToLongDateString()</td>
+                                <td>@Item.FajrAdhaan.ToString("HH:mm")</td>
+                                <td>@Item.FajrSalaah.ToString("HH:mm")</td>
+                                <td>@Item.JumuahAdhaan.ToString("HH:mm")</td>
+                                <td>@Item.JumuahSalaah.ToString("HH:mm")</td>
+                                <td>@Item.DhuhrAdhaan.ToString("HH:mm")</td>
+                                <td>@Item.DhuhrSalaah.ToString("HH:mm")</td>
+                                <td>@Item.AsrAdhaan.ToString("HH:mm")</td>
+                                <td>@Item.AsrSalaah.ToString("HH:mm")</td>
+                                <td>@Item.IshaAdhaan.ToString("HH:mm")</td>
+                                <td>@Item.IshaSalaah.ToString("HH:mm")</td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+
+
             </table>
         }
 
