@@ -70,7 +70,9 @@ namespace Taqweem.ViewModels
                 zSunrise = zZawaal - AZIMUTH;
                 zSunset = zZawaal + AZIMUTH;
                 zIftaar = zSunset + 0.05;
-                zIshraaq = zSunrise + 0.0833333;
+
+                zIshraaq = zSunrise + 0.25;
+                //zIshraaq = zSunrise + 0.0833333;
 
                 double AZIMUTH2 = (((-1) * Math.Sin(FAJR_ANGLE * (PI / 180))) - ((Math.Sin(dblLatitude) * Math.Sin(DECLINATION)))) / (Math.Cos(dblLatitude) * Math.Cos((DECLINATION)));
                 AZIMUTH2 = (Math.Acos(AZIMUTH2) * (180 / PI)) / 15;

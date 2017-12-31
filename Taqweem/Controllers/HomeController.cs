@@ -87,6 +87,10 @@ namespace Taqweem.Controllers
                 s.Latitude = -26.195149;
                 s.Longitude = 27.990238;
                 s.OldSiteId = 1;
+                s.LadiesFacility = true;
+                s.JummahFacility = true;
+                s.Address = "114 Jamestown Avenue Crosby Johannesburg 2092";
+                s.Contact = "Ml R Joosub, Ml S Maanjra, Br Abdur Rasheed, Br Faizal Suffla, Br Basheer Seedat";
                 s.TimeZoneId = "South Africa Standard Time";
 
                 Repository.Add(s);

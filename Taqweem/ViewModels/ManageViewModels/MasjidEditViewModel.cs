@@ -26,8 +26,10 @@ namespace Taqweem.ViewModels.ManageViewModels
 
         public JuristicMethod JuristMethod { get; set; }
 
+        [Display(Name = "Has a Ladies Facility")]
         public bool LadiesFacility { get; set; }
 
+        [Display(Name = "Jummah is Performed at this Masjid")]
         public bool JummahFacility { get; set; }
 
         public string Contact { get; set; }
@@ -36,6 +38,7 @@ namespace Taqweem.ViewModels.ManageViewModels
 
         public string GeneralInfo { get; set; }
 
+        [Display(Name = "Allow New Admins to Register")]
         public bool AllowRegistration { get; set; }
 
         public int MaghribAdhaanDelay { get; set; }
