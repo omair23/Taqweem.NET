@@ -36,14 +36,17 @@ namespace Taqweem.Services
                 client.EnableSsl = true;
 
                 NetworkCredential NC = new NetworkCredential();
-                NC.UserName = "omair000@gmail.com";
-                NC.Password = "9409285082081";
+                NC.UserName = "taqweemmasjid@gmail.com";
+                NC.Password = "Taqweem@786";
                 client.Credentials = NC;
 
                 MailAddress from = new MailAddress(NC.UserName, "Taqweem");
 
-                MailAddress receiver = new MailAddress("omair334@gmail.com", "Omair Kazi");
+                //TO DO Remove Static Email Address
+                MailAddress receiver = new MailAddress("omair334@gmail.com", "Omair Kazi"); //new MailAddress(email);
+
                 MailMessage Mymessage = new MailMessage(from, receiver);
+
                 Mymessage.Subject = subject;
                 Mymessage.IsBodyHtml = true;
 

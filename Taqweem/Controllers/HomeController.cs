@@ -121,11 +121,6 @@ namespace Taqweem.Controllers
 
         public IActionResult Index()
         {
-            //List<SalaahTime> Times = Repository.GetAll<SalaahTime>().ToList();
-            //Repository.DeleteMultiple(Times);
-
-            //return RedirectToAction("SalaahTimes", "Manage");
-
             DBInit();
 
             List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
@@ -136,9 +131,15 @@ namespace Taqweem.Controllers
 
             return View(Model);
 
+            //string Link = "http://taqweem.azurewebsites.net/";
+
+            //string Text = "<p>As Salaamu Alaikum from the Taqweem team</p><p>We are proud to announce the go-live of our <strong>new and improved website</strong> which can be visited on the new link shown below:</p><p>" +
+            //    "<a href='" + Link + "'>" +
+            //    "http://taqweem.azurewebsites.net/</a></p><p>We will send out an account verification email following this email in order to activate your account. Once activated, please log on to the Taqweem dashboard using your <strong>existing email address</strong> and the following password: <strong><u>Masjid@1</u></strong></p><p>Following the confirmation of your account, we strongly advise changing your password. This can be done by simply logging in and clicking the Password option on the menu bar.</p><p>At Taqweem, our aim is to provide extensive coverage of Masaajid and Salaah Times across the globe. Therefore we require your help, we are crowd-sourced website. Here are some tips and suggestions for you, the user, to help improve and expand Taqweem:</p><ul><li>Adding new Masjids to our system</li><li>Linking Masajid’s “Website” tags on Google Maps to the relevant masjid page on Taqweem</li><li>Encouraging people to register as Administrators of Masajid in order to keep the information and salaah times up-to-date</li></ul><p>Should you require any assistance with using the site, please contact the team on the “About” page.</p><p>We urge you to spread the word, send us your feedback and contribute towards maintaining the accuracy and completeness of information on the site.</p><p>Shukran</p><p><strong>Taqweem Team</strong></p>";
+
             //EmailModel Model = new EmailModel();
 
-            //Model.Content = "TEXT";
+            //Model.Content = Text;
 
             //return View("EmailTemplate", Model);
         }
@@ -255,7 +256,7 @@ namespace Taqweem.Controllers
 
                 string Message = String.Format("Name: {0} <br>Email Address: {1} <br>Location: {2} <br>Message: {3}", CVM.Name, CVM.Email, CVM.Location, CVM.Message);
 
-                _emailSender.SendEmailAsync(CVM.Email, "Taqweem Feedback", Message);
+                _emailSender.SendEmailAsync("taqweemmasjid@gmail.com", "Taqweem Feedback", Message);
 
                 return "Successful";
             }

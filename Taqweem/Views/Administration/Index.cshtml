@@ -25,11 +25,27 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-12">
+        <input type="button" onclick="welcomeEmail()" value="Send Welcome Email" />
+    </div>
+</div>
+
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }
 
 <script>
+
+    function welcomeEmail() {
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("WelcomeEmail", "Administration")',
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
 
     var data = new FormData();
 

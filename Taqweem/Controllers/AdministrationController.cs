@@ -50,6 +50,49 @@ namespace Taqweem.Controllers
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
+        public string ConfirmationEmail()
+        {
+            try
+            {
+                List<ApplicationUser> Users = Repository.GetAll<ApplicationUser>().ToList();
+
+                foreach (ApplicationUser User in Users)
+                {
+                    var code = _userManager.GenerateEmailConfirmationTokenAsync(User).Result;
+                    var callbackUrl = Url.EmailConfirmationLink(User.Id, code, Request.Scheme);
+                    var email = User.Email;
+                    var sendemail = _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
+                }
+
+                return "Successful";
+            }
+            catch (Exception ex)
+            {
+                return "Failed " + ex.Message;
+            }
+        }
+
+        public string WelcomeEmail()
+        {
+            try
+            {
+                List<ApplicationUser> Users = Repository.GetAll<ApplicationUser>().ToList();
+
+                EmailModel model = new EmailModel();
+
+                foreach (ApplicationUser User in Users)
+                {
+                    
+                }
+
+                return "Successful";
+            }
+            catch (Exception ex)
+            {
+                return "Failed " + ex.Message;
+            }
+        }
+
         public bool IsSuperUser()
         {
             ApplicationUser user = GetCurrentUserAsync().Result;

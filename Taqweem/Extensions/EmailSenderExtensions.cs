@@ -11,8 +11,12 @@ namespace Taqweem.Services
     {
         public static Task SendEmailConfirmationAsync(this IEmailSender emailSender, string email, string link)
         {
-            return emailSender.SendEmailAsync(email, "Confirm your email",
-                $"Please confirm your account by clicking this link: <a href='{HtmlEncoder.Default.Encode(link)}'>link</a>");
+            string Content = "<p>Dear Taqweem User</p><br><p>Thank you for signing up as a Masjid Administrator.</p><br>" +
+                             "<p>Your details have been submitted successfully. There is only one step left: to activate your account.</p><br>" +
+                              $"Please confirm your account by clicking this link: <a href='{HtmlEncoder.Default.Encode(link)}'>link</a>" +
+                              "<br><br><p>Shukran</p><p><strong>Taqweem Team</strong></p>";
+
+            return emailSender.SendEmailAsync(email, "Taqweem Account Confirmation", Content);
         }
     }
 }
