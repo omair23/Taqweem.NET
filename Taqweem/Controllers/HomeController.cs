@@ -111,6 +111,7 @@ namespace Taqweem.Controllers
                                                 EmailConfirmed = true,
                                                 ActiveStatus = UserStatus.Active,
                                                 IsSuperUser = true,
+                                                CreatedAt = new DateTime(2016, 1, 1),
                                                 MasjidId = "5f3e7169-ab20-4b34-bb27-2e86eefee2c1"};
 
                 var Password = "Open@1";

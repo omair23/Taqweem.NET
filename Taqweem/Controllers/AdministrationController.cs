@@ -170,6 +170,10 @@ namespace Taqweem.Controllers
                                     MasjidId = NewMasjid.Id,
                                 };
 
+                                double d = (double)Sheet.Cells[i, 5].Value;
+
+                                user.CreatedAt = DateTime.FromOADate(d);
+
                                 var Password = "Masjid@1"; //Sheet.Cells[i, 1].Value.ToString().ToUpper();
 
                                 var result = _userManager.CreateAsync(user, Password).Result;
