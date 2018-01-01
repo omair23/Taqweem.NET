@@ -17,7 +17,7 @@ namespace Taqweem.Models
 
         [StringLength(38)]
         [DefaultValue(null)]
-        public string CreatedBy { get; set; } = null;
+        public string CreatedId { get; set; } = null;
 
         public virtual ApplicationUser Created { get; set; }
     }

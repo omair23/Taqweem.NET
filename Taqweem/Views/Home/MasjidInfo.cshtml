@@ -186,18 +186,19 @@
         <div class="thumbnail">
             <div class="caption">
                 <h4 style="text-align:center">NOTICES</h4>
+
                 @if (Model.Notices.Any())
                 {
                     @foreach (var Notice in Model.Notices)
                     {
-                        @*@Html.Raw(Notice.NoticeContent)*@
-                        <p style="color:white;">@Notice.NoticeContent</p>
+                        <p style="text-align: left;">@Notice.Created.FullName - @Notice.CreatedAt.ToString("dd/MM/yyyy hh:mm")</p>
+                        <p style="text-align: left;color:white;">@Notice.NoticeContent</p>
+                        <hr />
                     }
                 }
                 else
                 {
                     <p>No notices to display</p>
-
                 }
 
                 @if (Model.NextSalaahTime != null)
@@ -429,6 +430,8 @@
     <div id="dirC" class="col-md-5" style="display: none;">
         <h4 style="color:#88E0AC; "> DIRECTIONS</h4>
 
+        <a id="dirLink" style="color: #ff6a00;" href="#">Open in Google Maps</a>
+
         <div class="thumbnail">
             <div class="caption">
                 <div id="directionsPanel"></div>
@@ -568,7 +571,12 @@
                origin: pointa,
                destination: pointb,
                travelMode: google.maps.TravelMode.DRIVING
-           };
+            };
+
+           var gmlink = "https://www.google.com/maps/dir/?api=1&origin=" + pointa + "&destination=" + pointb + "&travelmode=" + google.maps.TravelMode.DRIVING;
+
+           $("#dirLink").attr("href", gmlink);
+           $("#dirLink").attr("target", "_blank");
 
            directionsService.route(request, function (response, status) {
                if (status == google.maps.DirectionsStatus.OK) {

@@ -5,9 +5,8 @@
     Layout = "~/Views/Manage/_Layout.cshtml";
 
     <style>
-        .table-striped > tbody > tr:nth-child(odd) > td,
-        .table-striped > tbody > tr:nth-child(odd) > th {
-            background-color: #383838;
+        #maintable {
+            background-color: #272626;
         }
 
         .pagination > li > a, .pagination > li > span {
@@ -18,9 +17,14 @@
             background-color: #1FA154;
         }
 
-        .table-striped > tbody > tr:nth-child(odd) > tr.selected {
-            background-color: #1FA154;
+        /*.table-striped > tbody > tr:nth-child(odd) > td,
+        .table-striped > tbody > tr:nth-child(odd) > th {
+            background-color: #383838;
         }
+
+        table tr:nth-child(odd) td {
+            background-color: #383838;
+        }*/
 
         table.dataTable tbody tr.selected {
             background-color: #1FA154;
@@ -35,11 +39,18 @@
 <div class="row">
     <div class="col-md-12">
 
-        <a href="#"><h4>Add Notice</h4></a>
+        <a href="#modal_add_notice" data-toggle="modal"><h4>Add Notice</h4></a>
 
         @if (Model.Notices.Count >= 1)
         {
-            <table id="maintable" class="table table-bordered table-striped">
+            <div class="collapse navbar-collapse in">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a id="btnHide" class="btn m-r-5"><i style="color:white" class="fa fa-minus-circle"></i><span style="color:white; padding-left:10px">Hide</span></a></li>
+                    <li><a id="btnDelete" class="btn m-r-5"><i style="color:white" class="fa fa-trash"></i><span style="color:white; padding-left:10px">Delete</span></a></li>
+                </ul>
+            </div>
+
+            <table id="maintable" class="table table-bordered">
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -68,39 +79,12 @@
 </div>
 
 <script>
-    var data = new FormData();
-
-    $("#MyFile").change(handleFileSelect);
-
-    function handleFileSelect() {
-        data.append('file', $('#MyFile')[0].files[0]);
-    };
-
-    function submitFile() {
-        $.ajax({
-            type: 'post',
-            processData: false,
-            contentType: false,
-            url: '@Url.Action("UploadRapidsoft", "Manage")',
-            data: data,
-            dataType: 'json',
-            success: function (data) {
-                if (data == "Successful") {
-                    $("#MyFile").trigger('reset');
-                    alert("Succeeded");
-                }
-                else {
-                    $("#MyFile").trigger('reset');
-                    alert("Failed");
-                }
-            }
-        });
-    };
-
     $(document).ready(function () {
 
         @if(Model.Notices.Count > 0)
                     { <text>
+        $("#btnDelete").hide();
+
         var table = $('#maintable').DataTable({
             responsive: true,
             select: "multiple",
@@ -124,9 +108,87 @@
                 }],
         });
 
-                        </text>
+                </text>
+        }
+    });
+
+    $('#maintable tbody').on('click', 'tr', function () {
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        }
+        else {
+            $('#maintable').DataTable().$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
         }
 
+        if ($('#maintable').DataTable().rows('.selected').any()) {
+            $("#btnDelete").show();
+            $("#btnHide").show();
+        } else {
+            $("#btnDelete").hide();
+            $("#btnHide").hide();
+        };
+    });
 
+        $("#btnHide").click(function () {
+        if ($('#maintable').DataTable().rows('.selected').any()) {
+            BootstrapDialog.show({
+                title: 'Confirm Setting to Hidden',
+                message: 'Please confirm that you would like to hide this notice',
+                buttons: [{
+                    label: 'Close',
+                    cssClass: 'btn-primary pull-right',
+                    action: function (dialogItself) {
+                        dialogItself.close();
+                    }
+                }, {
+                    label: 'Confirm',
+                    cssClass: 'btn-danger pull-left',
+                    action: function (dialogItself) {
+                        $.ajax({
+                            type: 'post',
+                            url: '@Url.Action("HideNotice", "Manage")',
+                            data: { "Id": $('#maintable').DataTable().row('.selected').data().a1},
+                            success: function (data) {
+                                if (data == "Successful") {
+                                    location.reload();
+                                }
+                            }
+                        });
+                    }
+                }]
+            });
+        };
+    });
+
+    $("#btnDelete").click(function () {
+        if ($('#maintable').DataTable().rows('.selected').any()) {
+            BootstrapDialog.show({
+                title: 'Confirm Deletion',
+                message: 'Please confirm that you would like to delete this notice',
+                buttons: [{
+                    label: 'Close',
+                    cssClass: 'btn-primary pull-right',
+                    action: function (dialogItself) {
+                        dialogItself.close();
+                    }
+                }, {
+                    label: 'Confirm',
+                    cssClass: 'btn-danger pull-left',
+                    action: function (dialogItself) {
+                        $.ajax({
+                            type: 'post',
+                            url: '@Url.Action("DeleteNotice", "Manage")',
+                            data: { "Id": $('#maintable').DataTable().row('.selected').data().a1},
+                            success: function (data) {
+                                if (data == "Successful") {
+                                    location.reload();
+                                }
+                            }
+                        });
+                    }
+                }]
+            });
+        };
     });
 </script>

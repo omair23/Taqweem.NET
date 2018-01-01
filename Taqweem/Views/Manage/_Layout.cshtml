@@ -92,3 +92,137 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
+<div id="file_upload_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Uploading Salaah Times</h4>
+            </div>
+            <div class="modal-body">
+                <h5 id="file_upload_modal_h5">Please wait while your file is uploaded and processed</h5>
+            </div>
+            <div class="modal-footer">
+                <button id="file_upload_modal_closebutton" onclick="refreshPage()" data-dismiss="modal" class="btn btn-success pull-right" style="display: none;">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="delete_all_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Delete Salaah Times</h4>
+            </div>
+            <div class="modal-body">
+                <h5>Please confirm that you would like to Delete all Salaah Times for your masjid</h5>
+
+                <h5>Please note that this action cannot be undone</h5>
+            </div>
+            <div class="modal-footer">
+                <button onclick="deleteAll()" class="btn btn-danger pull-left">Confirm</button>
+                <button data-dismiss="modal" class="btn btn-success pull-right">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="delete_all_successful_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Successful</h4>
+            </div>
+            <div class="modal-body">
+                <h5>The requested Salaah Times for your masjid have successfully been deleted</h5>
+            </div>
+            <div class="modal-footer">
+                <button onclick="refreshPage()" class="btn btn-success pull-left">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="delete_all_failed_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Unsuccessful</h4>
+            </div>
+            <div class="modal-body">
+                <h5>Unfortunately your request could not be processed successfully, please try again later. If the problem persists please contact the system administrator</h5>
+            </div>
+            <div class="modal-footer">
+                <button onclick="refreshPage()" class="btn btn-success pull-left">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="modal_add_notice" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add New Notice</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmAddNotice">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Notice Message:</label>
+                                <input id="NoticeContent" class="form-control" />
+                                <span class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button onclick="addNotice()" class="btn btn-success pull-left">Submit</button>
+                <button data-dismiss="modal" class="btn btn-danger pull-right">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/bootstrap-dialog.js"></script>
+
+<script src="https://use.fontawesome.com/c0a9eeb4a5.js"></script>
+
+<script>
+    function refreshPage() {
+        location.reload();
+    }
+
+    function addNotice() {
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("AddNotice", "Manage")',
+            data: { "Content": $('#NoticeContent').val()},
+            success: function (data) {
+                if (data == "Successful") {
+                    location.reload();
+                }
+            }
+        });
+    }
+</script>

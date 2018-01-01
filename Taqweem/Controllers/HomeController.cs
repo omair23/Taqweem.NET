@@ -176,7 +176,7 @@ namespace Taqweem.Controllers
                             .ToList();
 
             Model.Notices = Repository
-                                    .Find<Notice>(s => s.MasjidId == Id)
+                                    .Find<Notice>(s => s.MasjidId == Id && !s.IsHidden)
                                     .ToList();
 
             Model.SalaahTime = GetSalaahTime(Info, DateTime.Now);

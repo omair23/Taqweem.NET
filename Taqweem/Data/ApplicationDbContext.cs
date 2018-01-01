@@ -35,15 +35,15 @@ namespace Taqweem.Data
 
             builder.Entity<Masjid>().Property(u => u.UID).UseSqlServerIdentityColumn();
 
-            builder.Entity<Masjid>().Property(p => p.UID)
-                .UseSqlServerIdentityColumn();
-
-            builder.Entity<Masjid>().Property(p => p.UID)
-                .Metadata.AfterSaveBehavior = PropertySaveBehavior.Ignore;
+            builder.Entity<Masjid>().Property(p => p.UID).Metadata.AfterSaveBehavior = PropertySaveBehavior.Ignore;
 
             builder.Entity<SalaahTime>().ToTable("SalaahTime");
 
             builder.Entity<Notice>().ToTable("Notice");
+
+            builder.Entity<Notice>().Property(u => u.UID).UseSqlServerIdentityColumn();
+
+            builder.Entity<Notice>().Property(p => p.UID).Metadata.AfterSaveBehavior = PropertySaveBehavior.Ignore;
 
             builder.Entity<Configuration>().ToTable("Configuration");
 

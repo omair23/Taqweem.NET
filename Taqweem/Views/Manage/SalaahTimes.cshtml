@@ -5,9 +5,8 @@
     Layout = "~/Views/Manage/_Layout.cshtml";
 
     <style>
-        .table-striped > tbody > tr:nth-child(odd) > td,
-        .table-striped > tbody > tr:nth-child(odd) > th {
-            background-color: #383838;
+        #maintable {
+            background-color: #272626;
         }
 
         .pagination > li > a, .pagination > li > span {
@@ -18,9 +17,14 @@
             background-color: #1FA154;
         }
 
-        .table-striped > tbody > tr:nth-child(odd) > tr.selected {
-            background-color: #1FA154;
+        /*.table-striped > tbody > tr:nth-child(odd) > td,
+        .table-striped > tbody > tr:nth-child(odd) > th {
+            background-color: #383838;
         }
+
+        table tr:nth-child(odd) td {
+            background-color: #383838;
+        }*/
 
         table.dataTable tbody tr.selected {
             background-color: #1FA154;
@@ -50,9 +54,18 @@
             </form>
         }
 
+        <br />
+
         @if (Model.SalaahTimes.Count >= 1)
         {
-            <table id="maintable" class="table table-bordered table-striped">
+            <div class="collapse navbar-collapse in">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a id="btnDelete" class="btn m-r-5"><i style="color:white" class="fa fa-trash"></i><span style="color:white; padding-left:10px">Delete</span></a></li>
+                    <li><a href="#delete_all_modal" data-toggle="modal" class="btn m-r-5"><i style="color:white" class="fa fa-trash"></i><span style="color:white; padding-left:10px">Delete All Salaah Times</span></a></li>
+                </ul>
+            </div>
+
+            <table id="maintable" class="table table-bordered">
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -123,6 +136,23 @@
 </div>
 
 <script>
+    function deleteAll() {
+        $('#delete_all_modal').modal('hide');
+
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("DeleteAllTimes", "Manage")',
+            success: function (data) {
+                if (data == "Successful") {
+                    $("#delete_all_successful_modal").modal('show');
+                }
+                else {
+                    $("#delete_all_failed_modal").modal('show');
+                }
+            }
+        });
+    }
+
     var data = new FormData();
 
     $("#MyFile").change(handleFileSelect);
@@ -132,33 +162,39 @@
     };
 
     function submitFile() {
+        $("#file_upload_modal").modal('show');
+
         $.ajax({
             type: 'post',
             processData: false,
             contentType: false,
             url: '@Url.Action("UploadRapidsoft", "Manage")',
             data: data,
-            dataType: 'json',
             success: function (data) {
-                if (data == "Successful") {
-                    $("#MyFile").trigger('reset');
-                    alert("Succeeded");
+                if (data == "Success") {
+                    $("#file_upload_modal_h5").html("Your file was successfully processed");
+                    $("#file_upload_modal_closebutton").css("display", "inline");
                 }
                 else {
-                    $("#MyFile").trigger('reset');
-                    alert("Failed");
+                    $("#file_upload_modal_h5").html("Unfortunately your file could not be successfully processed");
+                    $("#file_upload_modal_closebutton").css("display", "inline");
+                    $("#file_upload_modal_closebutton").removeClass("btn-success");
+                    $("#file_upload_modal_closebutton").addClass("btn-danger");
                 }
             }
         });
     };
 
-    $(document).ready(function () {
 
         @if(Model.SalaahTimes.Count > 0)
-                    { <text>
-        var table = $('#maintable').DataTable({
+        {
+        <text>
+    function mainTable() {
+        $('#maintable').DataTable().destroy();
+
+        return $('#maintable').DataTable({
             responsive: true,
-            select: "multiple",
+            select: "single",
             "dom": '<lf<t>ip>',
             "ordering": false,
             "columns": [
@@ -180,15 +216,69 @@
                 "orderable": false,  // set orderable for selected columns
             }
                 ,
-                {
-                    "targets": [0],
-                    visible: false,
-                }],
+            {
+                "targets": [0],
+                visible: false,
+            }],
         });
+    };
 
-                        </text>
+    $('#maintable tbody').on('click', 'tr', function () {
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        }
+        else {
+            $('#maintable').DataTable().$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+
+        if ($('#maintable').DataTable().rows('.selected').any()) {
+            $("#btnDelete").show();//.css("display", "inline");
+        } else {
+            $("#btnDelete").hide();//.css("display", "none");
+        };
+    });
+        </text>
         }
 
 
+    $(document).ready(function () {
+
+        $("#btnDelete").hide();
+
+        mainTable();
+
+    });
+
+    $("#btnDelete").click(function () {
+        if ($('#maintable').DataTable().rows('.selected').any()) {
+            BootstrapDialog.show({
+                title: 'Confirm Deletion',
+                message: 'Please confirm that you would like to delete this salaah time record',
+                buttons: [{
+                    label: 'Close',
+                    cssClass: 'btn-primary pull-right',
+                    action: function (dialogItself) {
+                        dialogItself.close();
+                    }
+                }, {
+                    label: 'Confirm',
+                    cssClass: 'btn-danger pull-left',
+                    action: function (dialogItself) {
+                        $.ajax({
+                            type: 'post',
+                            url: '@Url.Action("DeleteSalaahTime", "Manage")',
+                            data: { "Id": $('#maintable').DataTable().row('.selected').data().a1},
+                            success: function (data) {
+                                if (data == "Successful") {
+                                    $("#btnDelete").hide();
+                                    location.reload();
+                                }
+                            }
+                        });
+                    }
+                }]
+            });
+        };
     });
 </script>

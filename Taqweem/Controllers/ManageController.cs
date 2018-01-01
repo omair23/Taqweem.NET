@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 
 namespace Taqweem.Controllers
 {
@@ -58,7 +59,74 @@ namespace Taqweem.Controllers
         [TempData]
         public string StatusMessage { get; set; }
 
-        [AllowAnonymous]
+        public string AddNotice(string Content)
+        {
+            try
+            {
+                Notice Notice = new Notice();
+
+                ApplicationUser user = _userManager.GetUserAsync(User).Result;
+
+                Notice.NoticeContent = Content;
+
+                Notice.MasjidId = user.MasjidId;
+                Notice.IsHidden = false;
+                Notice.CreatedId = user.Id;
+
+                Repository.Add(Notice);
+
+                return "Successful";
+            }
+            catch (Exception ex)
+            {
+                return "Failed " + ex.Message;
+            }
+        }
+
+        public string HideNotice(string Id)
+        {
+            try
+            {
+                Notice Notice = Repository.Find<Notice>(s => s.Id == Id).FirstOrDefault();
+                Notice.IsHidden = true;
+
+                Repository.Update(Notice);
+                return "Successful";
+            }
+            catch (Exception ex)
+            {
+                return "Failed " + ex.Message;
+            }
+        }
+
+        public string DeleteNotice(string Id)
+        {
+            try
+            {
+                Notice Notice = Repository.Find<Notice>(s => s.Id == Id).FirstOrDefault();
+                Repository.Delete(Notice);
+                return "Successful";
+            }
+            catch (Exception ex)
+            {
+                return "Failed " + ex.Message;
+            }
+        }
+
+        public string DeleteSalaahTime(string Id)
+        {
+            try
+            {
+                SalaahTime time = Repository.Find<SalaahTime>(s => s.Id == Id).FirstOrDefault();
+                Repository.Delete(time);
+                return "Successful";
+            }
+            catch (Exception ex)
+            {
+                return "Failed " + ex.Message;
+            }
+        }
+
         [HttpPost]
         public string UploadRapidsoft(IFormFile file)
         {
@@ -159,6 +227,24 @@ namespace Taqweem.Controllers
             catch (Exception ex)
             {
                 return "Fail" + ex.Message;
+            }
+        }
+
+        public string DeleteAllTimes()
+        {
+            try
+            {
+                ApplicationUser user = _userManager.GetUserAsync(User).Result;
+
+                List<SalaahTime> Times = Repository.Find<SalaahTime>(s => s.MasjidId == user.MasjidId).ToList();
+
+                Repository.DeleteMultiple(Times);
+
+                return "Successful";
+            }
+            catch (Exception ex)
+            {
+                return "Failed " + ex.Message;
             }
         }
 
@@ -267,6 +353,7 @@ namespace Taqweem.Controllers
 
             Model.Notices = Repository
                             .Find<Notice>(s => s.MasjidId == masjid.Id)
+                            .Include(s => s.Created)
                             .ToList();
 
             return View(Model);
