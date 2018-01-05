@@ -16,7 +16,6 @@ namespace Taqweem.Models
         public virtual Masjid Masjid { get; set; }
 
         [StringLength(38)]
-        [DefaultValue(null)]
         public string CreatedId { get; set; } = null;
 
         public virtual ApplicationUser Created { get; set; }

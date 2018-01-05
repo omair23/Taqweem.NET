@@ -119,7 +119,19 @@ namespace Taqweem.Controllers
                 return RedirectToAction("Index", "Manage");
             }
 
-            FileViewModel Model = new FileViewModel();
+            AdminDashboardViewModel Model = new AdminDashboardViewModel();
+
+            try
+            {
+                Model.Users = Repository.GetAll<ApplicationUser>().Count();
+                Model.Masjids = Repository.GetAll<Masjid>().Count();
+                Model.MasjidSalaahTimes = Repository.GetAll<SalaahTime>().Select(s => s.MasjidId).Distinct().Count();
+                Model.MasjidNotices = Repository.GetAll<Notice>().Select(s => s.MasjidId).Distinct().Count();
+            }
+            catch(Exception ex)
+            {
+
+            }
 
             return View(Model);
         }
