@@ -55,7 +55,7 @@ namespace Taqweem.Models
 
         public double Height { get; set; } = 0;
 
-        public string TimeZoneId { get; set; } = "South Africa Standard Time";
+        public string TimeZoneId { get; set; } = "UTC";
 
         public virtual TimeZone TimeZone { get; set;}
 

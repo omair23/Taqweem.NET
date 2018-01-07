@@ -37,7 +37,7 @@ namespace Taqweem.ViewModels
 
             Masjid = pMasjid;
 
-            PerpetualTime = new cPerpetualTime(DateTime.Now, Masjid);
+            PerpetualTime = new cPerpetualTime(DateTime.Now, Masjid, false);
 
             //Static Conversions
             QiblaDistance = Math.Round(cCalculations.DistanceTo(Masjid.Latitude, Masjid.Longitude, 21.4225, 39.8262));

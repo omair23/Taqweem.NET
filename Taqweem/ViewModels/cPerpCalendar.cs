@@ -33,7 +33,7 @@ namespace Taqweem.ViewModels
 
                 for (int i=1; i<= Days; i++)
                 {
-                    Times.Add(new cPerpetualTime(new DateTime(DateTime.Now.Year, Item.Month, i), Masjid));
+                    Times.Add(new cPerpetualTime(new DateTime(DateTime.Now.Year, Item.Month, i), Masjid, false));
                 }
 
             }

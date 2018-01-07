@@ -123,8 +123,19 @@ namespace Taqweem.Controllers
         public IActionResult Index()
         {
             DBInit();
-
+            
             List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
+
+            //var Notices = Repository.GetAll<Notice>().ToList();
+            //Repository.DeleteMultiple(Notices);
+
+            //var Users = Repository.GetAll<ApplicationUser>().ToList();
+            //Repository.DeleteMultiple(Users);
+
+            //var SalaahTimes = Repository.GetAll<SalaahTime>().ToList();
+            //Repository.DeleteMultiple(SalaahTimes);
+
+            //Repository.DeleteMultiple(AllMasjids);
 
             Markers Model = new Markers();
 
@@ -196,7 +207,7 @@ namespace Taqweem.Controllers
                     val = val.AddDays(Model.NextSalaahTime.DayNumber - 1);
                 }                
 
-                Model.NextPerpetualTime = new cPerpetualTime(val, Info);
+                Model.NextPerpetualTime = new cPerpetualTime(val, Info, false);
             }
 
             return View(Model);
@@ -309,7 +320,7 @@ namespace Taqweem.Controllers
 
             TempMasjid.TimeZoneDiff = TimeZone;
 
-            cPerpetualTime Time = new cPerpetualTime(DateTime.Now, TempMasjid);
+            cPerpetualTime Time = new cPerpetualTime(DateTime.Now, TempMasjid, true);
 
             var _json = new
             {
@@ -445,7 +456,7 @@ namespace Taqweem.Controllers
 
             DateTime Now = DateTime.Now;
 
-            cPerpetualTime PepTime = new cPerpetualTime(DateTime.Now, Masjid);
+            cPerpetualTime PepTime = new cPerpetualTime(DateTime.Now, Masjid, false);
 
             if (Now.TimeOfDay < Times.FajrAdhaan.TimeOfDay)
             {

@@ -9,9 +9,10 @@ namespace Taqweem.ViewModels
 {
     public class cPerpetualTime
     {
-        public cPerpetualTime(DateTime Dval, Masjid Masjid)
+        public cPerpetualTime(DateTime Dval, Masjid Masjid, bool IsTempMasjid)
         {
-            Masjid.TimeZoneDiff = cCalculations.GetTimeZoneDifference(Masjid.TimeZoneId, Dval);
+            if (!IsTempMasjid)
+                Masjid.TimeZoneDiff = cCalculations.GetTimeZoneDifference(Masjid.TimeZoneId, Dval);
 
             Date = Dval;
 
