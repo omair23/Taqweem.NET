@@ -47,23 +47,30 @@
 
                             <label>Time Zone</label>
                             <select asp-for="TimeZoneId" class="form-control" required>
-                                @foreach(var Item in TimeZoneInfo.GetSystemTimeZones())
+                                @foreach (var Item in TimeZoneInfo.GetSystemTimeZones())
                                 {
-                                    <option value="@Item.Id"> @Item.StandardName - @Item.DisplayName </option>
+                                    if (Item.Id == "UTC")
+                                    {
+                                        <option value="@Item.Id" selected> @Item.StandardName - @Item.DisplayName </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Item.Id"> @Item.StandardName - @Item.DisplayName </option>
+                                    }
                                 }
                             </select>
                             <span asp-validation-for="TimeZoneId" class="text-danger"></span>
 
                             <label>Latitude</label>
-                            <input asp-for="Latitude" type="text" class="form-control" placeholder="Latitude" required autofocus>
+                            <input asp-for="Latitude" type="text" class="form-control" placeholder="Latitude" required>
                             <span asp-validation-for="Latitude" class="text-danger"></span>
 
                             <label>Longitude</label>
-                            <input asp-for="Longitude" type="text" class="form-control" placeholder="Longitude" required autofocus>
+                            <input asp-for="Longitude" type="text" class="form-control" placeholder="Longitude" required>
                             <span asp-validation-for="Longitude" class="text-danger"></span>
 
                             <label>Security Question - What is 3 added to 3?</label>
-                            <input asp-for="SecurityQuestion" type="text" class="form-control" placeholder="Security Question" required autofocus>
+                            <input asp-for="SecurityQuestion" type="text" class="form-control" placeholder="Security Question" required>
                             <span asp-validation-for="SecurityQuestion" class="text-danger"></span>
                         </fieldset>
 

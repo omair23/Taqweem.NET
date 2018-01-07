@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
     <meta name="description" content="Masjid: @Model.Masjid.Name - @Model.Masjid.Town - @Model.Masjid.Country - Salaah Times - Perpetual Times - Salaah Calendar - Perpetual Calendar - Adhaan - Salaah - Masjid - Map - Fajr - Dhuhr - Asr - Maghrib - Isha" />
 
     <style>
@@ -278,7 +279,7 @@
                         <td></td>
                     </tr>
                     <tr> <td style="text-align:left">QIBLA DISTANCE</td><td>@Model.QiblaDistance KM - @Model.QDNautical Nautical miles - @Model.QDStatute Statute miles</td></tr>
-                    <tr><td style="text-align:left">QIBLA BEARING FROM TRUE NORTH</td><td>@Model.QiblaBearing Degrees</td></tr>
+                    @if (Model.QiblaDistance > 1){<tr><td style="text-align:left">QIBLA BEARING FROM TRUE NORTH</td><td>@Model.QiblaBearing Degrees</td></tr>}
                     <tr><td style="text-align:left">LATITUDE</td><td>@Model.Masjid.Latitude</td></tr>
                     <tr><td style="text-align:left">LONGITUTE</td><td>@Model.Masjid.Longitude</td></tr>
                     <tr><td style="text-align:left">TIMEZONE</td><td>@Model.Masjid.TimeZone.StandardName - @Model.Masjid.TimeZone.DisplayName</td></tr>
@@ -478,11 +479,11 @@
        var markers;
 
        var customIcons = {
-           Yes: {
-               icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png'
-           },
            No: {
-               icon: 'http://labs.google.com/ridefinder/images/mm_20_red.png'
+               icon: "../../icons/taqweem2_small.png" //'http://labs.google.com/ridefinder/images/mm_20_blue.png'
+           },
+           Yes: {
+               icon: "../../icons/taqweem2_black_small.png" //'http://labs.google.com/ridefinder/images/mm_20_red.png'
            }
        };
 

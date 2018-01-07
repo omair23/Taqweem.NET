@@ -19,6 +19,8 @@
     <link href="~/lib/datatables/datatables.css" rel="stylesheet" />
     <script src="~/lib/datatables/datatables.js"></script>
 
+    <script src="~/js/bootstrap-dialog.js"></script>
+
     <style>
         * {
             font-family: Verdana;
@@ -43,9 +45,9 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="@Url.Action("TBC", "Administration")">Usage</a></li>
-                    <li><a href="@Url.Action("TBC", "Administration")">Users</a></li>
-                    <li><a href="@Url.Action("TBC", "Administration")">Masjids</a></li>
+                    <li><a href="@Url.Action("Index", "Administration")">Admin Home</a></li>
+                    <li><a href="@Url.Action("Users", "Administration")">Users</a></li>
+                    <li><a href="@Url.Action("Masjids", "Administration")">Masjids</a></li>
                     <li><a href="@Url.Action("Index", "Manage")">Back</a></li>
                 </ul>
             </div>

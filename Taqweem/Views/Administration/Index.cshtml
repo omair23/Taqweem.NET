@@ -2,13 +2,20 @@
 
 @{
     ViewData["Title"] = "Profile";
+
+    <style>
+        .table-striped > tbody > tr:nth-child(odd) > td,
+        .table-striped > tbody > tr:nth-child(odd) > th {
+            background-color: #383838;
+        }
+    </style>
 }
 
 <h4>@ViewData["Title"]</h4>
 
 <div class="row">
-    <div class="col-md-12">
-        <table>
+    <div class="col-md-6">
+        <table class="table table-condensed table-striped" style="color:#f2f2f2">
             <tr>
                 <th>Users</th>
                 <td>@Model.Users</td>
@@ -18,11 +25,11 @@
                 <td>@Model.Masjids</td>
             </tr>
             <tr>
-                <th>Masjid Salaah Times</th>
+                <th>Masjid's With Salaah Times</th>
                 <td>@Model.MasjidSalaahTimes</td>
             </tr>
             <tr>
-                <th>MasjidNotices</th>
+                <th>Masjid's With Notices</th>
                 <td>@Model.MasjidNotices</td>
             </tr>
         </table>
@@ -36,7 +43,6 @@
         <form name="submitMasjidForm" id="submitMasjidForm" method="post">
             <label for="file">Masjids File:</label>
             <input asp-for="MyFile" id="MyFile" name="MyFile" type="file"/>
-
             <input type="button" onclick="submitMasjid()" value="Upload Masjids File" /> 
         </form>
     </div>
@@ -54,6 +60,8 @@
 <div class="row">
     <div class="col-md-12">
         <input type="button" onclick="welcomeEmail()" value="Send Welcome Email" />
+
+        <input type="button" onclick="alignTz()" value="Align Time Zones" />
     </div>
 </div>
 
@@ -62,6 +70,15 @@
 }
 
 <script>
+    function alignTz() {
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("AlignTimeZones", "Administration")',
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
 
     function welcomeEmail() {
         $.ajax({

@@ -373,6 +373,28 @@ namespace Taqweem.Controllers
             return View(Model);
         }
 
+        [HttpGet]
+        public IActionResult MasjidAdmin(string Id)
+        {
+            ApplicationUser user = _userManager.GetUserAsync(User).Result;
+
+            if (user.IsSuperUser)
+            {
+                Masjid masjid = Repository.Find<Masjid>(s => s.Id == Id).FirstOrDefault();
+
+                MasjidEditViewModel Model = new MasjidEditViewModel();
+
+                _mapper.Map(masjid, Model);
+
+                //return View(Model);
+                return View("Masjid", Model);
+            }
+            else
+            {
+                return RedirectToAction("Masjid", "Manage");
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Masjid(MasjidEditViewModel model)
@@ -384,14 +406,13 @@ namespace Taqweem.Controllers
 
             var user = _userManager.GetUserAsync(User).Result;
 
-            if (user == null | user.MasjidId != model.Id)
+            if (user == null | (user.MasjidId != model.Id && !user.IsSuperUser))
             {
                 throw new ApplicationException($"Unable to update the masjid");
             }
 
-            Masjid masjid = Repository.Find<Masjid>(s => s.Id == user.MasjidId).FirstOrDefault();
+            Masjid masjid = Repository.Find<Masjid>(s => s.Id == model.Id).FirstOrDefault();
 
-            masjid.UID = 0;
             masjid.LastUpdate = DateTime.UtcNow;
 
             _mapper.Map(model, masjid);

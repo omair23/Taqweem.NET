@@ -14,6 +14,10 @@ using System.Collections.Generic;
 using Taqweem.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Taqweem.ViewModels;
+using Microsoft.EntityFrameworkCore;
+using Taqweem.ViewModels.AdminViewModels;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Taqweem.Controllers
 {
@@ -50,8 +54,70 @@ namespace Taqweem.Controllers
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
+        [HttpPost]
+        public string AlignTimeZones(string Id)
+        {
+            if (!IsSuperUser())
+            {
+                return "Unauthorised";
+            }
+
+            try
+            {
+                Dictionary<string, string> CountryTimeZones = new Dictionary<string, string>();
+
+                CountryTimeZones.Add("South Africa", "South Africa Standard Time");
+                CountryTimeZones.Add("Saudi Arabia", "Arab Standard Time");
+                CountryTimeZones.Add("Iraq", "Arabic Standard Time");
+                CountryTimeZones.Add("Jordan", "E. Europe Standard Time");
+                CountryTimeZones.Add("Kuwait", "Arab Standard Time");
+                CountryTimeZones.Add("Tanzania", "E. Africa Standard Time");
+                CountryTimeZones.Add("United Arab Emirates", "Arabian Standard Time");
+                CountryTimeZones.Add("Botswana", "South Africa Standard Time");
+                CountryTimeZones.Add("Namibia", "Namibia Standard Time");
+                CountryTimeZones.Add("Oman", "Arabian Standard Time");
+                CountryTimeZones.Add("India", "India Standard Time");
+                CountryTimeZones.Add("Myanmar (Burma)", "Myanmar Standard Time");
+                CountryTimeZones.Add("Uzbekistan", "West Asia Standard Time");
+                CountryTimeZones.Add("Turkey", "Turkey Standard Time");
+                CountryTimeZones.Add("Angola", "W. Central Africa Standard Time");
+                CountryTimeZones.Add("Democratic Republic of Congo", "W. Central Africa Standard Time");
+                CountryTimeZones.Add("Bahrain", "Arab Standard Time");
+                CountryTimeZones.Add("Qatar", "Arab Standard Time");
+                CountryTimeZones.Add("United Kingdom", "GMT Standard Time");
+                CountryTimeZones.Add("Malawi", "South Africa Standard Time");
+
+                List<Masjid> Masjids = Repository.GetAll<Masjid>().ToList();
+
+                foreach(Masjid masjid in Masjids)
+                {
+                    if (CountryTimeZones.ContainsKey(masjid.Country))
+                    {
+                        masjid.TimeZoneId = CountryTimeZones[masjid.Country];
+                    }
+                    else
+                    {
+                        masjid.TimeZoneId = "UTC";
+                    }
+                }
+
+                Repository.UpdateMultiple(Masjids);
+
+                return "Successful";
+            }
+            catch (Exception ex)
+            {
+                return "Failed " + ex.Message;
+            }
+        }
+
         public string ConfirmationEmail()
         {
+            if (!IsSuperUser())
+            {
+                return "Unauthorised";
+            }
+
             try
             {
                 List<ApplicationUser> Users = Repository.GetAll<ApplicationUser>().ToList();
@@ -74,6 +140,11 @@ namespace Taqweem.Controllers
 
         public string WelcomeEmail()
         {
+            if (!IsSuperUser())
+            {
+                return "Unauthorised";
+            }
+
             try
             {
                 List<ApplicationUser> Users = Repository.GetAll<ApplicationUser>().ToList();
@@ -308,6 +379,120 @@ namespace Taqweem.Controllers
             catch (Exception ex)
             {
                 return "Fail" + ex.Message;
+            }
+        }
+
+        public IActionResult Masjids()
+        {
+            if (!IsSuperUser())
+            {
+                return RedirectToAction("Index", "Manage");
+            }
+
+            List<Masjid> AllMasjids = Repository.GetAll<Masjid>().OrderByDescending(s => s.CreatedAt).ToList();
+
+            MasjidListViewModel Model = new MasjidListViewModel();
+
+            Model.Masjids = AllMasjids;
+
+            return View(Model);
+        }
+
+        public IActionResult Users()
+        {
+            if (!IsSuperUser())
+            {
+                return RedirectToAction("Index", "Manage");
+            }
+
+            List<ApplicationUser> AllUsers = Repository
+                                                .GetAll<ApplicationUser>()
+                                                .OrderByDescending(s => s.CreatedAt)
+                                                .Include(s => s.Masjid)
+                                                .ToList();
+
+            UserListViewModel Model = new UserListViewModel();
+
+            Model.Users = AllUsers;
+
+            return View(Model);
+        }
+
+        [HttpPost]
+        public string MasjidDelete(string Id)
+        {
+            if (!IsSuperUser())
+            {
+                return "Unauthorised";
+            }
+
+            try
+            {
+                List<Notice> Notices = Repository.Find<Notice>(s => s.MasjidId == Id).ToList();
+
+                List<SalaahTime> SalaahTimes = Repository.Find<SalaahTime>(s => s.MasjidId == Id).ToList();
+
+                Masjid Masjid = Repository.Find<Masjid>(s => s.Id == Id).FirstOrDefault();
+
+                Repository.DeleteMultiple(Notices);
+
+                Repository.DeleteMultiple(SalaahTimes);
+
+                Repository.Delete(Masjid);
+
+                return "Successful"; 
+            }
+            catch (Exception ex)
+            {
+                return "Failed " + ex.Message;
+            }
+        }
+
+        [HttpPost]
+        public string UserActivate(string Id)
+        {
+            if (!IsSuperUser())
+            {
+                return "Unauthorised";
+            }
+
+            try
+            {
+                ApplicationUser user = Repository.Find<ApplicationUser>(s => s.Id == Id).FirstOrDefault();
+
+                user.ActiveStatus = UserStatus.Active;
+
+                Repository.Update(user);
+
+                return "Successful";
+            }
+            catch (Exception ex)
+            {
+                return "Failed " + ex.Message;
+            }
+        }
+
+        [HttpPost]
+        public string UserDeactivate(string Id)
+        {
+            if (!IsSuperUser())
+            {
+                return "Unauthorised";
+            }
+
+            try
+            {
+                ApplicationUser user = Repository.Find<ApplicationUser>(s => s.Id == Id).FirstOrDefault();
+
+                user.ActiveStatus = UserStatus.Suspended;
+
+                Repository.Update(user);
+
+                return "Successful";
+            }
+            catch (Exception ex)
+            {
+                return "Failed " + ex.Message;
             }
         }
     }

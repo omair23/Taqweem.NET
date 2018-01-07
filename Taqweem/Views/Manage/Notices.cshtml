@@ -84,6 +84,7 @@
         @if(Model.Notices.Count > 0)
                     { <text>
         $("#btnDelete").hide();
+        $("#btnHide").hide();
 
         var table = $('#maintable').DataTable({
             responsive: true,
@@ -122,10 +123,10 @@
         }
 
         if ($('#maintable').DataTable().rows('.selected').any()) {
-            $("#btnDelete").show();
+            //$("#btnDelete").show();
             $("#btnHide").show();
         } else {
-            $("#btnDelete").hide();
+            //$("#btnDelete").hide();
             $("#btnHide").hide();
         };
     });
