@@ -1,5 +1,8 @@
-﻿using System.Net;
-using System.Net.Mail;
+﻿using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Taqweem.Classes;
 
@@ -10,10 +13,12 @@ namespace Taqweem.Services
     public class EmailSender : IEmailSender
     {
         private readonly RazorViewToStringRenderer _renderer;
+        private readonly MailboxAddress _sender;
 
         public EmailSender(RazorViewToStringRenderer renderer)
         {
             _renderer = renderer;
+            _sender = new MailboxAddress("Taqweem", "taqweemmasjid@gmail.com");
         }
 
         public string EmailBody(string message)
@@ -27,36 +32,73 @@ namespace Taqweem.Services
             return content;
         }
 
-        public async Task SendEmailAsync(string email, string subject, string message)
+        //public async Task SendEmailAsync(string email, string subject, string body)
+        //{
+        //    using (var client = new System.Net.Mail.SmtpClient())
+        //    {
+        //        client.Host = "smtp.gmail.com";
+        //        client.Port = 587;
+        //        client.EnableSsl = true;
+
+        //        NetworkCredential NC = new NetworkCredential();
+        //        NC.UserName = "taqweemmasjid@gmail.com";
+        //        NC.Password = "Taqweem@786";
+        //        client.Credentials = NC;
+
+        //        MailAddress from = new MailAddress(NC.UserName, "Taqweem");
+
+        //        //TO DO Remove Static Email Address
+        //        MailAddress receiver = new MailAddress("omair334@gmail.com", "Omair Kazi"); //new MailAddress(email);
+
+        //        MailMessage Mymessage = new MailMessage(from, receiver);
+
+        //        Mymessage.Subject = subject;
+        //        Mymessage.IsBodyHtml = true;
+
+        //        Mymessage.Body = EmailBody(message);
+
+        //        client.Send(Mymessage);
+        //    }
+
+        //    //return Task.CompletedTask;
+        //}
+
+        public Task SendEmailAsync(string email, string subject, string content)
         {
-            using (var client = new System.Net.Mail.SmtpClient())
+            try
             {
-                client.Host = "smtp.gmail.com";
-                client.Port = 587;
-                client.EnableSsl = true;
+                MimeMessage message = new MimeMessage();
 
-                NetworkCredential NC = new NetworkCredential();
-                NC.UserName = "taqweemmasjid@gmail.com";
-                NC.Password = "Taqweem@786";
-                client.Credentials = NC;
+                message.From.Add(_sender);
 
-                MailAddress from = new MailAddress(NC.UserName, "Taqweem");
+                message.To.Add(new MailboxAddress("omair334@gmail.com"));
 
-                //TO DO Remove Static Email Address
-                MailAddress receiver = new MailAddress("omair334@gmail.com", "Omair Kazi"); //new MailAddress(email);
+                message.Subject = subject;
 
-                MailMessage Mymessage = new MailMessage(from, receiver);
+                var bodyBuilder = new BodyBuilder();
+                bodyBuilder.HtmlBody = EmailBody(content);
+                message.Body = bodyBuilder.ToMessageBody();
 
-                Mymessage.Subject = subject;
-                Mymessage.IsBodyHtml = true;
+                //message.Body = new TextPart("html") { Text = content };
 
-                Mymessage.Body = EmailBody(message);
+                using (var client = new SmtpClient())
+                {
+                    client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+                    client.AuthenticationMechanisms.Remove("XOAUTH2");
+                    client.Authenticate("taqweemmasjid@gmail.com", "Taqweem@786");
 
-                client.Send(Mymessage);
+                    client.Send(message);
+                    client.Disconnect(true);
+                }
+
+                return Task.FromResult(0);
             }
-
-            //return Task.CompletedTask;
+            catch (Exception ex)
+            {
+                return Task.FromResult(-1);
+            }
         }
+
 
         //public Task SendEmailAsync(string email, string subject, string message)
         //{

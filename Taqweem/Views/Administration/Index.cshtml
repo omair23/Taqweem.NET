@@ -61,6 +61,8 @@
     <div class="col-md-12">
         <input type="button" onclick="welcomeEmail()" value="Send Welcome Email" />
 
+        <input type="button" onclick="confirmationEmail()" value="Send Confirmation Email" />
+
         <input type="button" onclick="alignTz()" value="Align Time Zones" />
     </div>
 </div>
@@ -74,6 +76,16 @@
         $.ajax({
             type: 'post',
             url: '@Url.Action("AlignTimeZones", "Administration")',
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
+
+    function confirmationEmail() {
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("ConfirmationEmail", "Administration")',
             success: function (data) {
                 alert(data);
             }
@@ -112,14 +124,7 @@
             url: '@Url.Action("UploadUsers", "Administration")',
             data: data,
             success: function (data) {
-                if (data == "Successful") {
-                    $("#MyFile").trigger('reset');
-                    alert("Succeeded");
-                }
-                else {
-                    $("#MyFile").trigger('reset');
-                    alert("Failed");
-                }
+                alert(data);
             }
         });
     };

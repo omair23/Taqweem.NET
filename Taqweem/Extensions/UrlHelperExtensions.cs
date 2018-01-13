@@ -12,6 +12,8 @@ namespace Microsoft.AspNetCore.Mvc
 
         public static string EmailConfirmationLink(this IUrlHelper urlHelper, string userId, string code, string scheme)
         {
+            //return "www.google.com";
+
             return urlHelper.Action(
                 action: nameof(AccountController.ConfirmEmail),
                 controller: "Account",
