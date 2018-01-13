@@ -122,12 +122,11 @@ namespace Taqweem.Controllers
             {
                 List<ApplicationUser> Users = Repository.GetAll<ApplicationUser>().ToList();
 
-                foreach (ApplicationUser User in Users)
+                foreach (ApplicationUser User in Users.Take(3).ToList())
                 {
                     var code = _userManager.GenerateEmailConfirmationTokenAsync(User).Result;
                     var callbackUrl = Url.EmailConfirmationLink(User.Id, code, Request.Scheme);
-                    var email = User.Email;
-                    var sendemail = _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
+                    var sendemail = _emailSender.SendEmailConfirmationAsync(User.Email, callbackUrl);
                 }
 
                 return "Successful";
@@ -158,7 +157,7 @@ namespace Taqweem.Controllers
 
                 foreach (ApplicationUser User in Users)
                 {
-                    _emailSender.SendEmailAsync(User.Email, "Taqweem Version 2.0", Text);
+                    var stat = _emailSender.SendEmailAsync(User.Email, "Taqweem Version 2.0", Text).Status;
                 }
 
                 return "Successful";
@@ -258,6 +257,8 @@ namespace Taqweem.Controllers
                                     MasjidId = NewMasjid.Id,
                                 };
 
+                                user.Id = Sheet.Cells[i, 7].Value.ToString();
+
                                 try
                                 {
                                     user.CreatedAt = DateTime.FromOADate((double)Sheet.Cells[i, 5].Value);
@@ -266,8 +267,8 @@ namespace Taqweem.Controllers
                                 {
                                     try
                                     {
-                                        user.CreatedAt = DateTime.ParseExact(Sheet.Cells[i, 5].Value.ToString(), 
-                                            "yyyy/MM/dd HH:mm",
+                                        user.CreatedAt = DateTime.ParseExact(Sheet.Cells[i, 5].Value.ToString(),
+                                            "yyyy/MM/dd hh:mm:ss tt",
                                             System.Globalization.CultureInfo.InvariantCulture);
                                     }
                                     catch (Exception ex2)

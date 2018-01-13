@@ -3,6 +3,7 @@ using MailKit.Security;
 using MimeKit;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Taqweem.Classes;
 
@@ -84,6 +85,7 @@ namespace Taqweem.Services
                 using (var client = new SmtpClient())
                 {
                     client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
                     client.Authenticate("taqweemmasjid@gmail.com", "Taqweem@786");
 

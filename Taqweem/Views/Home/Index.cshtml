@@ -152,6 +152,7 @@
        var map;
        var markers;
        var Location;
+       var infoWindow;
        var customIcons = {
 
            No: {
@@ -163,24 +164,35 @@
            }
        };
 
-       navigator.geolocation.getCurrentPosition(GetLocation);
+       function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+           infoWindow.setPosition(pos);
+           infoWindow.setContent(browserHasGeolocation ?
+               'Error: The Geolocation service failed.' :
+               'Error: Your browser doesn\'t support geolocation.');
+           infoWindow.open(map);
+       }
 
-       function GetLocation(location) {
-           Location = { lat: location.coords.latitude, lng: location.coords.longitude };
+       function setMarker(latitude, longitude) {
+           var point = new google.maps.LatLng(
+                        latitude,
+                        longitude);
+
+           marker = new google.maps.Marker({ position: point, map: map });
+
+           var Radius = document.getElementById('rangeInput').value;
+
+           $("#Latitude").html(latitude);
+           $("#Longitude").html(longitude);
+
+           GetRadiusTimes(latitude, longitude, Radius, 'Click');
+
+           infoWindow.close();
        }
 
        function load() {
-           var UserLatitude;
-           var UserLongitude;
+           var UserLatitude = -25;
+           var UserLongitude = 27;
            var ZoomLength = 6;
-           UserLatitude = -25;
-           UserLongitude = 27;
-
-           if (Location.lat != undefined) {
-               UserLatitude = Location.lat;
-               UserLongitude = Location.lng;
-               ZoomLength = 12;
-           }
 
            map = new google.maps.Map(document.getElementById("map"), {
                center: new google.maps.LatLng(UserLatitude, UserLongitude),
@@ -191,6 +203,36 @@
            marker = new google.maps.Marker({ position: Location, map: map });
 
            var infoWindow = new google.maps.InfoWindow;
+
+           // Try HTML5 geolocation.
+           if (navigator.geolocation) {
+               navigator.geolocation.getCurrentPosition(function (position) {
+                   var pos = {
+                       lat: position.coords.latitude,
+                       lng: position.coords.longitude
+                   };
+
+                   Location = { lat: position.coords.latitude, lng: position.coords.longitude };
+
+                   infoWindow.setPosition(pos);
+
+                   var html = "<table class='table' style='background-color: #383838; color: #fff; border-top: none; border:none'>" +
+                       "<tr><td>Your Location</td></tr>" +
+                       "<tr><td><a onclick='setMarker(" + position.coords.latitude + "," + position.coords.longitude + ")'>Set Marker Here</a></td></tr>"
+                        "</table>";
+
+                   infoWindow.setContent(html);
+                   infoWindow.open(map);
+
+                   map.setCenter(pos);
+                   map.setZoom(15);
+               }, function () {
+                   handleLocationError(true, infoWindow, map.getCenter());
+               });
+           } else {
+               // Browser doesn't support Geolocation
+               handleLocationError(false, infoWindow, map.getCenter());
+           }
 
            geocoder = new google.maps.Geocoder();
 
@@ -367,38 +409,38 @@
                 function startTime() {
                     Timer += 1;
 
-                    if (Timer == 6) {
+                    //if (Timer == 6) {
 
-                        if (Location.lat != undefined) {
-                            UserLatitude = Location.lat;
-                            UserLongitude = Location.lng;
-                            ZoomLength = 12;
+                    //    if (Location.lat != undefined) {
+                    //        UserLatitude = Location.lat;
+                    //        UserLongitude = Location.lng;
+                    //        ZoomLength = 12;
 
-                            var todayz = new Date();
-                            var tzn = todayz.getTimezoneOffset();
-                            tzn = tzn / -60;
+                    //        var todayz = new Date();
+                    //        var tzn = todayz.getTimezoneOffset();
+                    //        tzn = tzn / -60;
 
-                            document.getElementById("Latitude").innerHTML = UserLatitude;
-                            document.getElementById("Longitude").innerHTML = UserLongitude;
+                    //        document.getElementById("Latitude").innerHTML = UserLatitude;
+                    //        document.getElementById("Longitude").innerHTML = UserLongitude;
 
-                            map.setCenter({
-                                lat: UserLatitude,
-                                lng: UserLongitude
-                            });
+                    //        map.setCenter({
+                    //            lat: UserLatitude,
+                    //            lng: UserLongitude
+                    //        });
 
-                            map.setZoom(16);
+                    //        map.setZoom(16);
 
-                            var micon = customIcons.No || {};
+                    //        var micon = customIcons.No || {};
 
-                            var marker = new google.maps.Marker({
-                                map: map,
-                                position: Location,
-                                icon: micon.icon
-                            });
+                    //        var marker = new google.maps.Marker({
+                    //            map: map,
+                    //            position: Location,
+                    //            icon: micon.icon
+                    //        });
 
-                            GetRadiusTimes(UserLatitude, UserLongitude, 7, 'Init');
-                        }
-                    }
+                    //        GetRadiusTimes(UserLatitude, UserLongitude, 7, 'Init');
+                    //    }
+                    //}
 
                     if (Timer == 180) {
                         location.reload();
