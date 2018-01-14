@@ -39,6 +39,7 @@ namespace Taqweem.ViewModels
             {
                 Times = Repository
                         .Find<SalaahTime>(s => s.MasjidId == Masjid.Id
+                                            && s.TimeDate.Year == DateTime.Now.Year
                                             && s.Type == SalaahTimesType.DailyTime)
                         .OrderBy(s => s.DayNumber)
                         .ToList();
