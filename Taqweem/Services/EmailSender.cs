@@ -83,46 +83,48 @@ namespace Taqweem.Services
                 bodyBuilder.HtmlBody = EmailBody(content);
                 message.Body = bodyBuilder.ToMessageBody();
 
-                MailjetClient client = new MailjetClient("e4c449d5c56e09c5f3b49f74ef60f230", "dc3c91fac5cee339cdd35aa26f323230");
-                MailjetRequest request = new MailjetRequest
-                {
-                    Resource = Send.Resource,
-                }
-                            .Property(Send.FromEmail, "TaqweemMasjid@gmail.com")
-                            .Property(Send.FromName, "Taqweem")
-                            .Property(Send.Subject, subject)
-                            .Property(Send.HtmlPart, EmailBody(content))
-                            .Property(Send.Recipients, "omair334@gmail.com");
-                //new JArray {
-                //                    new JObject {
-                //                     {"Email", "passenger@mailjet.com"}
-                //                     }
-                //                });
-                MailjetResponse response = client.PostAsync(request).Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return Task.FromResult(0);
-                }
-                else
-                {
-                    return Task.FromResult(-1);
-                }
-
-                //using (var client = new SmtpClient())
+                //MailjetClient client = new MailjetClient("e4c449d5c56e09c5f3b49f74ef60f230", "dc3c91fac5cee339cdd35aa26f323230");
+                //MailjetRequest request = new MailjetRequest
                 //{
-                //    //client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-                //    client.Connect("in-v3.mailjet.com", 587, SecureSocketOptions.StartTls);
+                //    Resource = Send.Resource,
+                //}
+                //            .Property(Send.FromEmail, "TaqweemMasjid@gmail.com")
+                //            .Property(Send.FromName, "Taqweem")
+                //            .Property(Send.Subject, subject)
+                //            .Property(Send.HtmlPart, EmailBody(content))
+                //            .Property(Send.Recipients, "omair334@gmail.com");
+                ////new JArray {
+                ////                    new JObject {
+                ////                     {"Email", "passenger@mailjet.com"}
+                ////                     }
+                ////                });
+                //MailjetResponse response = client.PostAsync(request).Result;
 
-                //    //client.AuthenticationMechanisms.Remove("XOAUTH2");
-                //    //client.Authenticate("taqweemmasjid@gmail.com", "Taqweem@786");
-                //    client.Authenticate("e4c449d5c56e09c5f3b49f74ef60f230", "dc3c91fac5cee339cdd35aa26f323230");
-
-                //    client.Send(message);
-                //    client.Disconnect(true);
+                //if (response.IsSuccessStatusCode)
+                //{
+                //    return Task.FromResult(0);
+                //}
+                //else
+                //{
+                //    return Task.FromResult(-1);
                 //}
 
-                //return Task.FromResult(0);
+                //SendGrid.SendGridClient Client = new SendGrid.SendGridClient("azure_d8e0ca542b36f2c2ea78da124f620197@azure.com");
+
+                using (var client = new SmtpClient())
+                {
+                    //client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+                    client.Connect("smtp.sendgrid.net", 25, SecureSocketOptions.StartTls);
+
+                    client.AuthenticationMechanisms.Remove("XOAUTH2");
+                    //client.Authenticate("taqweemmasjid@gmail.com", "Taqweem@786");
+                    client.Authenticate("azure_d8e0ca542b36f2c2ea78da124f620197@azure.com", "Taqweem@786");
+
+                    client.Send(message);
+                    client.Disconnect(true);
+                }
+
+                return Task.FromResult(0);
             }
             catch (Exception ex)
             {
