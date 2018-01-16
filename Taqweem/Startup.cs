@@ -33,9 +33,6 @@ namespace Taqweem
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer("Data Source=tcp:taqweem.database.windows.net,1433;Initial Catalog=taqweem;User Id=omair@taqweem.database.windows.net;Password=Taqweem@786;"));
-
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
