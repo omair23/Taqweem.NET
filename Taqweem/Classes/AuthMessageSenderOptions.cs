@@ -11,6 +11,6 @@ namespace Taqweem.Classes
 
         public bool IsDebug { get; set; } = false;
 
-        public string DebugEmail { get; set; } = "fulcrumza@kpmg.co.za";
+        public string DebugEmail { get; set; } = "TaqweemMasjid@gmail.com";
     }
 }
