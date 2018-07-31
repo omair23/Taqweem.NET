@@ -18,6 +18,7 @@ using Taqweem.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Taqweem.ViewModels.AdminViewModels;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Web;
 
 namespace Taqweem.Controllers
 {
@@ -120,13 +121,19 @@ namespace Taqweem.Controllers
 
             try
             {
-                List<ApplicationUser> Users = Repository.GetAll<ApplicationUser>().ToList();
+                //List<ApplicationUser> Users = Repository.GetAll<ApplicationUser>().ToList();
+
+                List<ApplicationUser> Users = Repository.Find<ApplicationUser>(s => s.Email == "naushad@rapidsoft.co.za").ToList();
 
                 foreach (ApplicationUser User in Users.Take(3).ToList())
                 {
                     var code = _userManager.GenerateEmailConfirmationTokenAsync(User).Result;
+
+                    code = HttpUtility.UrlEncode(code);
+
                     var callbackUrl = Url.EmailConfirmationLink(User.Id, code, Request.Scheme);
                     //var sendemail = _emailSender.SendEmailConfirmationAsync(User.Email, callbackUrl);
+
 
                     string Content = "<p>Dear Taqweem User</p><br><p>Thank you for signing up as a Masjid Administrator.</p><br>" +
                              "<p>Your details have been submitted successfully. There is only one step left: to activate your account.</p><br>" +

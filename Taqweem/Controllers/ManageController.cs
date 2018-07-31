@@ -19,6 +19,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using System.Web;
 
 namespace Taqweem.Controllers
 {
@@ -543,6 +544,8 @@ namespace Taqweem.Controllers
             }
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            code = HttpUtility.UrlEncode(code);
+
             var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
             var email = user.Email;
             await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
