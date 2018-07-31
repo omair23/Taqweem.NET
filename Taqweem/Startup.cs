@@ -20,12 +20,13 @@ namespace Taqweem
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; set; }
+        public IHostingEnvironment env { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -59,8 +60,18 @@ namespace Taqweem
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IConfiguration configuration)
         {
+            //if (env.IsDevelopment())
+            //{
+                
+            //}
+
+            //if (env.IsProduction() || env.IsStaging())
+            //{
+                
+            //}
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

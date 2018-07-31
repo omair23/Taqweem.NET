@@ -341,6 +341,29 @@ namespace Taqweem.Controllers
             return View(Model);
         }
 
+        [HttpGet]
+        public IActionResult SalaahTimesAdmin(string Id)
+        {
+            ApplicationUser user = _userManager.GetUserAsync(User).Result;
+
+            if (user.IsSuperUser)
+            {
+                Masjid masjid = Repository.Find<Masjid>(s => s.Id == Id).FirstOrDefault();
+
+                //TO DO REPLACE VIEW MODEL
+
+                MasjidEditViewModel Model = new MasjidEditViewModel();
+
+                _mapper.Map(masjid, Model);
+
+                return View("Masjid", Model);
+            }
+            else
+            {
+                return RedirectToAction("Masjid", "Manage");
+            }
+        }
+
         public IActionResult Notices()
         {
             ApplicationUser user = _userManager.GetUserAsync(User).Result;
@@ -386,7 +409,6 @@ namespace Taqweem.Controllers
 
                 _mapper.Map(masjid, Model);
 
-                //return View(Model);
                 return View("Masjid", Model);
             }
             else

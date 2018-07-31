@@ -126,7 +126,17 @@ namespace Taqweem.Controllers
                 {
                     var code = _userManager.GenerateEmailConfirmationTokenAsync(User).Result;
                     var callbackUrl = Url.EmailConfirmationLink(User.Id, code, Request.Scheme);
-                    var sendemail = _emailSender.SendEmailConfirmationAsync(User.Email, callbackUrl);
+                    //var sendemail = _emailSender.SendEmailConfirmationAsync(User.Email, callbackUrl);
+
+                    string Content = "<p>Dear Taqweem User</p><br><p>Thank you for signing up as a Masjid Administrator.</p><br>" +
+                             "<p>Your details have been submitted successfully. There is only one step left: to activate your account.</p><br>" +
+                              $"Please confirm your account by clicking this link: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>link</a>" +
+                              "<br><br><p>Shukran</p><p><strong>Taqweem Team</strong></p>";
+
+                    var send = _emailSender.SendEmailAsync("omair334@gmail.com", "Taqweem Account Confirmation", Content);
+                    //string send = _emailSender.SendEmailString("omair334@gmail.com", "Taqweem Account Confirmation", Content);
+
+                    return send.Status.ToString();
                 }
 
                 return "Successful";

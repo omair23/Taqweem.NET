@@ -1,15 +1,11 @@
-﻿using Mailjet.Client;
-using Mailjet.Client.Resources;
-using MailKit.Net.Smtp;
-using MailKit.Security;
+﻿using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Taqweem.Classes;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Taqweem.Services
 {
@@ -18,12 +14,21 @@ namespace Taqweem.Services
         private readonly RazorViewToStringRenderer _renderer;
         private readonly MailboxAddress _sender;
         private readonly AuthMessageSenderOptions _optionsAccessor;
+        private readonly IConfiguration configuration;
+        private readonly IHostingEnvironment env;
 
-        public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor, RazorViewToStringRenderer renderer)
+        public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor, 
+                            RazorViewToStringRenderer renderer,
+                            IConfiguration Configuration,
+                            IHostingEnvironment Env)
         {
+            env = Env;
+            configuration = Configuration;
+
             _optionsAccessor = optionsAccessor.Value;
             _renderer = renderer;
-            _sender = new MailboxAddress("Taqweem", "taqweemmasjid@gmail.com");
+            //_sender = new MailboxAddress("Taqweem", "TaqweemMasjid@gmail.com");
+            _sender = new MailboxAddress(configuration.GetValue<string>("MailboxAddressName"), configuration.GetValue<string>("MailboxAddress"));
         }
 
         public string EmailBody(string message)
@@ -39,6 +44,26 @@ namespace Taqweem.Services
 
         public Task SendEmailAsync(string email, string subject, string content)
         {
+            bool result = ActualSendEmail(email, subject, content);
+
+            if (result == true)
+                return Task.FromResult(0);
+            else
+                return Task.FromResult(-1);
+        }
+
+        public string SendEmailString(string email, string subject, string content)
+        {
+            bool result = ActualSendEmail(email, subject, content);
+
+            if (result == true)
+                return "Succeeded";
+            else
+                return "Failed";
+        }
+
+        public bool ActualSendEmail(string email, string subject, string content)
+        {
             try
             {
                 MimeMessage message = new MimeMessage();
@@ -53,26 +78,23 @@ namespace Taqweem.Services
                 bodyBuilder.HtmlBody = EmailBody(content);
                 message.Body = bodyBuilder.ToMessageBody();
 
-                using (var client = new SmtpClient())
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
                 {
-                    //client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-                    client.Connect("smtp.sendgrid.net", 587, SecureSocketOptions.StartTls);
-
-                    client.AuthenticationMechanisms.Remove("XOAUTH2");
-                    client.Authenticate(_optionsAccessor.SendGridUser, _optionsAccessor.SendGridPassword);
-
+                    client.Connect("smtp.sendgrid.net", 587, SecureSocketOptions.Auto);
+                    //client.AuthenticationMechanisms.Remove("XOAUTH2");
+                    
+                    client.Authenticate(configuration.GetValue<string>("SendGrid_User"), configuration.GetValue<string>("SendGrid_Password"));
                     client.Send(message);
                     client.Disconnect(true);
                 }
 
-                return Task.FromResult(0);
+                return true;
             }
             catch (Exception ex)
             {
-                return Task.FromResult(-1);
+                return false;
             }
         }
-
 
         //public Task SendEmailAsync(string email, string subject, string message)
         //{
