@@ -70,7 +70,15 @@ namespace Taqweem.Services
 
                 message.From.Add(_sender);
 
-                message.To.Add(new MailboxAddress("omair334@gmail.com"));
+                if (env.IsProduction())
+                {
+                    message.To.Add(new MailboxAddress("Omair.Kazi@kpmg.co.za"));
+                    //message.To.Add(new MailboxAddress(email);
+                }
+                else
+                {
+                    message.To.Add(new MailboxAddress("omair334@gmail.com"));
+                }
 
                 message.Subject = subject;
 
