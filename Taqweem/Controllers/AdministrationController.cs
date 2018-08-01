@@ -120,12 +120,12 @@ namespace Taqweem.Controllers
 
             try
             {
-                List<ApplicationUser> Users = Repository.GetAll<ApplicationUser>().ToList();
+                List<ApplicationUser> Users = Repository.GetAll<ApplicationUser>().Take(5).ToList();
 
                 //List<ApplicationUser> Users = Repository.Find<ApplicationUser>(s => s.Email == "naushad@rapidsoft.co.za").ToList();
 
                 //TO DO Remove Limit
-                foreach (ApplicationUser User in Users.Take(4).ToList())
+                foreach (ApplicationUser User in Users)
                 {
                     var code = _userManager.GenerateEmailConfirmationTokenAsync(User).Result;
 
@@ -139,11 +139,12 @@ namespace Taqweem.Controllers
                               $"Please confirm your account by clicking this link: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>link</a>" +
                               "<br><br><p>Shukran</p><p><strong>Taqweem Team</strong></p>";
 
+
                     var send = _emailSender.SendEmailAsync(User.Email, "Taqweem Account Confirmation", Content);
                     //var send = _emailSender.SendEmailAsync("omair334@gmail.com", "Taqweem Account Confirmation", Content);
-
-                    return send.Status.ToString();
                 }
+
+                //return send.Status.ToString();
 
                 return "Successful";
             }

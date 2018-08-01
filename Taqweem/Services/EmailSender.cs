@@ -104,6 +104,11 @@ namespace Taqweem.Services
             }
         }
 
+        public Task SendMultipleEmailsAsync(string email, string subject, string message)
+        {
+            throw new NotImplementedException();
+        }
+
         //public Task SendEmailAsync(string email, string subject, string message)
         //{
         //    return Task.CompletedTask;
