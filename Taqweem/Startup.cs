@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
@@ -12,9 +8,9 @@ using Taqweem.Data;
 using Taqweem.Models;
 using Taqweem.Services;
 using Taqweem.Classes;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using AutoMapper;
 using Taqweem.ViewModels.ManageViewModels;
+using Hangfire;
 
 namespace Taqweem
 {
@@ -57,19 +53,23 @@ namespace Taqweem
             services.AddSingleton(mapper);
 
             services.AddMvc();
+
+            services.AddHangfire(c =>
+            {
+                c.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IConfiguration configuration)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IConfiguration configuration, IEmailSender emailSender)
         {
-            //if (env.IsDevelopment())
-            //{
-                
-            //}
+            app.UseHangfire();
+            app.UseHangfireDashboard();
+            app.ScheduleHangfireTasks(emailSender);
 
             //if (env.IsProduction() || env.IsStaging())
             //{
-                
+
             //}
 
             if (env.IsDevelopment())

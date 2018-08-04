@@ -1,5 +1,4 @@
-﻿
-namespace Taqweem.Classes
+﻿namespace Taqweem.Classes
 {
     public class AuthMessageSenderOptions
     {

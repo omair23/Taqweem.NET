@@ -7,5 +7,9 @@ namespace Taqweem.Services
         Task SendEmailAsync(string email, string subject, string message);
 
         string SendEmailString(string email, string subject, string message);
+
+        bool SendReport();
+
+        EmailModel ReportEmailModel();
     }
 }
