@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
@@ -12,20 +8,22 @@ using Taqweem.Data;
 using Taqweem.Models;
 using Taqweem.Services;
 using Taqweem.Classes;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using AutoMapper;
 using Taqweem.ViewModels.ManageViewModels;
+using Hangfire;
+using System;
 
 namespace Taqweem
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; set; }
+        public IHostingEnvironment env { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -56,11 +54,25 @@ namespace Taqweem
             services.AddSingleton(mapper);
 
             services.AddMvc();
+
+            services.AddHangfire(c =>
+            {
+                c.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IConfiguration configuration, IEmailSender emailSender)
         {
+            app.UseHangfire();
+            app.UseHangfireDashboard();
+            app.ScheduleHangfireTasks(emailSender);
+
+            //if (env.IsProduction() || env.IsStaging())
+            //{
+
+            //}
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

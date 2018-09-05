@@ -2,7 +2,7 @@
 {
     public class EmailModel
     {
-        public string Sender { get; set; } = "omair334@gmail.com";
+        public string Sender { get; set; } = "TaqweemMasjid@gmail.com";
 
         public string Recipient { get; set; }
 

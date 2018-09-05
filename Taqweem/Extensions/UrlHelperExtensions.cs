@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Taqweem.Controllers;
 
 namespace Microsoft.AspNetCore.Mvc
@@ -13,7 +10,7 @@ namespace Microsoft.AspNetCore.Mvc
         public static string EmailConfirmationLink(this IUrlHelper urlHelper, string userId, string code, string scheme)
         {
             //return "www.google.com";
-            return String.Format("https://taqweem.rapidsoft.co.za/Account/ConfirmEmail?userId={0}&code={1}", userId, code);
+            return String.Format("http://taqweem.rapidsoft.co.za/Account/ConfirmEmail?userId={0}&code={1}", userId, code);
 
             //return urlHelper.Action(
             //    action: nameof(AccountController.ConfirmEmail),

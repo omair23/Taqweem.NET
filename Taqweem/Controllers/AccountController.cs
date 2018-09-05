@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -7,14 +6,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Taqweem.Models;
 using Taqweem.Models.AccountViewModels;
 using Taqweem.Services;
-using System.Security.Cryptography;
 using Taqweem.Data;
+using System.Web;
 
 namespace Taqweem.Controllers
 {
@@ -287,6 +284,8 @@ namespace Taqweem.Controllers
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = HttpUtility.UrlEncode(code);
+
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
@@ -403,7 +402,10 @@ namespace Taqweem.Controllers
             {
                 throw new ApplicationException($"Unable to load user with ID '{userId}'.");
             }
+
             var result = await _userManager.ConfirmEmailAsync(user, code);
+
+            //return View(result.Succeeded ? "ConfirmEmail" : "Error");
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 

@@ -89,6 +89,8 @@ namespace Taqweem.Models
 
         public virtual ICollection<Notice> Notices { get; set; }
 
+        public virtual ICollection<ApplicationUser> Users { get; set; }
+
         public Masjid()
         {
 
