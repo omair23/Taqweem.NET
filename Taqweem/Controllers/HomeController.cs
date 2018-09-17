@@ -21,9 +21,14 @@ namespace Taqweem.Controllers
         private readonly ApplicationDbContext _context;
         private readonly EFRepository Repository;
         private readonly IEmailSender _emailSender;
+        private readonly WorldService _worldService;
 
-        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        public HomeController(ApplicationDbContext context, 
+                                UserManager<ApplicationUser> userManager, 
+                                IEmailSender emailSender,
+                                WorldService worldService)
         {
+            _worldService = worldService;
             _userManager = userManager;
             _context = context;
             Repository = new EFRepository(_context);
@@ -122,6 +127,8 @@ namespace Taqweem.Controllers
 
         public IActionResult Index()
         {
+            var x = _worldService.OpenExchangeRates();
+
             DBInit();
             
             List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();

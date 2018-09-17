@@ -58,6 +58,16 @@
 </div>
 
 <div class="row">
+    <div class="col-md-6">
+        <form name="submitCurrenciesForm" id="submitCurrenciesForm" method="post">
+            <label for="file">Currencies File:</label>
+            <input asp-for="MyFile" id="MyFile3" name="MyFile3" type="file" />
+            <input type="button" onclick="submitCurrencies()" value="Upload Currencies File" />
+        </form>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-md-12">
         <input type="button" onclick="welcomeEmail()" value="Send Welcome Email" />
 
@@ -108,6 +118,12 @@
 
     $("#MyFile2").change(handleFileSelect2);
 
+    $("#MyFile3").change(handleFileSelect3);
+
+    function handleFileSelect3() {
+        data.append('file', $('#MyFile3')[0].files[0]);
+    };
+
     function handleFileSelect2() {
         data.append('file', $('#MyFile2')[0].files[0]);
     };
@@ -125,6 +141,26 @@
             data: data,
             success: function (data) {
                 alert(data);
+            }
+        });
+    };
+
+    function submitCurrencies() {
+        $.ajax({
+            type: 'post',
+            processData: false,
+            contentType: false,
+            url: '@Url.Action("UploadCurrencies", "Administration")',
+            data: data,
+            success: function (data) {
+                if (data == "Successful") {
+                    $("#MyFile").trigger('reset');
+                    alert("Succeeded");
+                }
+                else {
+                    $("#MyFile").trigger('reset');
+                    alert("Failed");
+                }
             }
         });
     };

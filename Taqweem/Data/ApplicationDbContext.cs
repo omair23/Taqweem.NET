@@ -22,6 +22,10 @@ namespace Taqweem.Data
 
         public DbSet<Configuration> Configurations { get; set; }
 
+        public DbSet<Currency> Currencies { get; set; }
+
+        public DbSet<CurrencyHistory> CurrencyHistory { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -30,6 +34,10 @@ namespace Taqweem.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Models.TimeZone>().ToTable("TimeZone");
+
+            builder.Entity<Models.Currency>().ToTable("Currency");
+
+            builder.Entity<Models.CurrencyHistory>().ToTable("CurrencyHistory");
 
             builder.Entity<Masjid>().ToTable("Masjid");
 

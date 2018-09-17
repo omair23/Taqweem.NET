@@ -419,6 +419,80 @@ namespace Taqweem.Controllers
             }
         }
 
+        [HttpPost]
+        public string UploadCurrencies(IFormFile file)
+        {
+            try
+            {
+                if (!IsSuperUser())
+                {
+                    return "Failed";
+                }
+
+                if (ModelState.IsValid)
+                {
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        file.CopyTo(stream);
+
+                        byte[] byteArray = stream.ToArray();
+
+                        Stream stream2 = new MemoryStream(byteArray);
+
+                        var package = new ExcelPackage(stream2);
+
+                        var z = package.Workbook.Worksheets[1];
+
+                        ExcelWorksheet Sheet = package.Workbook.Worksheets[1];
+
+                        List<Currency> Currencies = new List<Currency>();
+
+                        for (int i = 2; i <= Sheet.Dimension.End.Row; i++)
+                        {
+                            try
+                            {
+                                var M = new Currency();
+
+                                M.Code = Sheet.Cells[i, 1].Value.ToString();
+                                M.Name = Sheet.Cells[i, 2].Value.ToString();
+                                M.Locations = Sheet.Cells[i, 3].Value.ToString();
+
+                                M.ConversionRate = Convert.ToDouble(Sheet.Cells[i, 4].Value.ToString());
+
+                                M.Symbol = Sheet.Cells[i, 5].Value.ToString();
+
+                                M.FractionalUnit = Sheet.Cells[i, 6].Value.ToString();
+
+                                M.NumberToBasic = Convert.ToInt32(Sheet.Cells[i, 7].Value.ToString());
+
+                                M.Flag = Sheet.Cells[i, 8].Value.ToString();
+
+                                Currencies.Add(M);
+                            }
+                            catch (Exception ex)
+                            {
+                                continue;
+                            }
+                        }
+
+                        Repository.AddMultiple(Currencies);
+
+                        package.Dispose();
+                    }
+
+                    return "Successful";
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                return "Fail" + ex.Message;
+            }
+        }
+
         public IActionResult Masjids()
         {
             if (!IsSuperUser())

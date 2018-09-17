@@ -38,6 +38,8 @@ namespace Taqweem
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
+            services.AddScoped<WorldService>();
+
             services.AddScoped<RazorViewToStringRenderer>();
 
             services.AddScoped<RazorHelperService>();
