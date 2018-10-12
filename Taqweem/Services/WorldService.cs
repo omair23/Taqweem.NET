@@ -34,7 +34,7 @@ namespace Taqweem.Services
             try
             {
                 string BaseCurrency = "USD";
-                string AppId = "af948d53294b4cbcb97cf5166bfd65a7";
+                string AppId = configuration.GetValue<string>("OpenExchange_APIKey");
                 string ApiUrl = "https://openexchangerates.org/api/latest.json?app_id=" + AppId + "&base=" + BaseCurrency;
 
                 using (HttpClient client = new HttpClient())

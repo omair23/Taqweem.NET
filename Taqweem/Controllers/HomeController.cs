@@ -127,9 +127,9 @@ namespace Taqweem.Controllers
 
         public IActionResult Index()
         {
-            var x = _worldService.OpenExchangeRates();
+            //var x = _worldService.OpenExchangeRates();
 
-            DBInit();
+            //DBInit();
             
             List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
 
