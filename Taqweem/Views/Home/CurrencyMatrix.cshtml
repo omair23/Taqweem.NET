@@ -1,0 +1,72 @@
+﻿
+@{
+ViewData["Title"] = "CurrencyMatrix";
+Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Taqweem Currency Matrix - South African Rand (ZAR)</h2>
+
+<br />
+
+<table class="dataTable" border="1" style="text-align:center">
+    <tr>
+        <th colspan="2"></th>
+        <th>Today</th>
+        <th>1 Day</th>
+        <th>3 Days</th>
+        <th>5 Days</th>
+        <th>7 Days</th>
+        <th>10 Days</th>
+        <th>15 Days</th>
+        <th>25 Days</th>
+        <th>30 Days</th>
+        <th>60 Days</th>
+        <th>90 Days</th>
+        <th>120 Days</th>
+        <th>180 Days</th>
+        <th>270 Days</th>
+        <th>365 Days</th>
+    </tr>
+
+
+    @foreach(var item in new List<string>(2))
+    {
+
+    }
+
+    <tr>
+        <th rowspan="2">AED</th>
+        <th rowspan="2">{flag}</th>
+        <th rowspan="2">4.4</th>
+        <th>4.2</th>
+        <th>4.5</th>
+        <th>4.54</th>
+        <th>4.49</th>
+        <th>4.45</th>
+        <th>4.61</th>
+        <th>4.59</th>
+        <th>4.5</th>
+        <th>4.53</th>
+        <th>4.61</th>
+        <th>4.82</th>
+        <th>4.7</th>
+        <th>4.29</th>
+        <th>4.55</th>
+    </tr>
+    <tr>
+        <th>2%</th>
+        <th>4%</th>
+        <th>-2%</th>
+        <th>-1%</th>
+        <th>15%</th>
+        <th>7%</th>
+        <th>3%</th>
+        <th>9%</th>
+        <th>-20%</th>
+        <th>1%</th>
+        <th>4.82</th>
+        <th>-2%</th>
+        <th>-4%</th>
+        <th>4.5%</th>
+    </tr>
+</table>

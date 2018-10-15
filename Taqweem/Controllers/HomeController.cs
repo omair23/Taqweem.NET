@@ -157,6 +157,11 @@ namespace Taqweem.Controllers
             */
         }
 
+        public IActionResult CurrencyMatrix()
+        {
+            return View();
+        }
+
         public IActionResult Login()
         {
             return View();
