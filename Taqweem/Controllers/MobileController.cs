@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Taqweem.Classes;
 using Taqweem.Models;
 using Taqweem.Services;
 
@@ -18,41 +20,43 @@ namespace Taqweem.Controllers
             _taqweemService = taqweemService;
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpGet("{id}", Name = "GetMasjid")]
-        public ActionResult<Masjid> GetMasjid(string Id)
+        [HttpGet]
+        public IEnumerable<object> GetMasjids()
         {
-            var item = _taqweemService.MasjidGetById(Id);
-            if (item == null)
-            {
-                return NotFound();
-            }
-            return item;
+            return _taqweemService.MasjidGetAll()
+                                    .Select(d => new MasjidDTOLight
+                                    {
+                                        Id = d.Id,
+                                        Name = d.Name,
+                                        Town = d.Town,
+                                        Country = d.Country
+                                    })
+                                   .ToList();
         }
 
-        //[ResponseType(typeof(Masjid))]
-        //public async Task<IHttpActionResult> MasjidGetInformation(string Id)
-        //{
+        [HttpGet]
+        public IEnumerable<object> GetMasjidsByTerm(string Term)
+        {
+            Term = Term != null ? Term : "";
 
-        //    return Ok(new object());
-        //    //var book = await (from b in db.Books.Include(b => b.Author)
-        //    //                  where b.BookId == id
-        //    //                  select new object
-        //    //                  {
-        //    //                      Title = b.Title,
-        //    //                      Genre = b.Genre,
-        //    //                      PublishDate = b.PublishDate,
-        //    //                      Price = b.Price,
-        //    //                      Description = b.Description,
-        //    //                      Author = b.Author.Name
-        //    //                  }).FirstOrDefaultAsync();
+            return _taqweemService.MasjidGetByTerm(Term)
+                                    .Select(d => new MasjidDTOLight
+                                    {
+                                        Id = d.Id,
+                                        Name = d.Name,
+                                        Town = d.Town,
+                                        Country = d.Country
+                                    })
+                                   .ToList();
+        }
 
-        //    //if (book == null)
-        //    //{
-        //    //    return NotFound();
-        //    //}
-        //    //return Ok(book);
-        //}
+        [HttpGet("{id}", Name = "GetMasjid")]
+        public Masjid GetMasjid(string Id)
+        {
+            var item = _taqweemService.MasjidGetById(Id);
 
+            return item;
+        }
 
     }
 }

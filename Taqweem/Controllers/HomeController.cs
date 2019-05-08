@@ -22,17 +22,20 @@ namespace Taqweem.Controllers
         private readonly EFRepository Repository;
         private readonly IEmailSender _emailSender;
         private readonly WorldService _worldService;
+        public readonly TaqweemService _taqweemService;
 
         public HomeController(ApplicationDbContext context, 
                                 UserManager<ApplicationUser> userManager, 
                                 IEmailSender emailSender,
-                                WorldService worldService)
+                                WorldService worldService,
+                                TaqweemService taqweemService)
         {
             _worldService = worldService;
             _userManager = userManager;
             _context = context;
             Repository = new EFRepository(_context);
             _emailSender = emailSender;
+            _taqweemService = taqweemService;
         }
 
         public IActionResult OldSiteRedirect(string Id)
@@ -41,9 +44,7 @@ namespace Taqweem.Controllers
             {
                 int OldId = Convert.ToInt32(Id);
 
-                Masjid masjid = Repository
-                                .Find<Masjid>(s => s.OldSiteId == OldId)
-                                .FirstOrDefault();
+                Masjid masjid = _taqweemService.MasjidGetByOldSiteId(OldId);
 
                 if (masjid != null)
                     return RedirectToAction("MasjidInfo", "Home", new { Id = masjid.Id });
@@ -56,93 +57,11 @@ namespace Taqweem.Controllers
             }
         }
 
-        public void DBInit()
-        {
-            List<Models.TimeZone> TimeZones = Repository.GetAll<Models.TimeZone>().ToList();
-
-            if(TimeZones.Count < 1)
-            {
-                foreach(var Zone in TimeZoneInfo.GetSystemTimeZones())
-                {
-                    Models.TimeZone T = new Models.TimeZone();
-                    T.Id = Zone.Id;
-                    T.DaylightName = Zone.DaylightName;
-                    T.DisplayName = Zone.DisplayName;
-                    T.StandardName = Zone.StandardName;
-                    T.SupportsDaylightSavingTime = Zone.SupportsDaylightSavingTime;
-
-                    T.DefaultUTCDifference = cCalculations.GetTimeZoneDifference(T.Id, DateTime.Now);
-
-                    TimeZones.Add(T);
-                }
-
-                Repository.AddMultiple(TimeZones);
-            }
-
-            List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
-
-            //DB INIT
-            if (AllMasjids.Count < 1)
-            {
-                Masjid s = new Masjid();
-                s.Id = "5f3e7169-ab20-4b34-bb27-2e86eefee2c1";
-                s.Name = "Masjid Muaadh bin Jabal - Crosby";
-                s.Town = "Johannesburg";
-                s.Country = "South Africa";
-                s.Latitude = -26.195149;
-                s.Longitude = 27.990238;
-                s.OldSiteId = 1;
-                s.LadiesFacility = true;
-                s.JummahFacility = true;
-                s.Address = "114 Jamestown Avenue Crosby Johannesburg 2092";
-                s.Contact = "Ml R Joosub, Ml S Maanjra, Br Abdur Rasheed, Br Faizal Suffla, Br Basheer Seedat";
-                s.TimeZoneId = "South Africa Standard Time";
-
-                Repository.Add(s);
-            }
-            ////
-
-            List<ApplicationUser> Users = Repository.GetAll<ApplicationUser>().ToList();
-
-            if (Users.Count < 1)
-            {
-                var OmairEmail = "omair334@gmail.com";
-
-                var user = new ApplicationUser {
-                                                UserName = OmairEmail,
-                                                Email = OmairEmail,
-                                                Id = "513f1fe1-8e01-4c62-b332-ee8a0f7e2c29",
-                                                FullName = "Omair Kazi",
-                                                EmailConfirmed = true,
-                                                ActiveStatus = UserStatus.Active,
-                                                IsSuperUser = true,
-                                                CreatedAt = new DateTime(2016, 1, 1),
-                                                MasjidId = "5f3e7169-ab20-4b34-bb27-2e86eefee2c1"};
-
-                var Password = "Open@1";
-
-                var result = _userManager.CreateAsync(user, Password).Result;
-            }
-        }
+        
 
         public IActionResult Index()
         {
-            //var x = _worldService.OpenExchangeRates();
-
-            //DBInit();
-            
-            List<Masjid> AllMasjids = Repository.GetAll<Masjid>().ToList();
-
-            //var Notices = Repository.GetAll<Notice>().ToList();
-            //Repository.DeleteMultiple(Notices);
-
-            //var Users = Repository.GetAll<ApplicationUser>().ToList();
-            //Repository.DeleteMultiple(Users);
-
-            //var SalaahTimes = Repository.GetAll<SalaahTime>().ToList();
-            //Repository.DeleteMultiple(SalaahTimes);
-
-            //Repository.DeleteMultiple(AllMasjids);
+            List<Masjid> AllMasjids = _taqweemService.MasjidGetAll().ToList();
 
             Markers Model = new Markers();
 
@@ -169,7 +88,7 @@ namespace Taqweem.Controllers
 
         public IActionResult MasjidList()
         {
-            List<Masjid> AllMasjids = Repository.GetAll<Masjid>().OrderBy(s => s.OldSiteId).ToList();
+            List<Masjid> AllMasjids = _taqweemService.MasjidGetAll().OrderBy(s => s.OldSiteId).ToList();
 
             MasjidListViewModel Model = new MasjidListViewModel();
 
@@ -180,23 +99,15 @@ namespace Taqweem.Controllers
 
         public IActionResult MasjidInfo(string Id)
         {
-            Masjid Info = Repository
-                            .Find<Masjid>(s => s.Id == Id)
-                            .Include(s => s.SalaahTimes)
-                            .Include(s => s.TimeZone)
-                            .FirstOrDefault();
+            Masjid Info = _taqweemService.MasjidGetByIdIncluded(Id);
 
             MasjidInfoViewModel Model = new MasjidInfoViewModel(Info);
 
-            Model.Markers.Marker = Repository.GetAll<Masjid>().ToList();
+            Model.Markers.Marker = _taqweemService.MasjidGetAll().ToList();
 
-            Model.Users = Repository
-                            .Find<ApplicationUser>(s => s.MasjidId == Id)
-                            .ToList();
+            Model.Users = _taqweemService.UsersGetByMasjidId(Id);
 
-            Model.Notices = Repository
-                                    .Find<Notice>(s => s.MasjidId == Id && !s.IsHidden)
-                                    .ToList();
+            Model.Notices = _taqweemService.NoticesGetByMasjidIdUnhidden(Id);
 
             Model.SalaahTime = GetSalaahTime(Info, DateTime.Now);
 
@@ -253,7 +164,7 @@ namespace Taqweem.Controllers
                 Masjid.Latitude = MasjidVM.Latitude;
                 Masjid.Longitude = MasjidVM.Longitude;
 
-                Repository.Add(Masjid);
+                Masjid = _taqweemService.MasjidCreate(Masjid);
 
                 return "Successful";
             }
