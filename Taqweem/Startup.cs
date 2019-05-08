@@ -22,6 +22,7 @@ namespace Taqweem
             Configuration = configuration;
         }
 
+
         public IConfiguration Configuration { get; set; }
         public IHostingEnvironment env { get; set; }
 
