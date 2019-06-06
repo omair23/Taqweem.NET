@@ -10,14 +10,15 @@ using Taqweem.Data;
 namespace Taqweem.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190508102515_PublicHolidays2")]
-    partial class PublicHolidays2
+    [Migration("20190606172128_NewSchema")]
+    partial class NewSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
+                .HasDefaultSchema("Taqweem")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -412,9 +413,6 @@ namespace Taqweem.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<string>("CreatedId")
-                        .HasMaxLength(38);
-
                     b.Property<DateTime>("DayOfHoliday");
 
                     b.Property<DateTime?>("DeletedAt");
@@ -431,8 +429,6 @@ namespace Taqweem.Data.Migrations
                     b.Property<DateTime?>("UpdatedAt");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedId");
 
                     b.ToTable("PublicHoliday","World");
                 });
@@ -585,13 +581,6 @@ namespace Taqweem.Data.Migrations
                     b.HasOne("Taqweem.Models.Masjid", "Masjid")
                         .WithMany("Notices")
                         .HasForeignKey("MasjidId");
-                });
-
-            modelBuilder.Entity("Taqweem.Models.PublicHoliday", b =>
-                {
-                    b.HasOne("Taqweem.Models.ApplicationUser", "Created")
-                        .WithMany()
-                        .HasForeignKey("CreatedId");
                 });
 
             modelBuilder.Entity("Taqweem.Models.SalaahTime", b =>

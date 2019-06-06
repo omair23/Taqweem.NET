@@ -10,14 +10,14 @@ using Taqweem.Data;
 namespace Taqweem.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190508102110_PublicHolidays")]
+    [Migration("20190606171254_PublicHolidays")]
     partial class PublicHolidays
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -400,6 +400,36 @@ namespace Taqweem.Data.Migrations
                     b.HasIndex("MasjidId");
 
                     b.ToTable("Notice");
+                });
+
+            modelBuilder.Entity("Taqweem.Models.PublicHoliday", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<string>("Country");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<DateTime>("DayOfHoliday");
+
+                    b.Property<DateTime?>("DeletedAt");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(38);
+
+                    b.Property<string>("NameOfHoliday");
+
+                    b.Property<long>("UID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("UpdatedAt");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PublicHoliday","World");
                 });
 
             modelBuilder.Entity("Taqweem.Models.SalaahTime", b =>

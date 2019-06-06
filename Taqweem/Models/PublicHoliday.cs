@@ -18,9 +18,8 @@ namespace Taqweem.Models
 
         public string Country { get; set; }
 
-        [StringLength(38)]
-        public string CreatedId { get; set; } = null;
+        //public string CreatedId { get; set; } = null;
 
-        public virtual ApplicationUser Created { get; set; }
+        //public virtual ApplicationUser Created { get; set; }
     }
 }

@@ -18,6 +18,16 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20181013155519_CurrencyHistory2.cs" />
     <Compile Remove="Data\Migrations\20181013155519_CurrencyHistory2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190508102110_PublicHolidays.cs" />
+    <Compile Remove="Data\Migrations\20190508102110_PublicHolidays.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190508102515_PublicHolidays2.cs" />
+    <Compile Remove="Data\Migrations\20190508102515_PublicHolidays2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190606170432_PublicHolidaysNew.cs" />
+    <Compile Remove="Data\Migrations\20190606170432_PublicHolidaysNew.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190606170854_PublicHolidaysNew22.cs" />
+    <Compile Remove="Data\Migrations\20190606170854_PublicHolidaysNew22.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190606171111_PublicH23.cs" />
+    <Compile Remove="Data\Migrations\20190606171111_PublicH23.Designer.cs" />
   </ItemGroup>
   
   <ItemGroup>
@@ -26,22 +36,22 @@
 
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
-    <PackageReference Include="HangFire" Version="1.6.21" />
-    <PackageReference Include="MailKit" Version="2.0.7" />
+    <PackageReference Include="HangFire" Version="1.7.3" />
+    <PackageReference Include="MailKit" Version="2.1.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.0" PrivateAssets="all">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.4" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Net.Compilers" Version="2.10.0">
+    <PackageReference Include="Microsoft.Net.Compilers" Version="3.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="MimeKit" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" PrivateAssets="All" />
+    <PackageReference Include="MimeKit" Version="2.1.5.1" />
     <PackageReference Include="OfficeOpenXml.Core.ExcelPackage" Version="1.0.0" />
-    <PackageReference Include="Sendgrid" Version="9.10.0" />
+    <PackageReference Include="Sendgrid" Version="9.11.0" />
   </ItemGroup>
 
   <ItemGroup>
