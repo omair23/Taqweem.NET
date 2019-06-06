@@ -79,6 +79,12 @@ namespace Taqweem.Models
 
         public SalaahTimesType SalaahTimesType { get; set; } = SalaahTimesType.ScheduleTime;
 
+        public bool IsSpecialDayEnabled { get; set; }
+
+        public bool IsPublicHolidaySpecialTimesEnabled { get; set; }
+
+        public int SpecialDayNumber { get; set; }
+
         [NotMapped]
         public double Distance { get; set; }
 

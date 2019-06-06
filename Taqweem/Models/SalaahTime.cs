@@ -27,6 +27,10 @@ namespace Taqweem.Models
 
         public DateTime JumuahSalaah { get; set; }
 
+        public DateTime SpecialDhuhrAdhaan { get; set; }
+
+        public DateTime SpecialDhuhrSalaah { get; set; }
+
         public DateTime AsrAdhaan { get; set; }
 
         public DateTime AsrSalaah { get; set; }

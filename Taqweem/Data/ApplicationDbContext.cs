@@ -22,6 +22,8 @@ namespace Taqweem.Data
 
         public DbSet<Configuration> Configurations { get; set; }
 
+        public DbSet<PublicHoliday> PublicHolidays { get; set; }
+
         public DbSet<Currency> Currencies { get; set; }
 
         public DbSet<CurrencyHistory> CurrencyHistory { get; set; }
@@ -48,6 +50,8 @@ namespace Taqweem.Data
             builder.Entity<SalaahTime>().ToTable("SalaahTime");
 
             builder.Entity<Notice>().ToTable("Notice");
+
+            builder.Entity<PublicHoliday>().ToTable("PublicHoliday");
 
             builder.Entity<Notice>().Property(u => u.UID).UseSqlServerIdentityColumn();
 
