@@ -21,7 +21,7 @@ namespace Taqweem.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<object> GetMasjids()
+        public async Task<IEnumerable<object>> GetMasjids()
         {
             return _taqweemService.MasjidGetAll()
                                     .Select(d => new MasjidDTOLight
@@ -31,7 +31,41 @@ namespace Taqweem.Controllers
                                         Town = d.Town,
                                         Country = d.Country
                                     })
+                                    .Take(10)
                                    .ToList();
+        }
+
+        [HttpGet]
+        public async Task<object> GetMasjidById(string id)
+        {
+            var d = await _taqweemService
+                                    .MasjidGetByIdAsync(id);
+
+            MasjidDTO returnObject = new MasjidDTO
+            {
+                Id = d.Id,
+                Name = d.Name,
+                Town = d.Town,
+                Country = d.Country,
+                LastUpdate = d.LastUpdate,
+                Latitude = d.Latitude,
+                Longitude = d.Longitude,
+                Height = d.Height,
+                TimeZoneId = d.TimeZoneId,
+                JuristMethod = d.JuristMethod,
+                LadiesFacility = d.LadiesFacility,
+                JummahFacility = d.JummahFacility,
+                Contact = d.Contact,
+                Address = d.Address,
+                GeneralInfo = d.GeneralInfo,
+                MaghribAdhaanDelay = d.MaghribAdhaanDelay,
+                SalaahTimesType = d.SalaahTimesType,
+                IsSpecialDayEnabled = d.IsSpecialDayEnabled,
+                IsPublicHolidaySpecialTimesEnabled = d.IsPublicHolidaySpecialTimesEnabled,
+                SpecialDayNumber = d.SpecialDayNumber
+            };
+
+            return returnObject;
         }
 
         [HttpGet]
@@ -48,14 +82,6 @@ namespace Taqweem.Controllers
                                         Country = d.Country
                                     })
                                    .ToList();
-        }
-
-        [HttpGet("{id}", Name = "GetMasjid")]
-        public Masjid GetMasjid(string Id)
-        {
-            var item = _taqweemService.MasjidGetById(Id);
-
-            return item;
         }
 
     }

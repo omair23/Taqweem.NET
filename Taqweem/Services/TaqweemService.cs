@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,11 @@ namespace Taqweem.Services
             return Repository.GetAll<Masjid>();
         }
 
+        public async Task<IEnumerable<Masjid>> MasjidGetAllAsync()
+        {
+            return await Repository.GetAllAsync<Masjid>();
+        }
+
         public IEnumerable<Masjid> MasjidGetByTerm(string Term)
         {
             return Repository.Find<Masjid>(s => s.Name.Contains(Term) |
@@ -46,6 +52,11 @@ namespace Taqweem.Services
         public Masjid MasjidGetById(string Id)
         {
             return Repository.GetByID<Masjid>(s => s.Id == Id);
+        }
+
+        public async Task<Masjid> MasjidGetByIdAsync(string Id)
+        {
+            return await Repository.GetByIdAsync<Masjid>(s => s.Id == Id);
         }
 
         public Masjid MasjidGetByIdIncluded(string Id)

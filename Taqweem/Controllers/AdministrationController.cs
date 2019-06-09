@@ -111,6 +111,26 @@ namespace Taqweem.Controllers
             }
         }
 
+        public string WelcomeEmail()
+        {
+            if (!IsSuperUser())
+            {
+                return "Unauthorised";
+            }
+
+            try
+            {
+
+                _emailSender.SendReport();
+
+                return "Successful";
+            }
+            catch (Exception ex)
+            {
+                return "Failed " + ex.Message;
+            }
+        }
+
         //public string ConfirmationEmail()
         //{
         //    if (!IsSuperUser())

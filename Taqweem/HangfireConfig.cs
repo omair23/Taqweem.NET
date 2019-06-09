@@ -19,8 +19,8 @@ namespace Taqweem
 
         public static IApplicationBuilder ScheduleHangfireTasks(this IApplicationBuilder app, IEmailSender _emailService)
         {
-            BackgroundJob.Enqueue(
-                    () => _emailService.SendReport());
+            /*BackgroundJob.Enqueue(
+                    () => _emailService.SendReport());*/
 
             RecurringJob.AddOrUpdate(
                 () => _emailService.SendReport(),

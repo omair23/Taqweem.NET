@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Taqweem.Data
 {
@@ -112,7 +113,17 @@ namespace Taqweem.Data
             return _context.Set<TEntity>().FirstOrDefault(id);
         }
 
+        public async Task<TEntity> GetByIdAsync<TEntity>(Expression<Func<TEntity, bool>> id) where TEntity : class
+        {
+            return await _context.Set<TEntity>().FirstOrDefaultAsync(id);
+        }
+
         public IQueryable<TEntity> GetAll<TEntity>() where TEntity : class
+        {
+            return _context.Set<TEntity>();
+        }
+
+        public async Task<IQueryable<TEntity>> GetAllAsync<TEntity>() where TEntity : class
         {
             return _context.Set<TEntity>();
         }
