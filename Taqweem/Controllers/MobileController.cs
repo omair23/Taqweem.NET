@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Taqweem.Classes;
 using Taqweem.Models;
 using Taqweem.Services;
+using TimeZoneConverter;
 
 namespace Taqweem.Controllers
 {
@@ -62,8 +63,9 @@ namespace Taqweem.Controllers
                 SalaahTimesType = d.SalaahTimesType,
                 IsSpecialDayEnabled = d.IsSpecialDayEnabled,
                 IsPublicHolidaySpecialTimesEnabled = d.IsPublicHolidaySpecialTimesEnabled,
-                SpecialDayNumber = d.SpecialDayNumber
-            };
+                SpecialDayNumber = d.SpecialDayNumber,
+                TZTimeZone = TZConvert.WindowsToIana(d.TimeZoneId)
+        };
 
             return returnObject;
         }

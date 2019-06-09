@@ -59,6 +59,8 @@ namespace Taqweem.Models
 
         public virtual TimeZone TimeZone { get; set;}
 
+        public string TZTimeZone { get; set; }
+
         public double TimeZoneDiff { get; set; }
 
         public JuristicMethod JuristMethod { get; set; } = JuristicMethod.UniversityOfIslamicSciencesKarachi;

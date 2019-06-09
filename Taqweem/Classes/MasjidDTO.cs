@@ -26,6 +26,8 @@ namespace Taqweem.Classes
 
         public string TimeZoneId { get; set; } = "UTC";
 
+        public string TZTimeZone { get; set; }
+
         public JuristicMethod JuristMethod { get; set; } = JuristicMethod.UniversityOfIslamicSciencesKarachi;
 
         public bool LadiesFacility { get; set; }
