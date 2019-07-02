@@ -17,8 +17,8 @@ namespace Taqweem.ViewModels.ManageViewModels
 
     public class SalaahTimeViewModel
     {
-        [Key]
-        public string KeyId { get; set; }
+        //[Key]
+        //public string KeyId { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
@@ -54,6 +54,16 @@ namespace Taqweem.ViewModels.ManageViewModels
         [DataType(DataType.Time)]
         [Display(Name = "Jumuah Salaah")]
         public DateTime JumuahSalaah { get; set; }
+
+        [Required]
+        [DataType(DataType.Time)]
+        [Display(Name = "Special Day Dhuhr Adhaan")]
+        public DateTime SpecialDhuhrAdhaan { get; set; }
+
+        [Required]
+        [DataType(DataType.Time)]
+        [Display(Name = "Special Day Dhuhr Salaah")]
+        public DateTime SpecialDhuhrSalaah { get; set; }
 
         [Required]
         [DataType(DataType.Time)]

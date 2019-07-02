@@ -51,7 +51,11 @@ namespace Taqweem
             {
                 cfg.CreateMap<MasjidEditViewModel, Masjid>().ForMember(x => x.UID, opt => opt.Ignore());
 
-                cfg.CreateMap<SalaahTimeViewModel, SalaahTime>().ForMember(x => x.UID, opt => opt.Ignore());
+                cfg.CreateMap<MasjidEditViewModel, Masjid>().ForMember(x => x.UID, opt => opt.Ignore()).ReverseMap();
+
+                cfg.CreateMap<SalaahTimeViewModel, SalaahTime>();//.ForMember(x => x.UID, opt => opt.Ignore());
+
+                cfg.CreateMap<SalaahTimeViewModel, SalaahTime>();//.ForMember(x => x.UID, opt => opt.Ignore()).ReverseMap();
             });
 
             var mapper = config.CreateMapper();

@@ -217,34 +217,64 @@
                             <th style="text-align:left;">SALAAH</th>
                         </tr>
 
-                        <tr>
-                            <td>FAJR</td>
-                            <td>@Model.NextSalaahTime.FajrAdhaan.ToString("HH:mm")</td>
-                            <td>@Model.NextSalaahTime.FajrSalaah.ToString("HH:mm")</td>
-                        </tr>
+                        @if (Model.NextSalaahTime.IsFajrTimeChange)
+                        {
+                            <tr>
+                                <td>FAJR</td>
+                                <td>@Model.NextSalaahTime.FajrAdhaan.ToString("HH:mm")</td>
+                                <td>@Model.NextSalaahTime.FajrSalaah.ToString("HH:mm")</td>
+                            </tr>
+                        }
 
-                        <tr>
-                            <td>DHUHR</td>
-                            <td>@Model.NextSalaahTime.DhuhrAdhaan.ToString("HH:mm")</td>
-                            <td>@Model.NextSalaahTime.DhuhrSalaah.ToString("HH:mm")</td>
-                        </tr>
+                        @if (Model.NextSalaahTime.IsDhuhrTimeChange)
+                        {
+                            <tr>
+                                <td>DHUHR</td>
+                                <td>@Model.NextSalaahTime.DhuhrAdhaan.ToString("HH:mm")</td>
+                                <td>@Model.NextSalaahTime.DhuhrSalaah.ToString("HH:mm")</td>
+                            </tr>
+                        }
 
-                        <tr>
-                            <td>ASR</td>
-                            <td>@Model.NextSalaahTime.AsrAdhaan.ToString("HH:mm")</td>
-                            <td>@Model.NextSalaahTime.AsrSalaah.ToString("HH:mm")</td>
-                        </tr>
+                        @if (Model.NextSalaahTime.IsJumuahTimeChange)
+                        {
+                            <tr>
+                                <td>JUMMAH</td>
+                                <td>@Model.NextSalaahTime.JumuahAdhaan.ToString("HH:mm")</td>
+                                <td>@Model.NextSalaahTime.JumuahSalaah.ToString("HH:mm")</td>
+                            </tr>
+                        }
+
+                        @if (Model.NextSalaahTime.IsSpecialDhuhrTimeChange)
+                        {
+                            <tr>
+                                <td>SPECIAL DAY DHUHR</td>
+                                <td>@Model.NextSalaahTime.SpecialDhuhrAdhaan.ToString("HH:mm")</td>
+                                <td>@Model.NextSalaahTime.SpecialDhuhrSalaah.ToString("HH:mm")</td>
+                            </tr>
+                        }
+
+                        @if (Model.NextSalaahTime.IsAsrTimeChange)
+                        {
+                            <tr>
+                                <td>ASR</td>
+                                <td>@Model.NextSalaahTime.AsrAdhaan.ToString("HH:mm")</td>
+                                <td>@Model.NextSalaahTime.AsrSalaah.ToString("HH:mm")</td>
+                            </tr>
+                        }
 
                         <tr>
                             <td>MAGHRIB</td>
                             <td colspan="2">@Model.NextPerpetualTime.Maghrib.ToString("HH:mm")</td>
                         </tr>
 
-                        <tr>
-                            <td>ISHA</td>
-                            <td>@Model.NextSalaahTime.IshaAdhaan.ToString("HH:mm")</td>
-                            <td>@Model.NextSalaahTime.IshaSalaah.ToString("HH:mm")</td>
-                        </tr>
+                        @if (Model.NextSalaahTime.IsIshaTimeChange)
+                        {
+                            <tr>
+                                <td>ISHA</td>
+                                <td>@Model.NextSalaahTime.IshaAdhaan.ToString("HH:mm")</td>
+                                <td>@Model.NextSalaahTime.IshaSalaah.ToString("HH:mm")</td>
+                            </tr>
+                        }
 
                     </table>
                 }

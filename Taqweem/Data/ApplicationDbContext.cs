@@ -49,6 +49,12 @@ namespace Taqweem.Data
 
             builder.Entity<SalaahTime>().ToTable("SalaahTime");
 
+            //builder.Entity<SalaahTime>().HasKey(c => c.UID);
+
+            //builder.Entity<SalaahTime>().Property(u => u.UID).UseSqlServerIdentityColumn();
+
+            //builder.Entity<SalaahTime>().Property(p => p.UID).Metadata.AfterSaveBehavior = PropertySaveBehavior.Ignore;
+
             builder.Entity<Notice>().ToTable("Notice");
 
             builder.Entity<PublicHoliday>().ToTable("PublicHoliday");

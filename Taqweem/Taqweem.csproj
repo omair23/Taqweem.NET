@@ -65,4 +65,10 @@
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Home\SalaahCalendar - Copy.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>

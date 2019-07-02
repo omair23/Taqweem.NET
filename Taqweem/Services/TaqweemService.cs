@@ -68,11 +68,42 @@ namespace Taqweem.Services
                     .FirstOrDefault();
         }
 
+        public async Task<Masjid> MasjidGetByIdIncludedAsync(string Id)
+        {
+            return await Task.Run(() => Repository
+                    .Find<Masjid>(s => s.Id == Id)
+                    .Include(s => s.SalaahTimes)
+                    .Include(s => s.TimeZone)
+                    .FirstOrDefault());
+        }
+
         public Masjid MasjidGetByOldSiteId(int OldId)
         {
             return Repository
                     .Find<Masjid>(s => s.OldSiteId == OldId)
                     .FirstOrDefault();
+        }
+
+        public SalaahTime GetSalaahTime(Masjid Masjid, DateTime Val)
+        {
+            if (Masjid.SalaahTimesType == SalaahTimesType.ScheduleTime)
+            {
+                return Masjid.SalaahTimes
+                            .Where(s => s.DayNumber <= Val.DayOfYear
+                                    && s.Type == SalaahTimesType.ScheduleTime)
+                            .OrderByDescending(x => x.DayNumber)
+                            .FirstOrDefault();
+            }
+            else
+            {
+                return Masjid.SalaahTimes
+                            .Where(s => s.DayNumber == Val.DayOfYear
+                                    && s.TimeDate.Year <= Val.Year
+                                    && s.Type == SalaahTimesType.DailyTime)
+                            .OrderByDescending(x => x.TimeDate.Year)
+                            .OrderByDescending(x => x.DayNumber)
+                            .FirstOrDefault();
+            }
         }
 
         //Users

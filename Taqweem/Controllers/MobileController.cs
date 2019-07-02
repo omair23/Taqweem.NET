@@ -71,6 +71,51 @@ namespace Taqweem.Controllers
         }
 
         [HttpGet]
+        public async Task<object> GetMasjidSalaahTimesById(string id)
+        {
+            try
+            {
+                Masjid masjid = await _taqweemService.MasjidGetByIdIncludedAsync(id);
+
+                SalaahTime times = _taqweemService.GetSalaahTime(masjid, DateTime.Now);
+
+                if (times != null)
+                {
+
+                    SalaahTimeDTO returnObject = new SalaahTimeDTO
+                    {
+                        MasjidId = times.MasjidId,
+                        Type = times.Type,
+                        IsATimeChange = times.IsATimeChange,
+                        TimeDate = times.TimeDate,
+                        DayNumber = times.DayNumber,
+                        FajrAdhaan = times.FajrAdhaan,
+                        FajrSalaah = times.FajrSalaah,
+                        DhuhrAdhaan = times.DhuhrAdhaan,
+                        DhuhrSalaah = times.DhuhrSalaah,
+                        JumuahAdhaan = times.JumuahAdhaan,
+                        JumuahSalaah = times.JumuahSalaah,
+                        SpecialDhuhrAdhaan = times.SpecialDhuhrAdhaan,
+                        SpecialDhuhrSalaah = times.SpecialDhuhrSalaah,
+                        AsrAdhaan = times.AsrAdhaan,
+                        AsrSalaah = times.AsrSalaah,
+                        IshaAdhaan = times.IshaAdhaan,
+                        IshaSalaah = times.IshaSalaah,
+                    };
+
+                    return returnObject;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+
+        [HttpGet]
         public IEnumerable<object> GetMasjidsByTerm(string Term)
         {
             Term = Term != null ? Term : "";

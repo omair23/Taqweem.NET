@@ -73,6 +73,25 @@
 
         <div class="col-md-4">
             <div class="form-group">
+                <label asp-for="SpecialDhuhrAdhaan" class="control-label"></label>
+                <input asp-for="SpecialDhuhrAdhaan" class="form-control timepicker" />
+                <span asp-validation-for="SpecialDhuhrAdhaan" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="SpecialDhuhrSalaah" class="control-label"></label>
+                <input asp-for="SpecialDhuhrSalaah" class="form-control timepicker" />
+                <span asp-validation-for="SpecialDhuhrSalaah" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="form-group">
                 <label asp-for="AsrAdhaan" class="control-label"></label>
                 <input asp-for="AsrAdhaan" class="form-control timepicker" />
                 <span asp-validation-for="AsrAdhaan" class="text-danger"></span>

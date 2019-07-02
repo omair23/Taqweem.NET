@@ -5,6 +5,8 @@ namespace Taqweem.ViewModels.ManageViewModels
 {
     public class MasjidEditViewModel
     {
+        public int OldSiteId { get; set; }
+
         [StringLength(38)]
         public string Id { get; set; }
 
@@ -21,6 +23,10 @@ namespace Taqweem.ViewModels.ManageViewModels
         public double Height { get; set; }
 
         public string TimeZoneId { get; set; } = "South Africa Standard Time";
+
+        public string TZTimeZone { get; set; }
+
+        public double TimeZoneDiff { get; set; }
 
         public virtual Models.TimeZone TimeZone { get; set; }
 
@@ -44,5 +50,17 @@ namespace Taqweem.ViewModels.ManageViewModels
         public int MaghribAdhaanDelay { get; set; }
 
         public SalaahTimesType SalaahTimesType { get; set; }
+
+        [Display(Name = "Masjid Uses Special Times on Public Holidays")]
+        public bool IsPublicHolidaySpecialTimesEnabled { get; set; }
+
+        [Display(Name = "Masjid Uses Special Times on a Particular Day Specified Further Below")]
+        public bool IsSpecialDayEnabled { get; set; }
+
+        [Display(Name = "Day of the Week that is the Special Day. Sunday - 0 Saturday - 6")]
+        [Range(0, 6, ErrorMessage = "Value for {0} must be between {1} and {2}")]
+        public int SpecialDayNumber { get; set; }
+
+        public double Distance { get; set; }
     }
 }

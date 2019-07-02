@@ -148,6 +148,11 @@ namespace Taqweem.Data
             return _context.Set<TEntity>().Where(predicate);
         }
 
+        public async Task<IQueryable<TEntity>> FindAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class
+        {
+            return _context.Set<TEntity>().Where(predicate);
+        }
+
         public IQueryable<TEntity> Find<TEntity, TKey>(Expression<Func<TEntity, bool>> predicate, int pageIndex, int pageSize, Expression<Func<TEntity, TKey>> orderBy) where TEntity : class
         {
             return _context.Set<TEntity>().Where(predicate).Skip((pageIndex - 1) * pageSize).Take(pageSize).OrderBy(orderBy);

@@ -85,7 +85,7 @@
             <div class="form-group">
                 <label class="control-label">Juristic Method</label>
                 <select asp-for="JuristMethod" class="form-control">
-                    @foreach(var Item in service.JuristicMethodSelectList())
+                    @foreach (var Item in service.JuristicMethodSelectList())
                     {
                         @if (Item.Value == Model.JuristMethod.ToString())
                         {
@@ -153,6 +153,27 @@
                 <input asp-for="AllowRegistration" /> @Html.DisplayNameFor(model => model.AllowRegistration)
             </label>
         </div>
+    </div>
+
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input asp-for="IsPublicHolidaySpecialTimesEnabled" /> @Html.DisplayNameFor(model => model.IsPublicHolidaySpecialTimesEnabled)
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input asp-for="IsSpecialDayEnabled" /> @Html.DisplayNameFor(model => model.IsSpecialDayEnabled)
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input asp-for="SpecialDayNumber" /> @Html.DisplayNameFor(model => model.SpecialDayNumber)
+        <span asp-validation-for="SpecialDayNumber" class="text-danger"></span>
     </div>
 
     <div class="form-group">

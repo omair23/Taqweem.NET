@@ -109,8 +109,11 @@ namespace Taqweem.Controllers
 
             Model.Notices = _taqweemService.NoticesGetByMasjidIdUnhidden(Id);
 
-            Model.SalaahTime = GetSalaahTime(Info, DateTime.Now);
 
+            //Get current salaah time for the masjid
+            Model.SalaahTime = _taqweemService.GetSalaahTime(Info, DateTime.Now);
+
+            //Get next salaah time change for the masjid
             Model.NextSalaahTime = NextSalaahTime(Info, DateTime.Now);
 
             if (Model.NextSalaahTime != null)
@@ -125,9 +128,64 @@ namespace Taqweem.Controllers
                 }                
 
                 Model.NextPerpetualTime = new cPerpetualTime(val, Info, false);
+
+                Model.NextSalaahTime.IsFajrTimeChange = IsTimeDifferent(
+                                                        Model.SalaahTime.FajrAdhaan,
+                                                        Model.SalaahTime.FajrSalaah,
+                                                        Model.NextSalaahTime.FajrAdhaan,
+                                                        Model.NextSalaahTime.FajrSalaah);
+
+                Model.NextSalaahTime.IsDhuhrTimeChange = IsTimeDifferent(
+                                                        Model.SalaahTime.DhuhrAdhaan,
+                                                        Model.SalaahTime.DhuhrSalaah,
+                                                        Model.NextSalaahTime.DhuhrAdhaan,
+                                                        Model.NextSalaahTime.DhuhrSalaah);
+
+                Model.NextSalaahTime.IsSpecialDhuhrTimeChange = IsTimeDifferent(
+                                                        Model.SalaahTime.SpecialDhuhrAdhaan,
+                                                        Model.SalaahTime.SpecialDhuhrSalaah,
+                                                        Model.NextSalaahTime.SpecialDhuhrAdhaan,
+                                                        Model.NextSalaahTime.SpecialDhuhrSalaah);
+
+                Model.NextSalaahTime.IsJumuahTimeChange = IsTimeDifferent(
+                                                        Model.SalaahTime.JumuahAdhaan,
+                                                        Model.SalaahTime.JumuahSalaah,
+                                                        Model.NextSalaahTime.JumuahAdhaan,
+                                                        Model.NextSalaahTime.JumuahSalaah);
+
+                Model.NextSalaahTime.IsAsrTimeChange = IsTimeDifferent(
+                                                        Model.SalaahTime.AsrAdhaan,
+                                                        Model.SalaahTime.AsrSalaah,
+                                                        Model.NextSalaahTime.AsrAdhaan,
+                                                        Model.NextSalaahTime.AsrSalaah);
+
+                Model.NextSalaahTime.IsIshaTimeChange = IsTimeDifferent(
+                                                        Model.SalaahTime.IshaAdhaan,
+                                                        Model.SalaahTime.IshaSalaah,
+                                                        Model.NextSalaahTime.IshaAdhaan,
+                                                        Model.NextSalaahTime.IshaSalaah);
+
             }
 
             return View(Model);
+        }
+
+        public bool IsTimeDifferent(DateTime AdhaanOld, DateTime SalaahOld, DateTime AdhaanNew, DateTime SalaahNew)
+        {
+            try
+            {
+                if (AdhaanOld.Hour == AdhaanNew.Hour
+                    && AdhaanOld.Minute == AdhaanNew.Minute
+                    && SalaahOld.Hour == SalaahNew.Hour
+                    && SalaahOld.Minute == SalaahNew.Minute)
+                    return false;
+                else
+                    return true;
+            }
+            catch (Exception ex)
+            {
+                return true;
+            }
         }
 
         public IActionResult About()
@@ -291,28 +349,6 @@ namespace Taqweem.Controllers
             return Nearest.OrderBy(s => s.Distance).ToList();
         }
 
-        public SalaahTime GetSalaahTime(Masjid Masjid, DateTime Val)
-        {
-            if (Masjid.SalaahTimesType == SalaahTimesType.ScheduleTime)
-            {
-                return Masjid.SalaahTimes
-                            .Where(s => s.DayNumber <= Val.DayOfYear
-                                    && s.Type == SalaahTimesType.ScheduleTime)
-                            .OrderByDescending(x => x.DayNumber)
-                            .FirstOrDefault();
-            }
-            else
-            {
-                return Masjid.SalaahTimes
-                            .Where(s => s.DayNumber == Val.DayOfYear
-                                    && s.TimeDate.Year <= Val.Year
-                                    && s.Type == SalaahTimesType.DailyTime)
-                            .OrderByDescending(x => x.TimeDate.Year)
-                            .OrderByDescending(x => x.DayNumber)
-                            .FirstOrDefault();
-            }
-        }
-
         public SalaahTime NextSalaahTime(Masjid Masjid, DateTime Val)
         {
             SalaahTime Time;
@@ -369,7 +405,7 @@ namespace Taqweem.Controllers
         {
             MasjidCountDown CountDown = new MasjidCountDown();
 
-            SalaahTime Times = GetSalaahTime(Masjid, DateTime.Now);
+            SalaahTime Times = _taqweemService.GetSalaahTime(Masjid, DateTime.Now);
 
             DateTime Now = DateTime.Now;
 
@@ -455,7 +491,7 @@ namespace Taqweem.Controllers
             else
             {
                 //Check Next Days Fajr
-                SalaahTime TomorrowsTime = GetSalaahTime(Masjid, DateTime.Now.AddDays(1));
+                SalaahTime TomorrowsTime = _taqweemService.GetSalaahTime(Masjid, DateTime.Now.AddDays(1));
                 CountDown.NextSalaah = "Fajr Adhaan";
                 CountDown.CountDown = "N/A";// TimeDiff(TomorrowsTime.FajrAdhaan);
                 CountDown.SalaahTime = TomorrowsTime.FajrAdhaan.ToString("HH:mm");

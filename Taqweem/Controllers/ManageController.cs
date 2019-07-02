@@ -311,11 +311,29 @@ namespace Taqweem.Controllers
 
             SalaahTime Time = new SalaahTime();
 
-            _mapper.Map(model, Time);
-
             Time.MasjidId = user.MasjidId;
             Time.Type = SalaahTimesType.ScheduleTime;
             Time.DayNumber = model.EffectiveDate.DayOfYear;
+
+            //_mapper.Map(model, Time);
+
+            Time.FajrAdhaan = model.FajrAdhaan;
+            Time.FajrSalaah = model.FajrSalaah;
+
+            Time.DhuhrAdhaan = model.DhuhrAdhaan;
+            Time.DhuhrSalaah = model.DhuhrSalaah;
+            Time.SpecialDhuhrAdhaan = model.SpecialDhuhrAdhaan;
+            Time.SpecialDhuhrSalaah = model.SpecialDhuhrSalaah;
+            Time.JumuahAdhaan = model.JumuahAdhaan;
+            Time.JumuahSalaah = model.JumuahSalaah;
+
+            Time.AsrAdhaan = model.AsrAdhaan;
+            Time.AsrSalaah = model.AsrSalaah;
+
+            Time.IshaAdhaan = model.IshaAdhaan;
+            Time.IshaSalaah = model.IshaSalaah;
+
+            //Time.UID = Repository.GetAll<SalaahTime>().Max(s => s.UID) + 1;
 
             Repository.Add(Time);
 
