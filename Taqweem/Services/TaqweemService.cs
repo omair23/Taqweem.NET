@@ -122,6 +122,58 @@ namespace Taqweem.Services
                     .ToList();
         }
 
+        public SalaahTime NextSalaahTime(Masjid Masjid, DateTime Val)
+        {
+            SalaahTime Time;
+
+            if (Masjid.SalaahTimesType == SalaahTimesType.ScheduleTime)
+            {
+                Time = Masjid.SalaahTimes
+                            .Where(s => s.DayNumber > Val.DayOfYear
+                                    && s.Type == SalaahTimesType.ScheduleTime)
+                            .OrderBy(x => x.DayNumber)
+                            .FirstOrDefault();
+
+                if (Time == null)
+                {
+                    Time = Masjid.SalaahTimes
+                            .Where(s => s.Type == SalaahTimesType.ScheduleTime)
+                            .OrderBy(x => x.DayNumber)
+                            .FirstOrDefault();
+
+                    if (Time != null)
+                    {
+                        Time.TimeDate = new DateTime(Val.Year + 1, 1, 1);
+                        Time.TimeDate = Time.TimeDate.AddDays(Time.DayNumber - 1);
+                    }
+                }
+            }
+            else
+            {
+                Time = Masjid.SalaahTimes
+                            .Where(s => s.DayNumber > Val.DayOfYear
+                                    && s.Type == SalaahTimesType.DailyTime
+                                    && s.TimeDate.Year <= Val.Year
+                                    && s.IsATimeChange == true)
+                            .OrderByDescending(s => s.TimeDate.Year)
+                            .OrderBy(x => x.DayNumber)
+                            .FirstOrDefault();
+
+                if (Time == null)
+                {
+                    Time = Masjid.SalaahTimes
+                            .Where(s => s.Type == SalaahTimesType.DailyTime
+                                    && s.TimeDate.Year <= Val.Year + 1
+                                    && s.IsATimeChange == true)
+                            .OrderByDescending(s => s.TimeDate.Year)
+                            .OrderBy(x => x.DayNumber)
+                            .FirstOrDefault();
+                }
+            }
+
+            return Time;
+        }
+
         public void DBInit()
         {
             List<Models.TimeZone> TimeZones = Repository.GetAll<Models.TimeZone>().ToList();

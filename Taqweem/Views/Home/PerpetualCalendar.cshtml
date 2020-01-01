@@ -46,7 +46,7 @@
                     <tbody>
                         @foreach (var Month in Model.Months)
                         {
-                            @if (Month.Month != 1)
+                            @*@if (Month.Month != 1)
                             {
                                 <tr style="color: #00ff34;">
                                     <th>Date</th>
@@ -62,7 +62,7 @@
                                     <th>Maghrib</th>
                                     <th>Isha</th>
                                 </tr>
-                            }
+                            }*@
 
                             @foreach (var Item in Model.Times
                                                     .Where(s => s.Date.Month == Month.Month)

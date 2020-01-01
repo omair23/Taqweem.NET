@@ -26,9 +26,9 @@
             <div class="caption">
                 <table class="table table-striped" id="perp" style="color: #fff">
                     @if (Model.Times
-                    .Where(s => service.GetDateTimeAddDays(s.DayNumber).Month == 1)
-                    .ToList()
-                    .Count > 0)
+                                   .Where(s => service.GetDateTimeAddDays(s.DayNumber).Month == 1)
+                                   .ToList()
+                                   .Count > 0)
                     {
                         <thead class='thead'>
                             <tr style="color: #00ff34;">
@@ -60,65 +60,72 @@
                         @foreach (var Month in Model.Months)
                         {
                             @if (Month.Month != 1 && (Model.Times
-                                                    .Where(s => service.GetDateTimeAddDays(s.DayNumber).Month == Month.Month)
-                                                    .ToList()
-                                                    .Count > 0))
+                                                   .Where(s => service.GetDateTimeAddDays(s.DayNumber).Month == Month.Month)
+                                                   .ToList()
+                                                   .Count > 0))
                             {
-                        <tr style="color: #00ff34;">
-                            @if (Model.Type == SalaahTimesType.DailyTime)
-                            {
-                                <th>Date</th>
-                            }
-                            else
-                            {
-                                <th>Effective From Date</th>
-                            }
-                            <th>Fajr Adhaan</th>
-                            <th>Fajr Salaah</th>
-                            <th>Jumuah Adhaan</th>
-                            <th>Jumuah Salaah</th>
-                            <th>Dhuhr Adhaan</th>
-                            <th>Dhuhr Salaah</th>
-                            <th>Sunday/Public Holiday Dhuhr Adhaan</th>
-                            <th>Sunday/Public Holiday Dhuhr Salaah</th>
-                            <th>Asr Adhaan</th>
-                            <th>Asr Salaah</th>
-                            <th>Isha Adhaan</th>
-                            <th>Isha Salaah</th>
-                        </tr>
+
+
+                                @if (Model.Type == SalaahTimesType.DailyTime)
+                                {
+                                    <tr style="color: #00ff34;">
+                                        <th>Date</th>
+                                        <th>Fajr Adhaan</th>
+                                        <th>Fajr Salaah</th>
+                                        <th>Jumuah Adhaan</th>
+                                        <th>Jumuah Salaah</th>
+                                        <th>Dhuhr Adhaan</th>
+                                        <th>Dhuhr Salaah</th>
+                                        <th>Sunday/Public Holiday Dhuhr Adhaan</th>
+                                        <th>Sunday/Public Holiday Dhuhr Salaah</th>
+                                        <th>Asr Adhaan</th>
+                                        <th>Asr Salaah</th>
+                                        <th>Isha Adhaan</th>
+                                        <th>Isha Salaah</th>
+                                    </tr>
+                                }
+                                @*else
+                                    {
+                                        <th>Effective From Date</th>
+                                    }*@
+
                             }
 
                             @foreach (var Item in Model.Times
-                                                    .Where(s => service.GetDateTimeAddDays(s.DayNumber).Month == Month.Month)
-                                                    .OrderBy(s => s.DayNumber)
-                                                    .ToList())
+                                                   .Where(s => service.GetDateTimeAddDays(s.DayNumber).Month == Month.Month)
+                                                   .OrderBy(s => s.DayNumber)
+                                                   .ToList())
                             {
-                                <tr>
-                                    <td>@service.GetDateTimeAddDays(Item.DayNumber).ToLongDateString()</td>
+                    <tr>
+                        <td>@service.GetDateTimeAddDays(Item.DayNumber).ToLongDateString()</td>
 
-                                    <td>@Item.FajrAdhaan.ToString("HH:mm")</td>
-                                    <td>@Item.FajrSalaah.ToString("HH:mm")</td>
+                        <td>@Item.FajrAdhaan.ToString("HH:mm")</td>
+                        <td>@Item.FajrSalaah.ToString("HH:mm")</td>
 
-                                    @if (service.GetDateTimeAddDays(Item.DayNumber).DayOfWeek == DayOfWeek.Friday)
-                                    {
-                                        <td>@Item.JumuahAdhaan.ToString("HH:mm")</td>
-                                        <td>@Item.JumuahSalaah.ToString("HH:mm")</td>
-                                        <td></td>
-                                        <td></td>
-                                    }
-                                    else
-                                    {
-                                        <td></td>
-                                        <td></td>
-                                        <td>@Item.DhuhrAdhaan.ToString("HH:mm")</td>
-                                        <td>@Item.DhuhrSalaah.ToString("HH:mm")</td>
-                                    }
+                        @if (service.GetDateTimeAddDays(Item.DayNumber).DayOfWeek == DayOfWeek.Friday)
+                        {
+                            <td>@Item.JumuahAdhaan.ToString("HH:mm")</td>
+                            <td>@Item.JumuahSalaah.ToString("HH:mm")</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        }
+                        else
+                        {
+                            <td></td>
+                            <td></td>
+                            <td>@Item.DhuhrAdhaan.ToString("HH:mm")</td>
+                            <td>@Item.DhuhrSalaah.ToString("HH:mm")</td>
+                            <td></td>
+                            <td></td>
+                        }
 
-                                    <td>@Item.AsrAdhaan.ToString("HH:mm")</td>
-                                    <td>@Item.AsrSalaah.ToString("HH:mm")</td>
-                                    <td>@Item.IshaAdhaan.ToString("HH:mm")</td>
-                                    <td>@Item.IshaSalaah.ToString("HH:mm")</td>
-                                </tr>
+                        <td>@Item.AsrAdhaan.ToString("HH:mm")</td>
+                        <td>@Item.AsrSalaah.ToString("HH:mm")</td>
+                        <td>@Item.IshaAdhaan.ToString("HH:mm")</td>
+                        <td>@Item.IshaSalaah.ToString("HH:mm")</td>
+                    </tr>
                             }
 
                         }

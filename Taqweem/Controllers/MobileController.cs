@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Taqweem.Classes;
 using Taqweem.Models;
 using Taqweem.Services;
@@ -19,6 +17,23 @@ namespace Taqweem.Controllers
         public MobileController(TaqweemService taqweemService)
         {
             _taqweemService = taqweemService;
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<object>> MarkersGet()
+        {
+            return _taqweemService.MasjidGetAll()
+                                    .Select(d => new MasjidDTOLight
+                                    {
+                                        Id = d.Id,
+                                        Name = d.Name,
+                                        Town = d.Town,
+                                        Country = d.Country,
+                                        Latitude = d.Latitude,
+                                        Longitude = d.Longitude
+                                    })
+                                    //.Take(10)
+                                   .ToList();
         }
 
         [HttpGet]

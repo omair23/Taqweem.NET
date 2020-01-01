@@ -12,6 +12,7 @@ using AutoMapper;
 using Taqweem.ViewModels.ManageViewModels;
 using Hangfire;
 using System;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace Taqweem
 {
@@ -51,11 +52,11 @@ namespace Taqweem
             {
                 cfg.CreateMap<MasjidEditViewModel, Masjid>().ForMember(x => x.UID, opt => opt.Ignore());
 
-                cfg.CreateMap<MasjidEditViewModel, Masjid>().ForMember(x => x.UID, opt => opt.Ignore()).ReverseMap();
+                //cfg.CreateMap<MasjidEditViewModel, Masjid>().ForMember(x => x.UID, opt => opt.Ignore()).ReverseMap();
 
                 cfg.CreateMap<SalaahTimeViewModel, SalaahTime>();//.ForMember(x => x.UID, opt => opt.Ignore());
 
-                cfg.CreateMap<SalaahTimeViewModel, SalaahTime>();//.ForMember(x => x.UID, opt => opt.Ignore()).ReverseMap();
+                //cfg.CreateMap<SalaahTimeViewModel, SalaahTime>();//.ForMember(x => x.UID, opt => opt.Ignore()).ReverseMap();
             });
 
             var mapper = config.CreateMapper();
@@ -86,7 +87,8 @@ namespace Taqweem
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
-                app.UseDatabaseErrorPage();
+                //TO DO Uncomment
+                //app.UseDatabaseErrorPage();
             }
             else
             {
@@ -97,11 +99,14 @@ namespace Taqweem
 
             app.UseAuthentication();
 
-            app.UseMvc(routes =>
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

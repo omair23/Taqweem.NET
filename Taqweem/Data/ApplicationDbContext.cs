@@ -43,9 +43,9 @@ namespace Taqweem.Data
 
             builder.Entity<Masjid>().ToTable("Masjid");
 
-            builder.Entity<Masjid>().Property(u => u.UID).UseSqlServerIdentityColumn();
+            builder.Entity<Masjid>().Property(u => u.UID).ValueGeneratedOnAdd();//.UseSqlServerIdentityColumn();
 
-            builder.Entity<Masjid>().Property(p => p.UID).Metadata.AfterSaveBehavior = PropertySaveBehavior.Ignore;
+            builder.Entity<Masjid>().Property(p => p.UID).Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
             builder.Entity<SalaahTime>().ToTable("SalaahTime");
 
@@ -59,9 +59,9 @@ namespace Taqweem.Data
 
             builder.Entity<PublicHoliday>().ToTable("PublicHoliday");
 
-            builder.Entity<Notice>().Property(u => u.UID).UseSqlServerIdentityColumn();
+            builder.Entity<Notice>().Property(u => u.UID).ValueGeneratedOnAdd();// .UseSqlServerIdentityColumn();
 
-            builder.Entity<Notice>().Property(p => p.UID).Metadata.AfterSaveBehavior = PropertySaveBehavior.Ignore;
+            builder.Entity<Notice>().Property(p => p.UID).Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
             builder.Entity<Configuration>().ToTable("Configuration");
 
