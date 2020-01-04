@@ -13,6 +13,7 @@ using Taqweem.ViewModels.ManageViewModels;
 using Hangfire;
 using System;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using System.Text.Json.Serialization;
 
 namespace Taqweem
 {
@@ -47,6 +48,13 @@ namespace Taqweem
             services.AddScoped<RazorViewToStringRenderer>();
 
             services.AddScoped<RazorHelperService>();
+
+            services.AddControllersWithViews()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            });
 
             var config = new MapperConfiguration(cfg =>
             {

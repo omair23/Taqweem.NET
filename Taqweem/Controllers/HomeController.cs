@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Taqweem.Models;
 using Taqweem.ViewModels;
 using Taqweem.Classes;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Taqweem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -190,12 +188,31 @@ namespace Taqweem.Controllers
 
         public IActionResult About()
         {
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        public IActionResult Error()
+        {
             return View();
         }
 
         public IActionResult AddMasjid()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         [HttpPost]
@@ -260,6 +277,23 @@ namespace Taqweem.Controllers
                             .Find<Masjid>(s => s.Id == Id)
                             .FirstOrDefault();
 
+            if (Masjid.SalaahTimesType == SalaahTimesType.DailyTime)
+                return RedirectToAction("SalaahCalendarDaily", "Home", new { Id = Id });
+
+            cSalaahCalendar Model = new cSalaahCalendar(Masjid, _context);
+
+            return View(Model);
+        }
+
+        public IActionResult SalaahCalendarDaily(string Id)
+        {
+            Masjid Masjid = Repository
+                            .Find<Masjid>(s => s.Id == Id)
+                            .FirstOrDefault();
+
+            if (Masjid.SalaahTimesType == SalaahTimesType.ScheduleTime)
+                return RedirectToAction("SalaahCalendar", "Home", new { Id = Id });
+
             cSalaahCalendar Model = new cSalaahCalendar(Masjid, _context);
 
             return View(Model);
@@ -315,10 +349,10 @@ namespace Taqweem.Controllers
             return Json(_json);
         }
 
-        public IActionResult Error()
+        /*public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        }*/
 
         public double rad(double value)
         {
@@ -327,10 +361,7 @@ namespace Taqweem.Controllers
 
         public List<Masjid> NearestMasjids(double Latitude, double Longitude, int Radius)
         {
-            List<Masjid> Markers = Repository
-                                    .GetAll<Masjid>()
-                                    .Include(s => s.SalaahTimes)
-                                    .ToList();
+            List<Masjid> Markers = _taqweemService.MasjidGetByCoordinateRangeAsync(Latitude, Longitude).Result;
 
             List<Masjid> Nearest = new List<Masjid>();
 
@@ -484,11 +515,13 @@ namespace Taqweem.Controllers
                 })
                 .ToList();
 
-                return Json(new { data = _json }, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });
+                return Json(new { data = _json });
+                //return Json(new { data = _json }, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });
             }
             catch (Exception ex)
             {
-                return Json(new { data = "" }, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });
+                return Json(new { data = "" });
+                //return Json(new { data = "" }, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });
             }
         }
     }

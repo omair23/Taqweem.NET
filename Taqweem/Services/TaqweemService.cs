@@ -38,7 +38,48 @@ namespace Taqweem.Services
 
         public async Task<IEnumerable<Masjid>> MasjidGetAllAsync()
         {
-            return await Repository.GetAllAsync<Masjid>();
+            var myTask = Task.Run(() => Repository.GetAllAsync<Masjid>());
+
+            return await myTask.ConfigureAwait(false);
+        }
+
+        public async Task<List<Masjid>> MasjidGetByCoordinateRangeAsync(double Latitude, double Longitude)
+        {
+            double LatitudeLimitUpper = Latitude + 10;
+            double LatitudeLimitLower = Latitude - 10;
+
+            double LongitudeLimitUpper = Longitude + 10;
+            double LongitudeLimitLower = Longitude - 10;
+
+            var myTask = Task.Run(() => Repository
+                       .Find<Masjid>(s =>
+                       s.Latitude > LatitudeLimitLower
+                       && s.Latitude < LatitudeLimitUpper
+                       && s.Longitude > LongitudeLimitLower
+                       && s.Longitude < LongitudeLimitUpper
+                       )
+                       .Include(s => s.SalaahTimes)
+                       .ToList());
+
+            return await myTask.ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<Masjid>> MasjidGetAllSalaahTimesAsync()
+        {
+            var myTask = Task.Run(() => Repository
+                        .GetAllAsync<Masjid>());
+
+            return await myTask.ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<Masjid>> MasjidGetByTermAsync(string Term)
+        {
+            var myTask = Task.Run(() => Repository.Find<Masjid>(s => s.Name.Contains(Term) |
+                                                s.Town.Contains(Term) |
+                                                s.Country.Contains(Term))
+                                                .Take(25));
+
+            return await myTask.ConfigureAwait(false);
         }
 
         public IEnumerable<Masjid> MasjidGetByTerm(string Term)
@@ -56,7 +97,9 @@ namespace Taqweem.Services
 
         public async Task<Masjid> MasjidGetByIdAsync(string Id)
         {
-            return await Repository.GetByIdAsync<Masjid>(s => s.Id == Id);
+            var myTask = Task.Run(() => Repository.GetByIdAsync<Masjid>(s => s.Id == Id));
+
+            return await myTask.ConfigureAwait(false);
         }
 
         public Masjid MasjidGetByIdIncluded(string Id)
@@ -70,11 +113,13 @@ namespace Taqweem.Services
 
         public async Task<Masjid> MasjidGetByIdIncludedAsync(string Id)
         {
-            return await Task.Run(() => Repository
+            var myTask = Task.Run(() => Repository
                     .Find<Masjid>(s => s.Id == Id)
                     .Include(s => s.SalaahTimes)
                     .Include(s => s.TimeZone)
                     .FirstOrDefault());
+
+            return await myTask.ConfigureAwait(false);
         }
 
         public Masjid MasjidGetByOldSiteId(int OldId)
@@ -84,19 +129,28 @@ namespace Taqweem.Services
                     .FirstOrDefault();
         }
 
-        public SalaahTime GetSalaahTime(Masjid Masjid, DateTime Val)
+        public SalaahTime GetSalaahTime(Masjid masjid, DateTime Val)
         {
-            if (Masjid.SalaahTimesType == SalaahTimesType.ScheduleTime)
+            if (masjid.SalaahTimesType == SalaahTimesType.ScheduleTime)
             {
-                return Masjid.SalaahTimes
+                var FirstTry = masjid.SalaahTimes
                             .Where(s => s.DayNumber <= Val.DayOfYear
                                     && s.Type == SalaahTimesType.ScheduleTime)
                             .OrderByDescending(x => x.DayNumber)
                             .FirstOrDefault();
+
+                if (FirstTry == null)
+                    FirstTry = masjid.SalaahTimes
+                            .Where(s => s.TimeDate.Year <= Val.Year
+                                    && s.Type == SalaahTimesType.ScheduleTime)
+                            .OrderBy(x => x.DayNumber)
+                            .FirstOrDefault();
+
+                return FirstTry;
             }
             else
             {
-                return Masjid.SalaahTimes
+                return masjid.SalaahTimes
                             .Where(s => s.DayNumber == Val.DayOfYear
                                     && s.TimeDate.Year <= Val.Year
                                     && s.Type == SalaahTimesType.DailyTime)
@@ -122,13 +176,13 @@ namespace Taqweem.Services
                     .ToList();
         }
 
-        public SalaahTime NextSalaahTime(Masjid Masjid, DateTime Val)
+        public SalaahTime NextSalaahTime(Masjid masjid, DateTime Val)
         {
             SalaahTime Time;
 
-            if (Masjid.SalaahTimesType == SalaahTimesType.ScheduleTime)
+            if (masjid.SalaahTimesType == SalaahTimesType.ScheduleTime)
             {
-                Time = Masjid.SalaahTimes
+                Time = masjid.SalaahTimes
                             .Where(s => s.DayNumber > Val.DayOfYear
                                     && s.Type == SalaahTimesType.ScheduleTime)
                             .OrderBy(x => x.DayNumber)
@@ -136,7 +190,7 @@ namespace Taqweem.Services
 
                 if (Time == null)
                 {
-                    Time = Masjid.SalaahTimes
+                    Time = masjid.SalaahTimes
                             .Where(s => s.Type == SalaahTimesType.ScheduleTime)
                             .OrderBy(x => x.DayNumber)
                             .FirstOrDefault();
@@ -150,7 +204,7 @@ namespace Taqweem.Services
             }
             else
             {
-                Time = Masjid.SalaahTimes
+                Time = masjid.SalaahTimes
                             .Where(s => s.DayNumber > Val.DayOfYear
                                     && s.Type == SalaahTimesType.DailyTime
                                     && s.TimeDate.Year <= Val.Year
@@ -161,7 +215,7 @@ namespace Taqweem.Services
 
                 if (Time == null)
                 {
-                    Time = Masjid.SalaahTimes
+                    Time = masjid.SalaahTimes
                             .Where(s => s.Type == SalaahTimesType.DailyTime
                                     && s.TimeDate.Year <= Val.Year + 1
                                     && s.IsATimeChange == true)

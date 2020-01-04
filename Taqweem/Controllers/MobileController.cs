@@ -131,7 +131,7 @@ namespace Taqweem.Controllers
 
 
         [HttpGet]
-        public IEnumerable<object> GetMasjidsByTerm(string Term)
+        public async Task<IEnumerable<object>> GetMasjidsByTerm(string Term)
         {
             Term = Term != null ? Term : "";
 
@@ -144,6 +144,38 @@ namespace Taqweem.Controllers
                                         Country = d.Country
                                     })
                                    .ToList();
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<object>> GetMasjidsNearestToLocation(double Latitude, double Longitude, int Radius)
+        {
+
+            List<Masjid> Markers = await _taqweemService.MasjidGetByCoordinateRangeAsync(Latitude, Longitude).ConfigureAwait(false);
+
+            List<Masjid> Nearest = new List<Masjid>();
+
+            foreach (var Item in Markers)
+            {
+                var d = cCalculations.DistanceTo(Latitude, Longitude, Item.Latitude, Item.Longitude);
+
+                if (d < Radius)
+                {
+                    Item.Distance = Math.Round(d, 2);
+
+                    Nearest.Add(Item);
+                }
+            }
+
+            return Nearest
+                    .OrderBy(s => s.Distance)
+                    .Select(d => new MasjidDTOLight
+                        {
+                            Id = d.Id,
+                            Name = d.Name,
+                            Town = d.Town,
+                            Country = d.Country
+                        })
+                    .ToList();
         }
 
     }
