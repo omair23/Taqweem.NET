@@ -175,6 +175,7 @@ namespace Taqweem.Controllers
                             Town = d.Town,
                             Country = d.Country
                         })
+                    .Take(20)
                     .ToList();
         }
 

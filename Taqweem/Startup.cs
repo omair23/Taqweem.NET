@@ -60,6 +60,8 @@ namespace Taqweem
             {
                 cfg.CreateMap<MasjidEditViewModel, Masjid>().ForMember(x => x.UID, opt => opt.Ignore());
 
+                cfg.CreateMap<Masjid, MasjidEditViewModel>();
+
                 //cfg.CreateMap<MasjidEditViewModel, Masjid>().ForMember(x => x.UID, opt => opt.Ignore()).ReverseMap();
 
                 cfg.CreateMap<SalaahTimeViewModel, SalaahTime>();//.ForMember(x => x.UID, opt => opt.Ignore());
@@ -105,9 +107,12 @@ namespace Taqweem
 
             app.UseStaticFiles();
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
